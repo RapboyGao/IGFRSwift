@@ -1,4 +1,4 @@
-@testable import IGFR
+@testable import IGFRSwift
 import Testing
 
 @Test func example() async throws {
