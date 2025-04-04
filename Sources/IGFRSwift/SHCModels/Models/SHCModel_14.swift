@@ -4,8 +4,8 @@
 
 import Foundation
 
-public extension ASHCModel {
-    static let model14 = ASHCModel(
+public extension SHCModel {
+    static let model14 = SHCModel(
         version: 14,
         degree: 13,
         minYear: 1900.0,

@@ -1,6 +1,6 @@
 //
 //
-//  ASHCModel.swift
+//  SHCModel.swift
 //
 //  国际地磁参考场球谐系数模型
 //
@@ -29,7 +29,7 @@ public struct ASHCCoefficient: Codable, Hashable, Sendable {
 }
 
 /// 国际地磁参考场模型容器
-public struct ASHCModel: Codable, Hashable, Sendable {
+public struct SHCModel: Codable, Hashable, Sendable {
     /// 模型版本号（1-14对应1968-2020版本）
     public let version: Int
     /// 模型最大阶数（8或13）
@@ -45,7 +45,7 @@ public struct ASHCModel: Codable, Hashable, Sendable {
     public let coefficients: [ASHCCoefficient]
 
     /// 全版本模型集合（共14个版本）
-    public static let all: [ASHCModel] = [
+    public static let all: [SHCModel] = [
         .model1, .model2, .model3, .model4, .model5,
         .model6, .model7, .model8, .model9, .model10,
         .model11, .model12, .model13, .model14

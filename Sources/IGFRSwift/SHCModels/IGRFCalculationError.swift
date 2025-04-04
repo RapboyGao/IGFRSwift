@@ -1,5 +1,5 @@
 // MARK: - 增强的错误类型系统
-public enum CalculationError: Error, Sendable {
+public enum IGRFCalculationError: Error, Sendable {
     // 输入参数错误
     case invalidLatitude               // 纬度超出[-90°, 90°]
     case invalidAltitude               // 海拔高度为负值
