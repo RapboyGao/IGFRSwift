@@ -44,11 +44,5 @@ public struct SHCModel: Codable, Hashable, Sendable {
     /// 包含所有球谐系数的数组
     public let coefficients: [SHCCoefficient]
 
-    /// 全版本模型集合（共14个版本）
-    public static let all: [SHCModel] = [
-        .model1, .model2, .model3, .model4, .model5,
-        .model6, .model7, .model8, .model9, .model10,
-        .model11, .model12, .model13, .model14
-    ]
 }
 
