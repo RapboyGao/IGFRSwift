@@ -69,7 +69,7 @@ public extension SHCModel {{
         minYear: {model_data['min_year']},
         maxYear: {model_data['max_year']},
         years: {model_data['years']},
-        coefficients: [
+        [
             {',\n            '.join(coeff_entries)}
         ]
     )

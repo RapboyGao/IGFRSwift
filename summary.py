@@ -79,7 +79,7 @@ def main():
     # 生成Markdown文件
     with open('summary.txt', 'w', encoding='utf-8') as md:
         for path, content in swift_files:
-            md.write(f'# {path}\n\n```swift\n{content}\n```\n\n')
+            md.write(f'## {path}\n\n```swift\n{content}\n```\n\n')
 
 if __name__ == '__main__':
     main()
