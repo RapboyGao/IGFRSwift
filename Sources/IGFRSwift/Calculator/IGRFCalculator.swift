@@ -33,7 +33,7 @@ public struct IGRFCalculator {
         
         // 计算施密特多项式
         let theta = converter.theta // 地心余纬度（度）
-        let schmidt = SchmidtLegendrePolynomial(nmax: model.degree, theta: [theta])
+        let schmidt = try SchmidtLegendrePolynomial(nmax: model.degree, theta: [theta])
         
         // 计算磁场分量
         let (x, y, z) = try calculateComponents(
