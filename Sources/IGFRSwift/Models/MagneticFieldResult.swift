@@ -1,11 +1,68 @@
 import Foundation
 
+/// 年变率参数
+public struct SecularVariation: Codable, Sendable, Hashable {
+    /// 总强度年变率（nT/年）
+    public let totalIntensitySV: Double
+    /// 磁偏角年变率（度/年，东偏为正）
+    public let declinationSV: Double
+    /// 磁倾角年变率（度/年，向下为正）
+    public let inclinationSV: Double
+    /// 北向强度年变率（nT/年）
+    public let northIntensitySV: Double
+    /// 东向强度年变率（nT/年）
+    public let eastIntensitySV: Double
+    /// 垂直强度年变率（nT/年）
+    public let verticalIntensitySV: Double
+    /// 水平强度年变率（nT/年）
+    public let horizontalIntensitySV: Double
+}
+
 /// 地磁计算结果模型（兼容macOS 10.15+）
 public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, Hashable {
+    // MARK: - Nested Types
+    public struct SecularVariation: Codable, Sendable, Hashable {
+        public let totalIntensitySV: Double
+        public let declinationSV: Double
+        public let inclinationSV: Double
+        public let northIntensitySV: Double
+        public let eastIntensitySV: Double
+        public let verticalIntensitySV: Double
+        public let horizontalIntensitySV: Double
+
+        public init(
+            totalIntensitySV: Double,
+            declinationSV: Double,
+            inclinationSV: Double,
+            northIntensitySV: Double,
+            eastIntensitySV: Double,
+            verticalIntensitySV: Double,
+            horizontalIntensitySV: Double
+        ) {
+            self.totalIntensitySV = totalIntensitySV
+            self.declinationSV = declinationSV
+            self.inclinationSV = inclinationSV
+            self.northIntensitySV = northIntensitySV
+            self.eastIntensitySV = eastIntensitySV
+            self.verticalIntensitySV = verticalIntensitySV
+            self.horizontalIntensitySV = horizontalIntensitySV
+        }
+    }
+
     // MARK: - Properties
+    // MARK: - Nested Types
+    public struct SecularVariation: Codable, Sendable, Hashable {
+        public let totalIntensitySV: Double
+        public let declinationSV: Double
+        public let inclinationSV: Double
+        public let northIntensitySV: Double
+        public let eastIntensitySV: Double
+        public let verticalIntensitySV: Double
+        public let horizontalIntensitySV: Double
+    }
 
+    // MARK: - Properties
     // MARK: - 地理坐标
-
     /// 纬度（十进制度数，范围：-90° ~ 90°）
     public let latitude: Double
     /// 经度（十进制度数，范围：-180° ~ 180°）
@@ -14,7 +71,6 @@ public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, H
     public let altitude: Double
 
     // MARK: - 磁场分量
-
     /// 北向强度（nT，正北方向）
     public let x: Double
     /// 东向强度（nT，正东方向）
@@ -23,17 +79,14 @@ public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, H
     public let z: Double
 
     // MARK: - 时间信息
-
     /// 计算时间（UTC时区）
     public let calculationDate: Date
 
     // MARK: - 长期变化
-
     /// 地磁场年变率参数
-    public let secularVariation: MagneticSecularVariation
+    public let secularVariation: SecularVariation
 
     // MARK: - 计算属性
-
     /// 总强度（nT）
     public var totalIntensity: Double {
         sqrt(x * x + y * y + z * z)
@@ -71,8 +124,9 @@ public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, H
         """
     }
 
-    // MARK: - Initialization
+    
 
+            // MARK: - Initialization
     public init(
         latitude: Double,
         longitude: Double,
@@ -80,7 +134,30 @@ public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, H
         x: Double,
         y: Double,
         z: Double,
-        secularVariation: MagneticSecularVariation,
+        secularVariation: SecularVariation,
+        calculationDate: Date = Date()
+    ) {
+        precondition((-90...90).contains(latitude), "纬度范围错误")
+        precondition((-180...180).contains(longitude), "经度范围错误")
+        precondition(x >= 0 && y >= 0 && z >= 0, "磁场强度不可为负")
+        
+        self.latitude = latitude
+        self.longitude = longitude
+        self.altitude = altitude
+        self.x = x
+        self.y = y
+        self.z = z
+        self.secularVariation = secularVariation
+        self.calculationDate = calculationDate
+    }
+    public init(
+        latitude: Double,
+        longitude: Double,
+        altitude: Double,
+        x: Double,
+        y: Double,
+        z: Double,
+        secularVariation: SecularVariation,
         calculationDate: Date = Date()
     ) {
         precondition((-90...90).contains(latitude), "纬度范围错误")
@@ -95,22 +172,4 @@ public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, H
         self.secularVariation = secularVariation
         self.calculationDate = calculationDate
     }
-}
-
-/// 年变率参数
-public struct MagneticSecularVariation: Codable, Sendable, Hashable {
-    /// 总强度年变率（nT/年）
-    public let totalIntensitySV: Double
-    /// 磁偏角年变率（度/年，东偏为正）
-    public let declinationSV: Double
-    /// 磁倾角年变率（度/年，向下为正）
-    public let inclinationSV: Double
-    /// 北向强度年变率（nT/年）
-    public let northIntensitySV: Double
-    /// 东向强度年变率（nT/年）
-    public let eastIntensitySV: Double
-    /// 垂直强度年变率（nT/年）
-    public let verticalIntensitySV: Double
-    /// 水平强度年变率（nT/年）
-    public let horizontalIntensitySV: Double
 }
