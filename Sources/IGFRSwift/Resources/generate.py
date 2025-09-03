@@ -56,32 +56,32 @@ def generate_swift_model(model_data, output_dir):
         entry = f'SHCCoefficient(n: {n}, m: {m}, type: .{c_type}, values: [{values_str}])'
         coeff_entries.append(entry)
     
-    swift_code = f"""//
-//  SHCModel_{version}.swift
-//
+    swift_code = f'''//
+    //  SHCModel_{version}.swift
+    //
 
-import Foundation
+    import Foundation
 
-public extension SHCModel {{
-    static let model{version} = SHCModel(
-        version: {version},
-        degree: {model_data['degree']},
-        minYear: {model_data['min_year']},
-        maxYear: {model_data['max_year']},
-        years: {model_data['years']},
-        [
-            {',\n            '.join(coeff_entries)}
-        ]
-    )
-}}
-"""
+    public extension SHCModel {{
+        static let model{version} = SHCModel(
+            version: {version},
+            degree: {model_data['degree']},
+            minYear: {model_data['min_year']},
+            maxYear: {model_data['max_year']},
+            years: {model_data['years']},
+            [
+                {','.join(coeff_entries)}
+            ]
+        )
+    }}'''
+
     output_path = os.path.join(output_dir, f'SHCModel_{version}.swift')
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(swift_code)
 
 def generate_shc_definition(output_dir):
     """生成模型定义文件"""
-    swift_code = """//
+    swift_code = f'''//
 //
 //  SHCModel.swift
 //
@@ -89,7 +89,7 @@ def generate_shc_definition(output_dir):
 //
 
 import Foundation
-
+''' + '''
 /// 球谐系数类型枚举
 public enum SHCCoefficientType: String, Codable, Hashable, Sendable {
     /// 高斯系数中的余弦项（Schmidt半归一化）
@@ -97,8 +97,7 @@ public enum SHCCoefficientType: String, Codable, Hashable, Sendable {
     /// 高斯系数中的正弦项（Schmidt半归一化）
     case h
 }
-
-/// 球谐系数数据单元
+''' + '''/// 球谐系数数据单元
 public struct SHCCoefficient: Codable, Hashable, Sendable {
     /// 球谐函数阶数（degree），取值范围 1 ≤ n ≤ 模型最大阶数
     public let n: Int
@@ -129,7 +128,7 @@ public struct SHCModel: Codable, Hashable, Sendable {
 
 }
 
-"""
+'''
 
 # 不生成
     """
