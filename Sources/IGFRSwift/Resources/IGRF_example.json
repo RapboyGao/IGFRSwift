@@ -1,0 +1,83 @@
+{
+  "geomagnetic-field-model-result": {
+    "model": "igrf",
+    "model_revision": "14",
+    "date": {
+      "value": "2025-01-01"
+    },
+    "coordinates": {
+      "latitude": {
+        "units": "deg (north)",
+        "value": 40
+      },
+      "longitude": {
+        "units": "deg (east)",
+        "value": 116
+      },
+      "altitude": {
+        "units": "km",
+        "value": 0
+      }
+    },
+    "field-value": {
+      "total-intensity": {
+        "units": "nT",
+        "value": 55004
+      },
+      "declination": {
+        "units": "deg (east)",
+        "value": -7.402
+      },
+      "inclination": {
+        "units": "deg (down)",
+        "value": 59.47
+      },
+      "north-intensity": {
+        "units": "nT",
+        "value": 27708
+      },
+      "east-intensity": {
+        "units": "nT",
+        "value": -3599
+      },
+      "vertical-intensity": {
+        "units": "nT",
+        "value": 47378
+      },
+      "horizontal-intensity": {
+        "units": "nT",
+        "value": 27941
+      }
+    },
+    "secular-variation": {
+      "total-intensity": {
+        "units": "nT/y",
+        "value": 29.8
+      },
+      "declination": {
+        "units": "arcmin/y (east)",
+        "value": -1.8
+      },
+      "inclination": {
+        "units": "arcmin/y (down)",
+        "value": 1.9
+      },
+      "north-intensity": {
+        "units": "nT/y",
+        "value": -12.5
+      },
+      "east-intensity": {
+        "units": "nT/y",
+        "value": -13
+      },
+      "vertical-intensity": {
+        "units": "nT/y",
+        "value": 40.9
+      },
+      "horizontal-intensity": {
+        "units": "nT/y",
+        "value": -10.7
+      }
+    }
+  }
+}
