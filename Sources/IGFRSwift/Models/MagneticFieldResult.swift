@@ -1,22 +1,11 @@
 import Foundation
 
-
-
 /// 地磁计算结果模型（兼容macOS 10.15+）
 public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, Hashable {
-    // MARK: - Nested Types
-    public struct SecularVariation: Codable, Sendable, Hashable {
-        public let totalIntensitySV: Double
-        public let declinationSV: Double
-        public let inclinationSV: Double
-        public let northIntensitySV: Double
-        public let eastIntensitySV: Double
-        public let verticalIntensitySV: Double
-        public let horizontalIntensitySV: Double
-    }
-
     // MARK: - Properties
+
     // MARK: - 地理坐标
+
     /// 纬度（十进制度数，范围：-90° ~ 90°）
     public let latitude: Double
     /// 经度（十进制度数，范围：-180° ~ 180°）
@@ -25,6 +14,7 @@ public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, H
     public let altitude: Double
 
     // MARK: - 磁场分量
+
     /// 北向强度（nT，正北方向）
     public let x: Double
     /// 东向强度（nT，正东方向）
@@ -33,14 +23,17 @@ public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, H
     public let z: Double
 
     // MARK: - 时间信息
+
     /// 计算时间（UTC时区）
     public let calculationDate: Date
 
     // MARK: - 长期变化
+
     /// 地磁场年变率参数
-    public let secularVariation: SecularVariation
+    public let secularVariation: MagneticSecularVariation
 
     // MARK: - 计算属性
+
     /// 总强度（nT）
     public var totalIntensity: Double {
         sqrt(x * x + y * y + z * z)
@@ -78,9 +71,8 @@ public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, H
         """
     }
 
-    
+    // MARK: - Initialization
 
-        // MARK: - Initialization
     public init(
         latitude: Double,
         longitude: Double,
@@ -88,7 +80,7 @@ public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, H
         x: Double,
         y: Double,
         z: Double,
-        secularVariation: SecularVariation,
+        secularVariation: MagneticSecularVariation,
         calculationDate: Date = Date()
     ) {
         precondition((-90...90).contains(latitude), "纬度范围错误")
@@ -104,7 +96,6 @@ public struct MagneticFieldResult: CustomStringConvertible, Codable, Sendable, H
         self.calculationDate = calculationDate
     }
 }
-
 
 /// 年变率参数
 public struct MagneticSecularVariation: Codable, Sendable, Hashable {
