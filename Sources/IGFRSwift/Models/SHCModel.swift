@@ -31,4 +31,6 @@ public struct SHCModel: Codable, Hashable, Sendable {
         }
         self.coefficients = temporaryCoefficients
     }
+    
+    public static let latest: SHCModel = .model14
 }
