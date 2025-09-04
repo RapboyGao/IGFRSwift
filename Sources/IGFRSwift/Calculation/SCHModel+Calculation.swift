@@ -75,3 +75,27 @@ public extension SHCModel {
         return (gdLat, height, Bn, Bu)
     }
 }
+
+public extension SHCModel {
+    func geod2geoc(gdLat: SHCAngle, height: Double, Bn: Double, Bu: Double) -> (theta: SHCAngle, r: Double, B_theta: Double, B_r: Double) {
+        let a = WGS84_a
+        let b = a * sqrt(1 - WGS84_e2)
+        
+        let sinAlpha = gdLat.sin()
+        let cosAlpha = gdLat.cos()
+        
+        let tmp = height * sqrt(pow(a*cosAlpha, 2) + pow(b*sinAlpha, 2))
+        let betaRadians = atan((tmp + pow(b, 2)) / (tmp + pow(a, 2)) * tan(gdLat.radians))
+        let theta = SHCAngle(radians: .pi/2 - betaRadians)
+        
+        let r = sqrt(pow(height, 2) + 2*tmp + (pow(a, 2)*(1 - (1 - pow(b/a, 4)) * pow(sinAlpha, 2))) / (1 - (1 - pow(b/a, 2)) * pow(sinAlpha, 2)))
+        
+        let psiRadians = sinAlpha * sin(theta.radians) - cosAlpha * cos(theta.radians)
+        let psi = SHCAngle(radians: psiRadians)
+        
+        let B_r = -psi.sin() * Bn + psi.cos() * Bu
+        let B_theta = -psi.cos() * Bn - psi.sin() * Bu
+        
+        return (theta, r, B_theta, B_r)
+    }
+}
