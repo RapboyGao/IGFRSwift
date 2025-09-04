@@ -99,3 +99,156 @@ public extension SHCModel {
         return (theta, r, B_theta, B_r)
     }
 }
+
+// 地球参考半径（km）
+private let RE = 6371.2
+
+/// IGRF计算结果结构体
+public struct IGRFGeocentricResult {
+    public let Br: Double      // 径向磁场分量 (nT)
+    public let Btheta: Double  // 余纬方向磁场分量 (nT)
+    public let Bphi: Double    // 经度方向磁场分量 (nT)
+    
+    public init(Br: Double, Btheta: Double, Bphi: Double) {
+        self.Br = Br
+        self.Btheta = Btheta
+        self.Bphi = Bphi
+    }
+}
+
+public extension SHCModel {
+    /// 计算IGRF模型值（地心坐标系输入输出）
+    /// - Parameters:
+    ///   - r: 地心距离 (km)
+    ///   - theta: 余纬角度 (度)
+    ///   - phi: 经度角度，东向为正 (度)
+    ///   - date: 计算日期
+    ///   - minDegree: 最小展开阶数，默认1
+    ///   - maxDegree: 最大展开阶数，默认模型最大阶数
+    /// - Returns: 地心坐标系下的磁场分量
+    func igrfGC(r: Double, theta: SHCAngle, phi: SHCAngle, date: Date, minDegree: Int = 1, maxDegree: Int? = nil) -> IGRFGeocentricResult {
+        let effectiveMaxDegree = maxDegree ?? self.degree
+        let effectiveMinDegree = max(1, minDegree)
+        let effectiveMaxDegreeClamped = min(effectiveMaxDegree, self.degree)
+        
+        // 将日期转换为十进制年份
+        let decimalYear = dateToDecimalYear(date)
+        
+        // 验证日期范围
+        guard decimalYear >= minYear && decimalYear <= maxYear else {
+            // 返回零值或抛出错误，这里选择返回零值
+            return IGRFGeocentricResult(Br: 0, Btheta: 0, Bphi: 0)
+        }
+        
+        // 准备keys数组
+        var keys: [(n: Int, m: Int)] = []
+        for n in effectiveMinDegree...effectiveMaxDegreeClamped {
+            for m in 0...n {
+                keys.append((n: n, m: m))
+            }
+        }
+        
+        // 计算Legendre函数
+        let legendre = Legendre(theta: [theta.degree], keys: keys)
+        
+        // 获取系数并进行时间插值
+        var gCoefficients: [Double] = []
+        var hCoefficients: [Double] = []
+        
+        for key in keys {
+            let n = key.n
+            let m = key.m
+            
+            // g系数
+            let gKey = SHCCoefficientKey(n: n, m: m, type: .g)
+            if let gCoeff = coefficients[gKey] {
+                let interpolatedValue = interpolateCoefficient(gCoeff.values, for: decimalYear)
+                gCoefficients.append(interpolatedValue)
+            } else {
+                gCoefficients.append(0.0)
+            }
+            
+            // h系数（m=0时h系数为0）
+            if m > 0 {
+                let hKey = SHCCoefficientKey(n: n, m: m, type: .h)
+                if let hCoeff = coefficients[hKey] {
+                    let interpolatedValue = interpolateCoefficient(hCoeff.values, for: decimalYear)
+                    hCoefficients.append(interpolatedValue)
+                } else {
+                    hCoefficients.append(0.0)
+                }
+            } else {
+                hCoefficients.append(0.0)
+            }
+        }
+        
+        // 计算磁场分量
+        let thetaRad = theta.radians
+        let phiRad = phi.radians
+        
+        var Br = 0.0
+        var Btheta = 0.0
+        var Bphi = 0.0
+        
+        let rRatio = RE / r
+        
+        for (index, key) in keys.enumerated() {
+            let n = key.n
+            let m = key.m
+            
+            let pValue = legendre.p[0][index]
+            let dpValue = legendre.dp[0][index]
+            
+            let gCoeff = gCoefficients[index]
+            let hCoeff = hCoefficients[index]
+            
+            // 计算cos(mφ)和sin(mφ)
+            let cosMPhi = cos(Double(m) * phiRad)
+            let sinMPhi = sin(Double(m) * phiRad)
+            
+            // 计算径向分量 Br
+            let brTerm = pow(rRatio, Double(n + 2)) * Double(n + 1) * (gCoeff * cosMPhi + hCoeff * sinMPhi)
+            Br += pValue * brTerm
+            
+            // 计算余纬分量 Btheta
+            let bthetaTerm = -pow(rRatio, Double(n + 1)) * rRatio * (gCoeff * cosMPhi + hCoeff * sinMPhi)
+            Btheta += dpValue * bthetaTerm
+            
+            // 计算经度分量 Bphi
+            if m > 0 {
+                let bphiTerm = -pow(rRatio, Double(n + 1)) * rRatio * Double(m) * (gCoeff * sinMPhi - hCoeff * cosMPhi)
+                let sinTheta = sin(thetaRad)
+                if abs(sinTheta) > 1e-10 { // 避免除以零
+                    Bphi += pValue * bphiTerm / sinTheta
+                }
+            }
+        }
+        
+        return IGRFGeocentricResult(Br: Br, Btheta: Btheta, Bphi: Bphi)
+    }
+    
+    /// 对系数进行时间插值
+    private func interpolateCoefficient(_ values: [Double], for year: Double) -> Double {
+        guard years.count > 1 else {
+            return values.first ?? 0.0
+        }
+        
+        // 找到合适的区间进行线性插值
+        let years = self.years
+        if year <= years.first ?? year {
+            return values.first ?? 0.0
+        }
+        if year >= years.last ?? year {
+            return values.last ?? 0.0
+        }
+        
+        for i in 0..<(years.count - 1) {
+            if year >= years[i] && year <= years[i + 1] {
+                let t = (year - years[i]) / (years[i + 1] - years[i])
+                return values[i] * (1 - t) + values[i + 1] * t
+            }
+        }
+        
+        return values.last ?? 0.0
+    }
+}
