@@ -1,5 +1,7 @@
 import Foundation
 
+// 地球参考半径（km）
+private let RE = 6371.2
 // World Geodetic System 84 parameters:
 private let WGS84_e2 = 0.00669437999014
 private let WGS84_a = 6378.137 // km
@@ -100,21 +102,9 @@ public extension SHCModel {
     }
 }
 
-// 地球参考半径（km）
-private let RE = 6371.2
 
-/// IGRF计算结果结构体
-public struct IGRFGeocentricResult {
-    public let Br: Double      // 径向磁场分量 (nT)
-    public let Btheta: Double  // 余纬方向磁场分量 (nT)
-    public let Bphi: Double    // 经度方向磁场分量 (nT)
-    
-    public init(Br: Double, Btheta: Double, Bphi: Double) {
-        self.Br = Br
-        self.Btheta = Btheta
-        self.Bphi = Bphi
-    }
-}
+
+
 
 public extension SHCModel {
     /// 计算IGRF模型值（地心坐标系输入输出）
