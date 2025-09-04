@@ -63,6 +63,11 @@ public extension SHCModel {
         let (e, n, u) = igrf(lon: .init(degree: location.longitude), lat: .init(degree: location.latitude), h: altitudeKM, date: date)
         return MagneticFieldResult(latitude: location.latitude, longitude: location.longitude, altitude: altitudeKM, north: n, east: e, up: u)
     }
+
+    func calculate(_ location: CLLocation, date: Date = Date()) -> MagneticFieldResult {
+        let (e, n, u) = igrf(lon: .init(degree: location.coordinate.longitude), lat: .init(degree: location.coordinate.latitude), h: location.altitude/1000, date: date)
+        return MagneticFieldResult(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, altitude: location.altitude/1000, north: n, east: e, up: u)
+    }
 }
 
 public extension SHCModel {
