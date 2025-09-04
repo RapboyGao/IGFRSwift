@@ -23,6 +23,40 @@ public extension SHCModel {
         // 原逻辑已经通过 calendar.range(of:in:for:) 自动考虑了闰年情况，无需额外处理
         return Double(year) + Double(dayOfYear - 1)/Double(daysInYear)
     }
+    
+    /// 计算IGRF模型值（地磁坐标系输入输出）
+    /// - Parameters:
+    ///   - lon: 经度角度，东向为正 (度)
+    ///   - lat: 地磁纬度角度 (度)
+    ///   - h: 高度，相对于椭球面 (km)
+    ///   - date: 计算日期
+    ///   - minDegree: 最小展开阶数，默认1
+    ///   - maxDegree: 最大展开阶数，默认模型最大阶数
+    /// - Returns: 地磁坐标系下的磁场分量 (Be, Bn, Bu)
+    func igrf(lon: SHCAngle, lat: SHCAngle, h: Double, date: Date, minDegree: Int = 1, maxDegree: Int? = nil) -> (Be: Double, Bn: Double, Bu: Double) {
+        let effectiveMaxDegree = maxDegree ?? self.degree
+        let effectiveMinDegree = max(1, minDegree)
+        
+        if effectiveMinDegree > effectiveMaxDegree {
+            // 重置为默认范围
+            return igrf(lon: lon, lat: lat, h: h, date: date, minDegree: 1, maxDegree: self.degree)
+        }
+        
+        // 转换为地心坐标系
+        let (theta, r, _, _) = geod2geoc(gdLat: lat, height: h, Bn: 0, Bu: 0)
+        let phi = lon
+        
+        // 使用igrfGC计算地心坐标系下的磁场
+        let geocentricResult = igrfGC(r: r, theta: theta, phi: phi, date: date, minDegree: minDegree, maxDegree: effectiveMaxDegree)
+        
+        // 将地心坐标系的磁场分量转换回地磁坐标系
+        let (_, _, Bn, Bu) = geoc2geod(theta: theta, r: r, B_theta: geocentricResult.Btheta, B_r: geocentricResult.Br)
+        
+        // Bphi对应于Be（东向分量）
+        let Be = geocentricResult.Bphi
+        
+        return (Be: Be, Bn: Bn, Bu: Bu)
+    }
 }
 
 public extension SHCModel {
