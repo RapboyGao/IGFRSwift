@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 
 // 地球参考半径（km）
 private let RE = 6371.2
@@ -56,6 +57,11 @@ public extension SHCModel {
         let Be = geocentricResult.Bphi
         
         return (Be: Be, Bn: Bn, Bu: Bu)
+    }
+    
+    func calculate(_ location: CLLocationCoordinate2D, altitudeKM: Double, date: Date) -> MagneticFieldResult {
+        let (e, n, u) = igrf(lon: .init(degree: location.longitude), lat: .init(degree: location.latitude), h: altitudeKM, date: date)
+        return MagneticFieldResult(latitude: location.latitude, longitude: location.longitude, altitude: altitudeKM, north: n, east: e, up: u)
     }
 }
 
