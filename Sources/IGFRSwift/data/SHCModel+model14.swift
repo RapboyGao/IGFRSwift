@@ -1,7 +1,7 @@
 import Foundation
 
-public extension IGRFDocument {
-    static let model14 = IGRFDocument(
+public extension SHCModel {
+    static let model14 = SHCModel(
         fileName: "igrf14coeffs.txt",
         headers: [
             "14th Generation International Geomagnetic Reference Field Schmidt semi-normalised spherical harmonic coefficients, degree n=1,13",
@@ -17,7 +17,7 @@ public extension IGRFDocument {
             2020.0, 2025.0, 2030.0,
         ],
         coefficients: [
-            IGRFCoefficient(
+            Coefficient(
                 n: 1,
                 m: 0,
                 kind: .g,
@@ -28,7 +28,7 @@ public extension IGRFDocument {
                     -29403.41, -29350, -29287,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 1,
                 m: 1,
                 kind: .g,
@@ -39,7 +39,7 @@ public extension IGRFDocument {
                     -1451.37, -1410.3, -1360.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 1,
                 m: 1,
                 kind: .h,
@@ -50,7 +50,7 @@ public extension IGRFDocument {
                     4653.35, 4545.5, 4438,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 2,
                 m: 0,
                 kind: .g,
@@ -61,7 +61,7 @@ public extension IGRFDocument {
                     -2499.78, -2556.2, -2612.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 2,
                 m: 1,
                 kind: .g,
@@ -72,7 +72,7 @@ public extension IGRFDocument {
                     2981.96, 2950.9, 2924.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 2,
                 m: 1,
                 kind: .h,
@@ -83,7 +83,7 @@ public extension IGRFDocument {
                     -2991.72, -3133.6, -3270.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 2,
                 m: 2,
                 kind: .g,
@@ -94,7 +94,7 @@ public extension IGRFDocument {
                     1676.85, 1648.7, 1607.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 2,
                 m: 2,
                 kind: .h,
@@ -105,7 +105,7 @@ public extension IGRFDocument {
                     -734.62, -814.2, -869.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 3,
                 m: 0,
                 kind: .g,
@@ -116,7 +116,7 @@ public extension IGRFDocument {
                     1363, 1360.9, 1353.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 3,
                 m: 1,
                 kind: .g,
@@ -127,7 +127,7 @@ public extension IGRFDocument {
                     -2380.8, -2404.2, -2426.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 3,
                 m: 1,
                 kind: .h,
@@ -138,7 +138,7 @@ public extension IGRFDocument {
                     -81.96, -56.9, -37.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 3,
                 m: 2,
                 kind: .g,
@@ -149,7 +149,7 @@ public extension IGRFDocument {
                     1236.06, 1243.8, 1245.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 3,
                 m: 2,
                 kind: .h,
@@ -160,7 +160,7 @@ public extension IGRFDocument {
                     241.8, 237.6, 236.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 3,
                 m: 3,
                 kind: .g,
@@ -171,7 +171,7 @@ public extension IGRFDocument {
                     525.6, 453.4, 375.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 3,
                 m: 3,
                 kind: .h,
@@ -182,7 +182,7 @@ public extension IGRFDocument {
                     -542.52, -549.6, -569.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 4,
                 m: 0,
                 kind: .g,
@@ -193,7 +193,7 @@ public extension IGRFDocument {
                     902.82, 894.7, 886.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 4,
                 m: 1,
                 kind: .g,
@@ -204,7 +204,7 @@ public extension IGRFDocument {
                     809.47, 799.6, 788.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 4,
                 m: 1,
                 kind: .h,
@@ -215,7 +215,7 @@ public extension IGRFDocument {
                     282.1, 278.6, 272.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 4,
                 m: 2,
                 kind: .g,
@@ -226,7 +226,7 @@ public extension IGRFDocument {
                     86.18, 55.8, 26.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 4,
                 m: 2,
                 kind: .h,
@@ -237,7 +237,7 @@ public extension IGRFDocument {
                     -158.5, -134, -113.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 4,
                 m: 3,
                 kind: .g,
@@ -248,7 +248,7 @@ public extension IGRFDocument {
                     -309.47, -281.1, -254.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 4,
                 m: 3,
                 kind: .h,
@@ -259,7 +259,7 @@ public extension IGRFDocument {
                     199.75, 212, 220,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 4,
                 m: 4,
                 kind: .g,
@@ -270,7 +270,7 @@ public extension IGRFDocument {
                     47.44, 12, -22,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 4,
                 m: 4,
                 kind: .h,
@@ -281,7 +281,7 @@ public extension IGRFDocument {
                     -350.3, -375.4, -395.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 0,
                 kind: .g,
@@ -292,7 +292,7 @@ public extension IGRFDocument {
                     -234.42, -232.9, -229.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 1,
                 kind: .g,
@@ -303,7 +303,7 @@ public extension IGRFDocument {
                     363.26, 369, 375.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 1,
                 kind: .h,
@@ -314,7 +314,7 @@ public extension IGRFDocument {
                     47.52, 45.3, 42.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 2,
                 kind: .g,
@@ -325,7 +325,7 @@ public extension IGRFDocument {
                     187.86, 187.2, 187.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 2,
                 kind: .h,
@@ -336,7 +336,7 @@ public extension IGRFDocument {
                     208.36, 220, 230.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 3,
                 kind: .g,
@@ -347,7 +347,7 @@ public extension IGRFDocument {
                     -140.73, -138.7, -135.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 3,
                 kind: .h,
@@ -358,7 +358,7 @@ public extension IGRFDocument {
                     -121.43, -122.9, -120.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 4,
                 kind: .g,
@@ -369,7 +369,7 @@ public extension IGRFDocument {
                     -151.16, -141.9, -130.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 4,
                 kind: .h,
@@ -380,7 +380,7 @@ public extension IGRFDocument {
                     32.09, 42.9, 51.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 5,
                 kind: .g,
@@ -391,7 +391,7 @@ public extension IGRFDocument {
                     13.98, 20.9, 25.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 5,
                 m: 5,
                 kind: .h,
@@ -402,7 +402,7 @@ public extension IGRFDocument {
                     99.14, 106.2, 115.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 0,
                 kind: .g,
@@ -413,7 +413,7 @@ public extension IGRFDocument {
                     65.97, 64.3, 63.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 1,
                 kind: .g,
@@ -424,7 +424,7 @@ public extension IGRFDocument {
                     65.56, 63.8, 62.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 1,
                 kind: .h,
@@ -435,7 +435,7 @@ public extension IGRFDocument {
                     -19.22, -18.4, -16.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 2,
                 kind: .g,
@@ -446,7 +446,7 @@ public extension IGRFDocument {
                     72.96, 76.7, 80.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 2,
                 kind: .h,
@@ -457,7 +457,7 @@ public extension IGRFDocument {
                     25.02, 16.8, 8.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 3,
                 kind: .g,
@@ -468,7 +468,7 @@ public extension IGRFDocument {
                     -121.57, -115.7, -109.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 3,
                 kind: .h,
@@ -479,7 +479,7 @@ public extension IGRFDocument {
                     52.76, 48.9, 46.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 4,
                 kind: .g,
@@ -490,7 +490,7 @@ public extension IGRFDocument {
                     -36.06, -40.9, -44.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 4,
                 kind: .h,
@@ -501,7 +501,7 @@ public extension IGRFDocument {
                     -64.4, -59.8, -55.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 5,
                 kind: .g,
@@ -512,7 +512,7 @@ public extension IGRFDocument {
                     13.6, 14.9, 16.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 5,
                 kind: .h,
@@ -523,7 +523,7 @@ public extension IGRFDocument {
                     8.96, 10.9, 14.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 6,
                 kind: .g,
@@ -534,7 +534,7 @@ public extension IGRFDocument {
                     -64.8, -60.8, -56.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 6,
                 m: 6,
                 kind: .h,
@@ -545,7 +545,7 @@ public extension IGRFDocument {
                     68.04, 72.8, 77.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 0,
                 kind: .g,
@@ -556,7 +556,7 @@ public extension IGRFDocument {
                     80.54, 79.6, 79.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 1,
                 kind: .g,
@@ -567,7 +567,7 @@ public extension IGRFDocument {
                     -76.63, -76.9, -77.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 1,
                 kind: .h,
@@ -578,7 +578,7 @@ public extension IGRFDocument {
                     -51.5, -48.9, -45.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 2,
                 kind: .g,
@@ -589,7 +589,7 @@ public extension IGRFDocument {
                     -8.23, -8.8, -9.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 2,
                 kind: .h,
@@ -600,7 +600,7 @@ public extension IGRFDocument {
                     -16.85, -14.4, -11.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 3,
                 kind: .g,
@@ -611,7 +611,7 @@ public extension IGRFDocument {
                     56.45, 59.3, 61.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 3,
                 kind: .h,
@@ -622,7 +622,7 @@ public extension IGRFDocument {
                     2.36, -1, -4.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 4,
                 kind: .g,
@@ -633,7 +633,7 @@ public extension IGRFDocument {
                     15.8, 15.8, 15.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 4,
                 kind: .h,
@@ -644,7 +644,7 @@ public extension IGRFDocument {
                     23.56, 23.5, 23.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 5,
                 kind: .g,
@@ -655,7 +655,7 @@ public extension IGRFDocument {
                     6.3, 2.5, -1.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 5,
                 kind: .h,
@@ -666,7 +666,7 @@ public extension IGRFDocument {
                     -2.19, -7.4, -11.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 6,
                 kind: .g,
@@ -677,7 +677,7 @@ public extension IGRFDocument {
                     -7.21, -11.2, -15.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 6,
                 kind: .h,
@@ -688,7 +688,7 @@ public extension IGRFDocument {
                     -27.19, -25.1, -22.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 7,
                 kind: .g,
@@ -699,7 +699,7 @@ public extension IGRFDocument {
                     9.77, 14.3, 18.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 7,
                 m: 7,
                 kind: .h,
@@ -710,7 +710,7 @@ public extension IGRFDocument {
                     -1.9, -2.2, -3.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 0,
                 kind: .g,
@@ -721,7 +721,7 @@ public extension IGRFDocument {
                     23.66, 23.1, 22.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 1,
                 kind: .g,
@@ -732,7 +732,7 @@ public extension IGRFDocument {
                     9.74, 10.9, 11.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 1,
                 kind: .h,
@@ -743,7 +743,7 @@ public extension IGRFDocument {
                     8.43, 7.2, 5.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 2,
                 kind: .g,
@@ -754,7 +754,7 @@ public extension IGRFDocument {
                     -17.49, -17.5, -17.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 2,
                 kind: .h,
@@ -765,7 +765,7 @@ public extension IGRFDocument {
                     -15.23, -12.6, -10.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 3,
                 kind: .g,
@@ -776,7 +776,7 @@ public extension IGRFDocument {
                     -0.49, 2, 4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 3,
                 kind: .h,
@@ -787,7 +787,7 @@ public extension IGRFDocument {
                     12.83, 11.5, 10,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 4,
                 kind: .g,
@@ -798,7 +798,7 @@ public extension IGRFDocument {
                     -21.07, -21.8, -22.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 4,
                 kind: .h,
@@ -809,7 +809,7 @@ public extension IGRFDocument {
                     -11.76, -9.7, -7.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 5,
                 kind: .g,
@@ -820,7 +820,7 @@ public extension IGRFDocument {
                     15.28, 16.9, 18.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 5,
                 kind: .h,
@@ -831,7 +831,7 @@ public extension IGRFDocument {
                     14.94, 12.7, 10.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 6,
                 kind: .g,
@@ -842,7 +842,7 @@ public extension IGRFDocument {
                     13.65, 14.9, 15.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 6,
                 kind: .h,
@@ -853,7 +853,7 @@ public extension IGRFDocument {
                     3.62, 0.7, -2.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 7,
                 kind: .g,
@@ -864,7 +864,7 @@ public extension IGRFDocument {
                     -16.59, -16.8, -16.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 7,
                 kind: .h,
@@ -875,7 +875,7 @@ public extension IGRFDocument {
                     -6.9, -5.2, -3.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 8,
                 kind: .g,
@@ -886,7 +886,7 @@ public extension IGRFDocument {
                     -0.34, 1, 2.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 8,
                 m: 8,
                 kind: .h,
@@ -897,7 +897,7 @@ public extension IGRFDocument {
                     2.9, 3.9, 4.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 0,
                 kind: .g,
@@ -908,7 +908,7 @@ public extension IGRFDocument {
                     5.03, 4.7, 4.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 1,
                 kind: .g,
@@ -919,7 +919,7 @@ public extension IGRFDocument {
                     8.36, 8, 8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 1,
                 kind: .h,
@@ -930,7 +930,7 @@ public extension IGRFDocument {
                     -23.44, -24.8, -24.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 2,
                 kind: .g,
@@ -941,7 +941,7 @@ public extension IGRFDocument {
                     2.84, 3, 3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 2,
                 kind: .h,
@@ -952,7 +952,7 @@ public extension IGRFDocument {
                     11.04, 12.1, 12.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 3,
                 kind: .g,
@@ -963,7 +963,7 @@ public extension IGRFDocument {
                     -1.48, -0.2, -0.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 3,
                 kind: .h,
@@ -974,7 +974,7 @@ public extension IGRFDocument {
                     9.86, 8.3, 8.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 4,
                 kind: .g,
@@ -985,7 +985,7 @@ public extension IGRFDocument {
                     -1.14, -2.5, -2.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 4,
                 kind: .h,
@@ -996,7 +996,7 @@ public extension IGRFDocument {
                     -5.13, -3.4, -3.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 5,
                 kind: .g,
@@ -1007,7 +1007,7 @@ public extension IGRFDocument {
                     -13.22, -13.1, -13.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 5,
                 kind: .h,
@@ -1018,7 +1018,7 @@ public extension IGRFDocument {
                     -6.2, -5.3, -5.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 6,
                 kind: .g,
@@ -1029,7 +1029,7 @@ public extension IGRFDocument {
                     1.08, 2.4, 2.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 6,
                 kind: .h,
@@ -1040,7 +1040,7 @@ public extension IGRFDocument {
                     7.79, 7.2, 7.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 7,
                 kind: .g,
@@ -1051,7 +1051,7 @@ public extension IGRFDocument {
                     8.82, 8.6, 8.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 7,
                 kind: .h,
@@ -1062,7 +1062,7 @@ public extension IGRFDocument {
                     0.4, -0.6, -0.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 8,
                 kind: .g,
@@ -1073,7 +1073,7 @@ public extension IGRFDocument {
                     -9.23, -8.7, -8.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 8,
                 kind: .h,
@@ -1084,7 +1084,7 @@ public extension IGRFDocument {
                     -1.44, 0.8, 0.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 9,
                 kind: .g,
@@ -1095,7 +1095,7 @@ public extension IGRFDocument {
                     -11.86, -12.8, -12.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 9,
                 m: 9,
                 kind: .h,
@@ -1106,7 +1106,7 @@ public extension IGRFDocument {
                     9.6, 9.8, 9.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 0,
                 kind: .g,
@@ -1117,7 +1117,7 @@ public extension IGRFDocument {
                     -1.84, -1.3, -1.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 1,
                 kind: .g,
@@ -1128,7 +1128,7 @@ public extension IGRFDocument {
                     -6.25, -6.4, -6.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 1,
                 kind: .h,
@@ -1139,7 +1139,7 @@ public extension IGRFDocument {
                     3.38, 3.3, 3.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 2,
                 kind: .g,
@@ -1150,7 +1150,7 @@ public extension IGRFDocument {
                     -0.11, 0.2, 0.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 2,
                 kind: .h,
@@ -1161,7 +1161,7 @@ public extension IGRFDocument {
                     -0.18, 0.1, 0.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 3,
                 kind: .g,
@@ -1172,7 +1172,7 @@ public extension IGRFDocument {
                     1.66, 2, 2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 3,
                 kind: .h,
@@ -1183,7 +1183,7 @@ public extension IGRFDocument {
                     3.5, 2.5, 2.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 4,
                 kind: .g,
@@ -1194,7 +1194,7 @@ public extension IGRFDocument {
                     -0.86, -1, -1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 4,
                 kind: .h,
@@ -1205,7 +1205,7 @@ public extension IGRFDocument {
                     4.86, 5.4, 5.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 5,
                 kind: .g,
@@ -1216,7 +1216,7 @@ public extension IGRFDocument {
                     0.65, -0.5, -0.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 5,
                 kind: .h,
@@ -1227,7 +1227,7 @@ public extension IGRFDocument {
                     -8.62, -9, -9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 6,
                 kind: .g,
@@ -1238,7 +1238,7 @@ public extension IGRFDocument {
                     -0.88, -0.9, -0.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 6,
                 kind: .h,
@@ -1249,7 +1249,7 @@ public extension IGRFDocument {
                     -0.11, 0.4, 0.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 7,
                 kind: .g,
@@ -1260,7 +1260,7 @@ public extension IGRFDocument {
                     1.88, 1.5, 1.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 7,
                 kind: .h,
@@ -1271,7 +1271,7 @@ public extension IGRFDocument {
                     -4.26, -4.2, -4.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 8,
                 kind: .g,
@@ -1282,7 +1282,7 @@ public extension IGRFDocument {
                     1.44, 0.9, 0.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 8,
                 kind: .h,
@@ -1293,7 +1293,7 @@ public extension IGRFDocument {
                     -3.43, -3.8, -3.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 9,
                 kind: .g,
@@ -1304,7 +1304,7 @@ public extension IGRFDocument {
                     -2.38, -2.6, -2.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 9,
                 kind: .h,
@@ -1315,7 +1315,7 @@ public extension IGRFDocument {
                     -0.1, 0.9, 0.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 10,
                 kind: .g,
@@ -1326,7 +1326,7 @@ public extension IGRFDocument {
                     -3.84, -3.9, -3.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 10,
                 m: 10,
                 kind: .h,
@@ -1337,7 +1337,7 @@ public extension IGRFDocument {
                     -8.84, -9, -9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 0,
                 kind: .g,
@@ -1348,7 +1348,7 @@ public extension IGRFDocument {
                     2.96, 3, 3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 1,
                 kind: .g,
@@ -1359,7 +1359,7 @@ public extension IGRFDocument {
                     -1.36, -1.4, -1.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 1,
                 kind: .h,
@@ -1370,7 +1370,7 @@ public extension IGRFDocument {
                     -0.02, 0, 0,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 2,
                 kind: .g,
@@ -1381,7 +1381,7 @@ public extension IGRFDocument {
                     -2.51, -2.5, -2.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 2,
                 kind: .h,
@@ -1392,7 +1392,7 @@ public extension IGRFDocument {
                     2.5, 2.8, 2.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 3,
                 kind: .g,
@@ -1403,7 +1403,7 @@ public extension IGRFDocument {
                     2.31, 2.4, 2.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 3,
                 kind: .h,
@@ -1414,7 +1414,7 @@ public extension IGRFDocument {
                     -0.55, -0.6, -0.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 4,
                 kind: .g,
@@ -1425,7 +1425,7 @@ public extension IGRFDocument {
                     -0.85, -0.6, -0.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 4,
                 kind: .h,
@@ -1436,7 +1436,7 @@ public extension IGRFDocument {
                     -0.39, 0.1, 0.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 5,
                 kind: .g,
@@ -1447,7 +1447,7 @@ public extension IGRFDocument {
                     0.28, 0, 0,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 5,
                 kind: .h,
@@ -1458,7 +1458,7 @@ public extension IGRFDocument {
                     0.62, 0.5, 0.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 6,
                 kind: .g,
@@ -1469,7 +1469,7 @@ public extension IGRFDocument {
                     -0.66, -0.6, -0.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 6,
                 kind: .h,
@@ -1480,7 +1480,7 @@ public extension IGRFDocument {
                     -0.21, -0.3, -0.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 7,
                 kind: .g,
@@ -1491,7 +1491,7 @@ public extension IGRFDocument {
                     -0.07, -0.1, -0.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 7,
                 kind: .h,
@@ -1502,7 +1502,7 @@ public extension IGRFDocument {
                     -1.66, -1.2, -1.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 8,
                 kind: .g,
@@ -1513,7 +1513,7 @@ public extension IGRFDocument {
                     1.44, 1.1, 1.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 8,
                 kind: .h,
@@ -1524,7 +1524,7 @@ public extension IGRFDocument {
                     -1.6, -1.7, -1.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 9,
                 kind: .g,
@@ -1535,7 +1535,7 @@ public extension IGRFDocument {
                     -0.59, -1, -1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 9,
                 kind: .h,
@@ -1546,7 +1546,7 @@ public extension IGRFDocument {
                     -2.98, -2.9, -2.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 10,
                 kind: .g,
@@ -1557,7 +1557,7 @@ public extension IGRFDocument {
                     0.18, -0.1, -0.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 10,
                 kind: .h,
@@ -1568,7 +1568,7 @@ public extension IGRFDocument {
                     -1.97, -1.8, -1.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 11,
                 kind: .g,
@@ -1579,7 +1579,7 @@ public extension IGRFDocument {
                     3.09, 2.6, 2.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 11,
                 m: 11,
                 kind: .h,
@@ -1590,7 +1590,7 @@ public extension IGRFDocument {
                     -2.51, -2.3, -2.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 0,
                 kind: .g,
@@ -1601,7 +1601,7 @@ public extension IGRFDocument {
                     -2, -2, -2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 1,
                 kind: .g,
@@ -1612,7 +1612,7 @@ public extension IGRFDocument {
                     -0.13, -0.1, -0.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 1,
                 kind: .h,
@@ -1623,7 +1623,7 @@ public extension IGRFDocument {
                     -1.15, -1.2, -1.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 2,
                 kind: .g,
@@ -1634,7 +1634,7 @@ public extension IGRFDocument {
                     0.43, 0.4, 0.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 2,
                 kind: .h,
@@ -1645,7 +1645,7 @@ public extension IGRFDocument {
                     0.52, 0.6, 0.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 3,
                 kind: .g,
@@ -1656,7 +1656,7 @@ public extension IGRFDocument {
                     1.28, 1.2, 1.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 3,
                 kind: .h,
@@ -1667,7 +1667,7 @@ public extension IGRFDocument {
                     1.37, 1, 1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 4,
                 kind: .g,
@@ -1678,7 +1678,7 @@ public extension IGRFDocument {
                     -1.14, -1.2, -1.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 4,
                 kind: .h,
@@ -1689,7 +1689,7 @@ public extension IGRFDocument {
                     -1.81, -1.5, -1.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 5,
                 kind: .g,
@@ -1700,7 +1700,7 @@ public extension IGRFDocument {
                     0.71, 0.6, 0.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 5,
                 kind: .h,
@@ -1711,7 +1711,7 @@ public extension IGRFDocument {
                     0.08, 0, 0,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 6,
                 kind: .g,
@@ -1722,7 +1722,7 @@ public extension IGRFDocument {
                     0.31, 0.5, 0.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 6,
                 kind: .h,
@@ -1733,7 +1733,7 @@ public extension IGRFDocument {
                     0.71, 0.6, 0.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 7,
                 kind: .g,
@@ -1744,7 +1744,7 @@ public extension IGRFDocument {
                     0.49, 0.5, 0.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 7,
                 kind: .h,
@@ -1755,7 +1755,7 @@ public extension IGRFDocument {
                     -0.15, -0.2, -0.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 8,
                 kind: .g,
@@ -1766,7 +1766,7 @@ public extension IGRFDocument {
                     -0.26, -0.1, -0.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 8,
                 kind: .h,
@@ -1777,7 +1777,7 @@ public extension IGRFDocument {
                     0.55, 0.8, 0.8,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 9,
                 kind: .g,
@@ -1788,7 +1788,7 @@ public extension IGRFDocument {
                     -0.47, -0.5, -0.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 9,
                 kind: .h,
@@ -1799,7 +1799,7 @@ public extension IGRFDocument {
                     0.16, 0.1, 0.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 10,
                 kind: .g,
@@ -1810,7 +1810,7 @@ public extension IGRFDocument {
                     0.09, -0.2, -0.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 10,
                 kind: .h,
@@ -1821,7 +1821,7 @@ public extension IGRFDocument {
                     -0.93, -0.9, -0.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 11,
                 kind: .g,
@@ -1832,7 +1832,7 @@ public extension IGRFDocument {
                     -1.13, -1.2, -1.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 11,
                 kind: .h,
@@ -1843,7 +1843,7 @@ public extension IGRFDocument {
                     -0.04, 0.1, 0.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 12,
                 kind: .g,
@@ -1854,7 +1854,7 @@ public extension IGRFDocument {
                     -0.33, -0.7, -0.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 12,
                 m: 12,
                 kind: .h,
@@ -1865,7 +1865,7 @@ public extension IGRFDocument {
                     0.52, 0.2, 0.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 0,
                 kind: .g,
@@ -1876,7 +1876,7 @@ public extension IGRFDocument {
                     0.08, 0.2, 0.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 1,
                 kind: .g,
@@ -1887,7 +1887,7 @@ public extension IGRFDocument {
                     -0.93, -0.9, -0.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 1,
                 kind: .h,
@@ -1898,7 +1898,7 @@ public extension IGRFDocument {
                     -0.88, -0.9, -0.9,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 2,
                 kind: .g,
@@ -1909,7 +1909,7 @@ public extension IGRFDocument {
                     0.53, 0.6, 0.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 2,
                 kind: .h,
@@ -1920,7 +1920,7 @@ public extension IGRFDocument {
                     0.64, 0.7, 0.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 3,
                 kind: .g,
@@ -1931,7 +1931,7 @@ public extension IGRFDocument {
                     0.72, 0.7, 0.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 3,
                 kind: .h,
@@ -1942,7 +1942,7 @@ public extension IGRFDocument {
                     1.4, 1.2, 1.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 4,
                 kind: .g,
@@ -1953,7 +1953,7 @@ public extension IGRFDocument {
                     -0.3, -0.2, -0.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 4,
                 kind: .h,
@@ -1964,7 +1964,7 @@ public extension IGRFDocument {
                     -0.38, -0.3, -0.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 5,
                 kind: .g,
@@ -1975,7 +1975,7 @@ public extension IGRFDocument {
                     0.75, 0.5, 0.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 5,
                 kind: .h,
@@ -1986,7 +1986,7 @@ public extension IGRFDocument {
                     -1.31, -1.3, -1.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 6,
                 kind: .g,
@@ -1997,7 +1997,7 @@ public extension IGRFDocument {
                     -0.01, 0.1, 0.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 6,
                 kind: .h,
@@ -2008,7 +2008,7 @@ public extension IGRFDocument {
                     -0.09, -0.1, -0.1,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 7,
                 kind: .g,
@@ -2019,7 +2019,7 @@ public extension IGRFDocument {
                     0.76, 0.7, 0.7,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 7,
                 kind: .h,
@@ -2030,7 +2030,7 @@ public extension IGRFDocument {
                     0.29, 0.2, 0.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 8,
                 kind: .g,
@@ -2041,7 +2041,7 @@ public extension IGRFDocument {
                     -0.05, 0, 0,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 8,
                 kind: .h,
@@ -2052,7 +2052,7 @@ public extension IGRFDocument {
                     -0.11, -0.2, -0.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 9,
                 kind: .g,
@@ -2063,7 +2063,7 @@ public extension IGRFDocument {
                     0.37, 0.3, 0.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 9,
                 kind: .h,
@@ -2074,7 +2074,7 @@ public extension IGRFDocument {
                     0.47, 0.5, 0.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 10,
                 kind: .g,
@@ -2085,7 +2085,7 @@ public extension IGRFDocument {
                     0.13, 0.2, 0.2,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 10,
                 kind: .h,
@@ -2096,7 +2096,7 @@ public extension IGRFDocument {
                     0.54, 0.6, 0.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 11,
                 kind: .g,
@@ -2107,7 +2107,7 @@ public extension IGRFDocument {
                     0.45, 0.4, 0.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 11,
                 kind: .h,
@@ -2118,7 +2118,7 @@ public extension IGRFDocument {
                     -0.41, -0.6, -0.6,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 12,
                 kind: .g,
@@ -2129,7 +2129,7 @@ public extension IGRFDocument {
                     -0.46, -0.5, -0.5,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 12,
                 kind: .h,
@@ -2140,7 +2140,7 @@ public extension IGRFDocument {
                     -0.36, -0.3, -0.3,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 13,
                 kind: .g,
@@ -2151,7 +2151,7 @@ public extension IGRFDocument {
                     -0.4, -0.4, -0.4,
                 ]
             ),
-            IGRFCoefficient(
+            Coefficient(
                 n: 13,
                 m: 13,
                 kind: .h,

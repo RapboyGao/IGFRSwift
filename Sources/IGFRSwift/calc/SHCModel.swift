@@ -2,21 +2,30 @@ import CoreLocation
 import Foundation
 
 public struct SHCModel: Sendable, Equatable {
-    public let document: IGRFDocument
+    public let fileName: String
+    public let headers: [String]
+    public let headerNumbers: [Double]
+    public let epochs: [Double]
+    public let coefficients: [Coefficient]
     public let nmax: Int
-    private let epochs: [Double]
 
-    public init(document: IGRFDocument) {
-        self.document = document
-        self.epochs = document.epochs
-        self.nmax = document.coefficients.map { $0.n }.max() ?? 0
+    public init(
+        fileName: String,
+        headers: [String],
+        headerNumbers: [Double],
+        epochs: [Double],
+        coefficients: [Coefficient]
+    ) {
+        self.fileName = fileName
+        self.headers = headers
+        self.headerNumbers = headerNumbers
+        self.epochs = epochs
+        self.coefficients = coefficients
+        self.nmax = coefficients.map { $0.n }.max() ?? 0
     }
 
     public static var latest: SHCModel {
-        guard let doc = IGRFData.documents.last else {
-            return SHCModel(document: IGRFDocument(fileName: "", headers: [], headerNumbers: [], epochs: [], coefficients: []))
-        }
-        return SHCModel(document: doc)
+        .model14
     }
 
     public func calculate(
@@ -60,7 +69,7 @@ public struct SHCModel: Sendable, Equatable {
         let dt = t1 - t0
         let invDt = dt != 0.0 ? 1.0 / dt : 0.0
 
-        for coeff in document.coefficients {
+        for coeff in coefficients {
             guard coeff.values.count > index + 1 else { continue }
             let v0 = coeff.values[index]
             let v1 = coeff.values[index + 1]
@@ -130,5 +139,26 @@ public struct SHCModel: Sendable, Equatable {
             declinationArcMinutes: dDArcMin,
             inclinationArcMinutes: dIArcMin
         )
+    }
+}
+
+public extension SHCModel {
+    enum CoefficientKind: String, Sendable, Equatable {
+        case g
+        case h
+    }
+
+    struct Coefficient: Sendable, Equatable {
+        public let n: Int
+        public let m: Int
+        public let kind: CoefficientKind
+        public let values: [Double]
+
+        public init(n: Int, m: Int, kind: CoefficientKind, values: [Double]) {
+            self.n = n
+            self.m = m
+            self.kind = kind
+            self.values = values
+        }
     }
 }
