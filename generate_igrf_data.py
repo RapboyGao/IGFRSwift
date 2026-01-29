@@ -4,12 +4,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import Decimal, getcontext
 from pathlib import Path
-import argparse
-import json
 import re
 import ssl
 import subprocess
-import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -35,8 +33,6 @@ ROOT = Path(__file__).resolve().parent
 OUT_DIR = ROOT / "Sources" / "IGFRSwift" / "data"
 INDEX_FILE = OUT_DIR / "IGRFData.swift"
 
-ZENODO_API = "https://zenodo.org/api/records"
-EXPECTED_LATEST_VERSION = 14
 DEFAULT_CONTEXT = None
 URL_CONTEXT = None
 
@@ -55,16 +51,6 @@ def _init_ssl_context() -> None:
         DEFAULT_CONTEXT = ssl.create_default_context()
 
 
-def _http_json(url: str) -> dict:
-    req = urllib.request.Request(
-        url,
-        headers={"User-Agent": "IGFRSwift/1.0 (data fetch)"},
-    )
-    context = URL_CONTEXT if URL_CONTEXT is not None else DEFAULT_CONTEXT
-    with urllib.request.urlopen(req, timeout=30, context=context) as resp:
-        return json.loads(resp.read().decode("utf-8"))
-
-
 def _http_text(url: str) -> str:
     req = urllib.request.Request(
         url,
@@ -75,115 +61,6 @@ def _http_text(url: str) -> str:
         return resp.read().decode("utf-8")
 
 
-def _zenodo_search(query: str, max_pages: int = 2) -> list[dict]:
-    params = urllib.parse.urlencode({"q": query, "size": 25, "sort": "mostrecent"})
-    url = f"{ZENODO_API}?{params}"
-    hits: list[dict] = []
-    pages = 0
-    while url and pages < max_pages:
-        data = _http_json(url)
-        hits.extend(data.get("hits", {}).get("hits", []))
-        url = data.get("links", {}).get("next")
-        pages += 1
-    return hits
-
-
-def _latest_record(record: dict) -> dict:
-    latest = record.get("links", {}).get("latest")
-    if latest:
-        return _http_json(latest)
-    return record
-
-
-def _extract_generation(title: str) -> int | None:
-    match = re.search(r"IGRF[- ]?(\d+)", title, re.IGNORECASE)
-    if not match:
-        match = re.search(
-            r"IGRF[^0-9]*(\d+)(?:st|nd|rd|th)", title, re.IGNORECASE
-        )
-    if not match:
-        return None
-    return int(match.group(1))
-
-
-def _pick_coeffs_file(record: dict, generation: int) -> dict | None:
-    files = record.get("files", [])
-    if not files:
-        return None
-    exact = re.compile(rf"igrf{generation}coeffs\.txt$", re.IGNORECASE)
-    loose = re.compile(rf"igrf{generation}.*\.txt$", re.IGNORECASE)
-    for file_info in files:
-        key = file_info.get("key", "")
-        if exact.search(key):
-            return file_info
-    for file_info in files:
-        key = file_info.get("key", "")
-        if loose.search(key):
-            return file_info
-    return None
-
-
-def _zenodo_igrf_records(latest_only: bool) -> dict[int, dict]:
-    hits = _zenodo_search("\"International Geomagnetic Reference Field\"")
-    candidates: list[tuple[int, dict]] = []
-    for hit in hits:
-        title = hit.get("metadata", {}).get("title", "")
-        generation = _extract_generation(title)
-        if generation is None:
-            continue
-        candidates.append((generation, hit))
-
-    if not candidates:
-        return {}
-
-    records: dict[int, dict] = {}
-    if latest_only:
-        latest_generation = max(gen for gen, _ in candidates)
-        best_hit = None
-        for gen, hit in candidates:
-            if gen != latest_generation:
-                continue
-            if best_hit is None or hit.get("updated", "") > best_hit.get("updated", ""):
-                best_hit = hit
-        if best_hit is None:
-            return {}
-        record = _latest_record(best_hit)
-        title = record.get("metadata", {}).get("title", "")
-        generation = _extract_generation(title)
-        if generation is None:
-            return {}
-        file_info = _pick_coeffs_file(record, generation)
-        if file_info is None:
-            return {}
-        record["_file_info"] = file_info
-        records[generation] = record
-        return records
-
-    by_concept: dict[str, dict] = {}
-    for gen, hit in candidates:
-        concept = str(hit.get("conceptrecid") or hit.get("id"))
-        existing = by_concept.get(concept)
-        if existing is None or hit.get("updated", "") > existing.get("updated", ""):
-            by_concept[concept] = hit
-
-    for hit in by_concept.values():
-        record = _latest_record(hit)
-        title = record.get("metadata", {}).get("title", "")
-        generation = _extract_generation(title)
-        if generation is None:
-            continue
-        file_info = _pick_coeffs_file(record, generation)
-        if file_info is None:
-            continue
-        existing = records.get(generation)
-        if existing is None or record.get("updated", "") > existing.get(
-            "updated", ""
-        ):
-            record["_file_info"] = file_info
-            records[generation] = record
-    return records
-
-
 def _decimal_to_str(value: Decimal) -> str:
     text = format(value, "f")
     if "." in text:
@@ -191,7 +68,7 @@ def _decimal_to_str(value: Decimal) -> str:
     return text or "0"
 
 
-def _parse_zenodo_text(text: str, file_name: str) -> IGRFDoc:
+def _parse_ncei_coeffs(text: str, file_name: str) -> IGRFDoc:
     headers: list[str] = []
     header_numbers: list[str] = []
     epochs: list[str] = []
@@ -220,10 +97,7 @@ def _parse_zenodo_text(text: str, file_name: str) -> IGRFDoc:
     header_lines = non_comment[:data_start]
     headers.extend(header_lines)
 
-    if not header_lines:
-        raise ValueError(f"Missing column header row in {file_name}")
-
-    column_header = header_lines[-1]
+    column_header = header_lines[-1] if header_lines else ""
     tokens = column_header.split()
     epoch_tokens: list[str] = []
     sv_token: str | None = None
@@ -268,9 +142,9 @@ def _parse_zenodo_text(text: str, file_name: str) -> IGRFDoc:
             sv_value = Decimal(values[-1])
             delta_years = Decimal(sv_year_end - sv_year_start)
             predicted = base_values[-1] + sv_value * delta_years
-            values = [
-                _decimal_to_str(v) for v in base_values
-            ] + [_decimal_to_str(predicted)]
+            values = [_decimal_to_str(v) for v in base_values] + [
+                _decimal_to_str(predicted)
+            ]
         coefficients.append(CoefficientRow(n=n, m=m, kind=kind, values=values))
 
     return IGRFDoc(
@@ -392,66 +266,79 @@ def _run_swift_format() -> None:
     )
 
 
-def _parse_args(argv: list[str]) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate IGRF Swift data.")
-    parser.add_argument(
-        "--expect-latest",
-        type=int,
-        default=EXPECTED_LATEST_VERSION,
-        help="Expected latest IGRF generation number.",
-    )
-    parser.add_argument(
-        "--latest-only",
-        action="store_true",
-        help="Generate only the latest IGRF model found on Zenodo.",
-    )
-    parser.add_argument(
-        "--insecure",
-        action="store_true",
-        help="Disable TLS verification (only if your local cert store is broken).",
-    )
-    return parser.parse_args(argv)
+def _candidate_versions(start: int = 20, end: int = 1) -> list[int]:
+    return list(range(start, end - 1, -1))
+
+
+def _coeffs_url(version: int) -> str:
+    return f"https://www.ngdc.noaa.gov/IAGA/vmod/coeffs/igrf{version}coeffs.txt"
+
+
+def _try_download(version: int) -> tuple[int, str, str] | None:
+    url = _coeffs_url(version)
+    try:
+        text = _http_text(url)
+    except urllib.error.HTTPError:
+        return None
+    except urllib.error.URLError as err:
+        raise err
+    return version, url, text
+
+
+def _ask_yes_no(prompt: str, default: str = "y") -> bool:
+    suffix = " [Y/n]: " if default.lower() == "y" else " [y/N]: "
+    answer = input(prompt + suffix).strip().lower()
+    if not answer:
+        answer = default.lower()
+    return answer in ("y", "yes")
+
+
+def _ask_int(prompt: str, default: int) -> int:
+    answer = input(f"{prompt} [{default}]: ").strip()
+    if not answer:
+        return default
+    return int(answer)
 
 
 def main() -> None:
-    args = _parse_args(sys.argv[1:])
     _init_ssl_context()
     global URL_CONTEXT
-    if args.insecure:
+
+    print("IGRF data fetch (NCEI)")
+    if _ask_yes_no("Use insecure TLS (only if your cert store fails)?", default="n"):
         URL_CONTEXT = ssl._create_unverified_context()
-    records = _zenodo_igrf_records(args.latest_only)
-    if not records:
-        raise SystemExit("No IGRF records found on Zenodo.")
 
-    generations = sorted(records)
-    latest = generations[-1]
-    if latest != args.expect_latest:
-        raise SystemExit(
-            f"Latest IGRF generation on Zenodo is {latest}, "
-            f"expected {args.expect_latest}. Update --expect-latest if needed."
-        )
+    start_version = _ask_int("Start searching from version", 20)
+    print("Searching for the latest available coeffs file...")
 
-    if args.latest_only:
-        generations = [latest]
+    result = None
+    for version in _candidate_versions(start=start_version, end=1):
+        try:
+            result = _try_download(version)
+        except urllib.error.URLError as err:
+            if isinstance(err.reason, ssl.SSLCertVerificationError):
+                raise SystemExit(
+                    "TLS verification failed. Re-run and choose insecure TLS."
+                )
+            raise
+        if result:
+            break
 
-    docs: list[IGRFDoc] = []
-    for generation in generations:
-        record = records[generation]
-        file_info = record.get("_file_info")
-        if not file_info:
-            continue
-        file_name = file_info.get("key", f"IGRF{generation}.txt")
-        links = file_info.get("links", {})
-        download_url = links.get("download") or links.get("self")
-        if not download_url:
-            raise SystemExit(f"Missing download link for {file_name}")
-        text = _http_text(download_url)
-        docs.append(_parse_zenodo_text(text, file_name))
+    if not result:
+        raise SystemExit("No igrf*coeffs.txt found from version 20 down to 1.")
 
-    if not docs:
-        raise SystemExit("No coefficient files downloaded from Zenodo.")
+    latest, coeffs_url, text = result
+    print(f"Found IGRF-{latest} at {coeffs_url}")
+    if not _ask_yes_no(f"Use IGRF-{latest}?", default="y"):
+        raise SystemExit("Aborted by user.")
 
-    _write_swift(docs)
+    file_name = (
+        Path(urllib.parse.urlparse(coeffs_url).path).name
+        or f"igrf{latest}coeffs.txt"
+    )
+    doc = _parse_ncei_coeffs(text, file_name)
+
+    _write_swift([doc])
     _run_swift_format()
 
 

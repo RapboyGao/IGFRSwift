@@ -1,7 +1,7 @@
 import Foundation
 
-extension IGRFDocument {
-    public static let model14 = IGRFDocument(
+public extension IGRFDocument {
+    static let model14 = IGRFDocument(
         fileName: "igrf14coeffs.txt",
         headers: [
             "14th Generation International Geomagnetic Reference Field Schmidt semi-normalised spherical harmonic coefficients, degree n=1,13",
