@@ -3,7 +3,7 @@
     "model": "igrf",
     "model_revision": "14",
     "date": {
-      "value": "2025-01-01"
+      "value": "2026-01-29"
     },
     "coordinates": {
       "latitude": {
@@ -22,31 +22,31 @@
     "field-value": {
       "total-intensity": {
         "units": "nT",
-        "value": 55004
+        "value": 55036
       },
       "declination": {
         "units": "deg (east)",
-        "value": -7.402
+        "value": -7.434
       },
       "inclination": {
         "units": "deg (down)",
-        "value": 59.47
+        "value": 59.504
       },
       "north-intensity": {
         "units": "nT",
-        "value": 27708
+        "value": 27695
       },
       "east-intensity": {
         "units": "nT",
-        "value": -3599
+        "value": -3613
       },
       "vertical-intensity": {
         "units": "nT",
-        "value": 47378
+        "value": 47422
       },
       "horizontal-intensity": {
         "units": "nT",
-        "value": 27941
+        "value": 27929
       }
     },
     "secular-variation": {
