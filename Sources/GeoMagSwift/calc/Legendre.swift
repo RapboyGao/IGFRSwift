@@ -1,9 +1,25 @@
 import Foundation
 
+/// 勒让德多项式计算工具类
+/// Legendre polynomial calculation utilities
 internal enum Legendre {
+    /// 归一化因子缓存
+    /// Normalization factors cache
     nonisolated(unsafe) private static var normalizationCache: [Int: [[Double]]] = [:]
+    /// 缓存锁
+    /// Cache lock
     private static let cacheLock = NSLock()
 
+    /// 计算施密特归一化的勒让德多项式及其导数
+    /// Calculate Schmidt-normalized Legendre polynomials and their derivatives
+    /// - Parameters:
+    ///   - nmax: 最大阶数
+    ///   - nmax: Maximum order
+    ///   - theta: 极角（弧度）
+    ///   - theta: Polar angle (radians)
+    /// - Returns:
+    ///   包含勒让德多项式值和其导数的元组
+    ///   Tuple containing Legendre polynomial values and their derivatives
     static func schmidtNormalized(nmax: Int, theta: Double) -> (p: [[Double]], dp: [[Double]]) {
         let sinTheta = sin(theta)
         let cosTheta = cos(theta)
@@ -62,6 +78,13 @@ internal enum Legendre {
         return (p, dp)
     }
 
+    /// 计算归一化因子
+    /// Calculate normalization factors
+    /// - Parameter nmax: 最大阶数
+    /// - Parameter nmax: Maximum order
+    /// - Returns:
+    ///   归一化因子矩阵
+    ///   Normalization factors matrix
     private static func normalizationFactors(nmax: Int) -> [[Double]] {
         cacheLock.lock()
         if let cached = normalizationCache[nmax] {
@@ -84,6 +107,13 @@ internal enum Legendre {
         return factors
     }
 
+    /// 计算阶乘数组
+    /// Calculate factorial array
+    /// - Parameter max: 最大计算值
+    /// - Parameter max: Maximum value
+    /// - Returns:
+    ///   阶乘值数组
+    ///   Factorial values array
     private static func computeFactorials(upTo max: Int) -> [Double] {
         if max <= 1 {
             return [1.0]
@@ -97,6 +127,18 @@ internal enum Legendre {
         return factorials
     }
 
+    /// 计算施密特归一化因子
+    /// Calculate Schmidt normalization factor
+    /// - Parameters:
+    ///   - n: 阶数
+    ///   - n: Order
+    ///   - m: 次数
+    ///   - m: Degree
+    ///   - factorials: 阶乘数组
+    ///   - factorials: Factorial array
+    /// - Returns:
+    ///   归一化因子
+    ///   Normalization factor
     private static func schmidtNormalization(n: Int, m: Int, factorials: [Double]) -> Double {
         if n == 0 && m == 0 {
             return 1.0

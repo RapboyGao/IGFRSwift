@@ -1,6 +1,18 @@
 import Foundation
 
+/// 日期工具类
+/// Date utilities
 internal enum DateUtils {
+    /// 计算给定日期的十进制年份
+    /// Calculate decimal year from given date
+    /// - Parameters:
+    ///   - date: 输入日期
+    ///   - date: Input date
+    ///   - calendar: 日历对象，默认为公历
+    ///   - calendar: Calendar object, default is Gregorian
+    /// - Returns:
+    ///   十进制年份值
+    ///   Decimal year value
     static func decimalYear(from date: Date, calendar: Calendar = Calendar(identifier: .gregorian)) -> Double {
         var cal = calendar
         cal.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
