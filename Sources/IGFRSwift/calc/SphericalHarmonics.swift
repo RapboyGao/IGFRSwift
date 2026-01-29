@@ -69,7 +69,7 @@ internal enum SphericalHarmonics {
         bp = bp / sinThetaSafe
 
         let x = -bt * coords.cosDelta - br * coords.sinDelta
-        let z = bt * coords.sinDelta - br * coords.cosDelta
+        let z = -(bt * coords.sinDelta - br * coords.cosDelta)
         let y = bp
 
         return (north: x, east: y, down: z)

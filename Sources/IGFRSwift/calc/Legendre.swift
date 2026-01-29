@@ -17,7 +17,7 @@ internal enum Legendre {
         }
 
         for m in 1...nmax {
-            p[m][m] = -(2.0 * Double(m) - 1.0) * sinTheta * p[m - 1][m - 1]
+            p[m][m] = (2.0 * Double(m) - 1.0) * sinTheta * p[m - 1][m - 1]
         }
 
         for m in 0..<nmax {

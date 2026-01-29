@@ -12,7 +12,6 @@ import Testing
     let result = SHCModel.latest.calculate(location, date: date!)
 
     let main = result.mainField
-    print("main:", main.north, main.east, main.down, main.horizontalIntensity, main.totalIntensity, main.declination, main.inclination)
     #expect(abs(main.north - 27695) <= 2.0)
     #expect(abs(main.east - (-3613)) <= 2.0)
     #expect(abs(main.down - 47422) <= 2.0)
@@ -22,7 +21,6 @@ import Testing
     #expect(abs(main.inclination - 59.504) <= 0.02)
 
     let sv = result.secularVariation
-    print("sv:", sv.north, sv.east, sv.down, sv.horizontalIntensity, sv.totalIntensity, sv.declinationArcMinutes, sv.inclinationArcMinutes)
     #expect(abs(sv.north - (-12.5)) <= 0.5)
     #expect(abs(sv.east - (-13.0)) <= 0.5)
     #expect(abs(sv.down - 40.9) <= 0.5)

@@ -35,7 +35,7 @@ internal enum Geodesy {
         let sinTheta = cosGeo
         let cosTheta = sinGeo
 
-        let delta = latRad - geocentricLat
+        let delta = geocentricLat - latRad
         let sinDelta = sin(delta)
         let cosDelta = cos(delta)
 
