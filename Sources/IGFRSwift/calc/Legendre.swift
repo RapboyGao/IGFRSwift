@@ -1,6 +1,9 @@
 import Foundation
 
 internal enum Legendre {
+    nonisolated(unsafe) private static var normalizationCache: [Int: [[Double]]] = [:]
+    private static let cacheLock = NSLock()
+
     static func schmidtNormalized(nmax: Int, theta: Double) -> (p: [[Double]], dp: [[Double]]) {
         let sinTheta = sin(theta)
         let cosTheta = cos(theta)
@@ -47,16 +50,38 @@ internal enum Legendre {
             }
         }
 
-        let factorials = computeFactorials(upTo: 2 * nmax)
+        let normalization = normalizationFactors(nmax: nmax)
         for n in 0...nmax {
             for m in 0...n {
-                let normalization = schmidtNormalization(n: n, m: m, factorials: factorials)
-                p[n][m] *= normalization
-                dp[n][m] *= normalization
+                let factor = normalization[n][m]
+                p[n][m] *= factor
+                dp[n][m] *= factor
             }
         }
 
         return (p, dp)
+    }
+
+    private static func normalizationFactors(nmax: Int) -> [[Double]] {
+        cacheLock.lock()
+        if let cached = normalizationCache[nmax] {
+            cacheLock.unlock()
+            return cached
+        }
+        cacheLock.unlock()
+
+        let factorials = computeFactorials(upTo: 2 * nmax)
+        var factors = Array(repeating: Array(repeating: 0.0, count: nmax + 1), count: nmax + 1)
+        for n in 0...nmax {
+            for m in 0...n {
+                factors[n][m] = schmidtNormalization(n: n, m: m, factorials: factorials)
+            }
+        }
+
+        cacheLock.lock()
+        normalizationCache[nmax] = factors
+        cacheLock.unlock()
+        return factors
     }
 
     private static func computeFactorials(upTo max: Int) -> [Double] {

@@ -100,10 +100,17 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         if year >= epochs[epochs.count - 1] {
             return (epochs.count - 2, 1.0)
         }
-        var index = 0
-        while index + 1 < epochs.count && year > epochs[index + 1] {
-            index += 1
+        var low = 0
+        var high = epochs.count - 1
+        while low + 1 < high {
+            let mid = (low + high) / 2
+            if year <= epochs[mid] {
+                high = mid
+            } else {
+                low = mid
+            }
         }
+        let index = low
         let t0 = epochs[index]
         let t1 = epochs[index + 1]
         let fraction = t1 == t0 ? 0.0 : (year - t0) / (t1 - t0)
