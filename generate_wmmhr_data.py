@@ -30,7 +30,7 @@ class WMMHRDoc:
 
 
 ROOT = Path(__file__).resolve().parent
-OUT_DIR = ROOT / "Sources" / "IGFRSwift" / "models"
+OUT_DIR = ROOT / "Sources" / "GeoMagSwift" / "models"
 
 DEFAULT_CONTEXT = None
 URL_CONTEXT = None
@@ -53,7 +53,7 @@ def _init_ssl_context() -> None:
 def _http_bytes(url: str, retries: int = 3, backoff: float = 1.0) -> bytes:
     req = urllib.request.Request(
         url,
-        headers={"User-Agent": "IGFRSwift/1.0 (data fetch)"},
+        headers={"User-Agent": "GeoMagSwift/1.0 (data fetch)"},
     )
     context = URL_CONTEXT if URL_CONTEXT is not None else DEFAULT_CONTEXT
     last_err: Exception | None = None

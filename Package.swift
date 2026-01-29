@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "IGFRSwift",
+    name: "GeoMagSwift",
 
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "IGFRSwift",
-            targets: ["IGFRSwift"]
+            name: "GeoMagSwift",
+            targets: ["GeoMagSwift"]
         ),
     ],
     dependencies: [
@@ -20,15 +20,15 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "IGFRSwift",
+            name: "GeoMagSwift",
             dependencies: [
                 .product(name: "Numerics", package: "swift-numerics"),
             ],
             resources: [.process("Resources")]
         ),
         .testTarget(
-            name: "IGFRTests",
-            dependencies: ["IGFRSwift"]
+            name: "GeoMagTests",
+            dependencies: ["GeoMagSwift"]
         ),
     ]
 )

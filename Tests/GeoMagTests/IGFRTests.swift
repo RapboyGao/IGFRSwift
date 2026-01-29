@@ -2,7 +2,7 @@ import CoreLocation
 import Foundation
 import Testing
 
-@testable import IGFRSwift
+@testable import GeoMagSwift
 
 @Test func testIGRF14DeclinationMatchesNCEI() async throws {
     struct SeededGenerator: RandomNumberGenerator {
