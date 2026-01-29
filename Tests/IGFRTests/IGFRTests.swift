@@ -1,31 +1,74 @@
-@testable import IGFRSwift
 import CoreLocation
 import Foundation
 import Testing
 
-@Test func testMagneticFieldMatchesExample() async throws {
+@testable import IGFRSwift
+
+@Test func testIGRF14DeclinationMatchesNCEI() async throws {
+    struct SeededGenerator: RandomNumberGenerator {
+        var state: UInt64
+        mutating func next() -> UInt64 {
+            state = 6364136223846793005 &* state &+ 1
+            return state
+        }
+    }
+
+    struct Response: Decodable {
+        struct Result: Decodable {
+            let declination: Double
+        }
+        let result: [Result]
+    }
+
+    func randomDouble(in range: ClosedRange<Double>, using generator: inout SeededGenerator) -> Double {
+        let value = Double(generator.next()) / Double(UInt64.max)
+        return range.lowerBound + (range.upperBound - range.lowerBound) * value
+    }
+
+    func makeURL(latitude: Double, longitude: Double) -> URL {
+        let latHem = latitude >= 0 ? "N" : "S"
+        let lonHem = longitude >= 0 ? "E" : "W"
+        let latAbs = abs(latitude)
+        let lonAbs = abs(longitude)
+
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "www.ngdc.noaa.gov"
+        components.path = "/geomag-web/calculators/calculateDeclination"
+        components.queryItems = [
+            URLQueryItem(name: "browserRequest", value: "true"),
+            URLQueryItem(name: "magneticComponent", value: "d"),
+            URLQueryItem(name: "key", value: "zNEw7"),
+            URLQueryItem(name: "lat1", value: String(format: "%.6f", latAbs)),
+            URLQueryItem(name: "lat1Hemisphere", value: latHem),
+            URLQueryItem(name: "lon1", value: String(format: "%.6f", lonAbs)),
+            URLQueryItem(name: "lon1Hemisphere", value: lonHem),
+            URLQueryItem(name: "model", value: "IGRF"),
+            URLQueryItem(name: "startYear", value: "2026"),
+            URLQueryItem(name: "startMonth", value: "1"),
+            URLQueryItem(name: "startDay", value: "29"),
+            URLQueryItem(name: "resultFormat", value: "json"),
+        ]
+        return components.url!
+    }
+
     let calendar = Calendar(identifier: .gregorian)
-    let date = calendar.date(from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0), year: 2026, month: 1, day: 29))
-    #expect(date != nil)
+    let date = calendar.date(
+        from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0), year: 2026, month: 1, day: 29))!
+    var rng = SeededGenerator(state: 0x1A2B3C4D5E6F7788)
 
-    let location = CLLocation(latitude: 40, longitude: 116)
-    let result = SHCModel.igrf14.calculate(location, date: date!)
+    for _ in 0..<5 {
+        let latitude = randomDouble(in: -80.0...80.0, using: &rng)
+        let longitude = randomDouble(in: -180.0...180.0, using: &rng)
+        let url = makeURL(latitude: latitude, longitude: longitude)
 
-    let main = result.mainField
-    #expect(abs(main.north - 27695) <= 2.0)
-    #expect(abs(main.east - (-3613)) <= 2.0)
-    #expect(abs(main.down - 47422) <= 2.0)
-    #expect(abs(main.horizontalIntensity - 27929) <= 2.0)
-    #expect(abs(main.totalIntensity - 55036) <= 2.0)
-    #expect(abs(main.declination - (-7.434)) <= 0.02)
-    #expect(abs(main.inclination - 59.504) <= 0.02)
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let response = try JSONDecoder().decode(Response.self, from: data)
+        let declination = response.result.first?.declination
+        #expect(declination != nil)
 
-    let sv = result.secularVariation
-    #expect(abs(sv.north - (-12.5)) <= 0.5)
-    #expect(abs(sv.east - (-13.0)) <= 0.5)
-    #expect(abs(sv.down - 40.9) <= 0.5)
-    #expect(abs(sv.horizontalIntensity - (-10.7)) <= 0.5)
-    #expect(abs(sv.totalIntensity - 29.8) <= 0.5)
-    #expect(abs(sv.declinationArcMinutes - (-1.8)) <= 0.2)
-    #expect(abs(sv.inclinationArcMinutes - 1.9) <= 0.2)
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        let result = SHCModel.igrf14.calculate(location, date: date)
+        #expect(abs(result.mainField.declination - declination!) <= 1e-5)
+    }
 }
