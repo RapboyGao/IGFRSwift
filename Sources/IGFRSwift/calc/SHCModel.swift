@@ -24,16 +24,14 @@ public struct SHCModel: Sendable, Equatable {
         self.nmax = coefficients.map { $0.n }.max() ?? 0
     }
 
-    public static var latest: SHCModel {
-        .model14
-    }
-
     public func calculate(
         _ location: CLLocation,
         date: Date = Date()
     ) -> MagneticFieldSolution {
         let year = DateUtils.decimalYear(from: date)
-        return calculate(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, altitude: location.altitude / 1000.0, year: year)
+        return calculate(
+            latitude: location.coordinate.latitude, longitude: location.coordinate.longitude,
+            altitude: location.altitude / 1000.0, year: year)
     }
 
     public func calculate(
@@ -43,10 +41,12 @@ public struct SHCModel: Sendable, Equatable {
         year: Double
     ) -> MagneticFieldSolution {
         let (g, h, gDot, hDot) = coefficients(for: year)
-        let main = SphericalHarmonics.fieldComponents(nmax: nmax, g: g, h: h, latitude: latitude, longitude: longitude, altitude: altitude)
+        let main = SphericalHarmonics.fieldComponents(
+            nmax: nmax, g: g, h: h, latitude: latitude, longitude: longitude, altitude: altitude)
         let mainField = MagneticFieldResult(north: main.north, east: main.east, down: main.down)
 
-        let secular = SphericalHarmonics.fieldComponents(nmax: nmax, g: gDot, h: hDot, latitude: latitude, longitude: longitude, altitude: altitude)
+        let secular = SphericalHarmonics.fieldComponents(
+            nmax: nmax, g: gDot, h: hDot, latitude: latitude, longitude: longitude, altitude: altitude)
         let sec = makeSecularVariation(mainField: mainField, derivative: secular)
 
         return MagneticFieldSolution(mainField: mainField, secularVariation: sec)

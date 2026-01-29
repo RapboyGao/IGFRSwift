@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import ssl
 import subprocess
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -31,7 +32,6 @@ class IGRFDoc:
 
 ROOT = Path(__file__).resolve().parent
 OUT_DIR = ROOT / "Sources" / "IGFRSwift" / "data"
-INDEX_FILE = OUT_DIR / "IGRFData.swift"
 
 DEFAULT_CONTEXT = None
 URL_CONTEXT = None
@@ -51,14 +51,30 @@ def _init_ssl_context() -> None:
         DEFAULT_CONTEXT = ssl.create_default_context()
 
 
-def _http_text(url: str) -> str:
+def _http_text(url: str, retries: int = 3, backoff: float = 1.0) -> str:
     req = urllib.request.Request(
         url,
         headers={"User-Agent": "IGFRSwift/1.0 (data fetch)"},
     )
     context = URL_CONTEXT if URL_CONTEXT is not None else DEFAULT_CONTEXT
-    with urllib.request.urlopen(req, timeout=30, context=context) as resp:
-        return resp.read().decode("utf-8")
+    last_err: Exception | None = None
+    for attempt in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=30, context=context) as resp:
+                return resp.read().decode("utf-8")
+        except urllib.error.URLError as err:
+            last_err = err
+            if attempt < retries - 1:
+                time.sleep(backoff * (2 ** attempt))
+                continue
+            raise
+        except ssl.SSLError as err:
+            last_err = err
+            if attempt < retries - 1:
+                time.sleep(backoff * (2 ** attempt))
+                continue
+            raise
+    raise urllib.error.URLError(last_err or "unknown error")
 
 
 def _decimal_to_str(value: Decimal) -> str:
@@ -181,18 +197,18 @@ def _format_double_array(tokens: list[str], indent: str) -> str:
 def _model_name(doc: IGRFDoc) -> str:
     match = re.search(r"(\d+)", doc.file_name)
     suffix = match.group(1) if match else doc.file_name
-    return f"model{suffix}"
+    return f"igrf{suffix}"
 
 
 def _write_model_file(doc: IGRFDoc) -> None:
     model_name = _model_name(doc)
-    file_name = f"IGRFDocument+{model_name}.swift"
+    file_name = f"SHCModel+{model_name}.swift"
     out_path = OUT_DIR / file_name
     lines: list[str] = []
     lines.append("import Foundation")
     lines.append("")
-    lines.append("public extension IGRFDocument {")
-    lines.append(f"    static let {model_name} = IGRFDocument(")
+    lines.append("public extension SHCModel {")
+    lines.append(f"    static let {model_name} = SHCModel(")
     lines.append(f"        fileName: \"{_swift_string(doc.file_name)}\",")
     if doc.headers:
         lines.append("        headers: [")
@@ -211,7 +227,7 @@ def _write_model_file(doc: IGRFDoc) -> None:
     )
     lines.append("        coefficients: [")
     for row in doc.coefficients:
-        lines.append("            IGRFCoefficient(")
+        lines.append("            Coefficient(")
         lines.append(f"                n: {row.n},")
         lines.append(f"                m: {row.m},")
         lines.append(f"                kind: .{row.kind},")
@@ -226,26 +242,11 @@ def _write_model_file(doc: IGRFDoc) -> None:
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def _write_index_file(docs: list[IGRFDoc]) -> None:
-    lines: list[str] = []
-    lines.append("import Foundation")
-    lines.append("")
-    lines.append("public enum IGRFData {")
-    lines.append("    public static let documents: [IGRFDocument] = [")
-    for doc in docs:
-        lines.append(f"        .{_model_name(doc)},")
-    lines.append("    ]")
-    lines.append("}")
-    INDEX_FILE.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
-
 def _clean_output() -> None:
     if not OUT_DIR.exists():
         return
-    for path in OUT_DIR.glob("IGRFDocument+model*.swift"):
+    for path in OUT_DIR.glob("SHCModel+igrf*.swift"):
         path.unlink()
-    if INDEX_FILE.exists():
-        INDEX_FILE.unlink()
 
 
 def _write_swift(docs: list[IGRFDoc]) -> None:
@@ -253,7 +254,6 @@ def _write_swift(docs: list[IGRFDoc]) -> None:
     _clean_output()
     for doc in docs:
         _write_model_file(doc)
-    _write_index_file(docs)
 
 
 def _run_swift_format() -> None:
@@ -266,7 +266,7 @@ def _run_swift_format() -> None:
     )
 
 
-def _candidate_versions(start: int = 20, end: int = 1) -> list[int]:
+def _candidate_versions(start: int = 19, end: int = 1) -> list[int]:
     return list(range(start, end - 1, -1))
 
 
@@ -308,10 +308,10 @@ def main() -> None:
     if _ask_yes_no("Use insecure TLS (only if your cert store fails)?", default="n"):
         URL_CONTEXT = ssl._create_unverified_context()
 
-    start_version = _ask_int("Start searching from version", 20)
-    print("Searching for the latest available coeffs file...")
+    start_version = _ask_int("Start searching from version", 19)
+    print("Downloading all available coeffs files...")
 
-    result = None
+    docs: list[IGRFDoc] = []
     for version in _candidate_versions(start=start_version, end=1):
         try:
             result = _try_download(version)
@@ -320,25 +320,27 @@ def main() -> None:
                 raise SystemExit(
                     "TLS verification failed. Re-run and choose insecure TLS."
                 )
+            print(f"Skipping IGRF-{version}: {err}")
+            continue
+        if not result:
+            continue
+        found_version, coeffs_url, text = result
+        file_name = (
+            Path(urllib.parse.urlparse(coeffs_url).path).name
+            or f"igrf{found_version}coeffs.txt"
+        )
+        try:
+            docs.append(_parse_ncei_coeffs(text, file_name))
+        except ValueError as err:
+            if "No data rows found" in str(err):
+                print(f"Skipping {file_name}: {err}")
+                continue
             raise
-        if result:
-            break
 
-    if not result:
-        raise SystemExit("No igrf*coeffs.txt found from version 20 down to 1.")
+    if not docs:
+        raise SystemExit("No igrf*coeffs.txt found in the requested range.")
 
-    latest, coeffs_url, text = result
-    print(f"Found IGRF-{latest} at {coeffs_url}")
-    if not _ask_yes_no(f"Use IGRF-{latest}?", default="y"):
-        raise SystemExit("Aborted by user.")
-
-    file_name = (
-        Path(urllib.parse.urlparse(coeffs_url).path).name
-        or f"igrf{latest}coeffs.txt"
-    )
-    doc = _parse_ncei_coeffs(text, file_name)
-
-    _write_swift([doc])
+    _write_swift(docs)
     _run_swift_format()
 
 

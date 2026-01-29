@@ -9,7 +9,7 @@ import Testing
     #expect(date != nil)
 
     let location = CLLocation(latitude: 40, longitude: 116)
-    let result = SHCModel.latest.calculate(location, date: date!)
+    let result = SHCModel.igrf14.calculate(location, date: date!)
 
     let main = result.mainField
     #expect(abs(main.north - 27695) <= 2.0)

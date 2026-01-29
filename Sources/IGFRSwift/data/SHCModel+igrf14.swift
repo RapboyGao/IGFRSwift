@@ -1,7 +1,7 @@
 import Foundation
 
 public extension SHCModel {
-    static let model14 = SHCModel(
+    static let igrf14 = SHCModel(
         fileName: "igrf14coeffs.txt",
         headers: [
             "14th Generation International Geomagnetic Reference Field Schmidt semi-normalised spherical harmonic coefficients, degree n=1,13",
