@@ -2,10 +2,10 @@ import Foundation
 
 internal extension Double {
     var degreesToRadians: Double {
-        self * .pi / 180.0
+        self / 57.29577951308232
     }
 
     var radiansToDegrees: Double {
-        self * 180.0 / .pi
+        self * 57.29577951308232
     }
 }
