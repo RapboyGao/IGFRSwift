@@ -1,5 +1,8 @@
 {
   "files.associations": {
     "*.txt": "markdown"
-  }
+  },
+  "cSpell.words": [
+    "IGRF"
+  ]
 }
