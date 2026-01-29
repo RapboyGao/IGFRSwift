@@ -1,7 +1,7 @@
 import CoreLocation
 import Foundation
 
-public struct SHCModel: Sendable, Equatable {
+public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     public let fileName: String
     public let headers: [String]
     public let headerNumbers: [Double]
@@ -23,6 +23,8 @@ public struct SHCModel: Sendable, Equatable {
         self.coefficients = coefficients
         self.nmax = coefficients.map { $0.n }.max() ?? 0
     }
+
+    public var id: String { fileName }
 
     public func calculate(
         _ location: CLLocation,
@@ -143,12 +145,12 @@ public struct SHCModel: Sendable, Equatable {
 }
 
 public extension SHCModel {
-    enum CoefficientKind: String, Sendable, Equatable {
+    enum CoefficientKind: String, Sendable, Hashable, Codable {
         case g
         case h
     }
 
-    struct Coefficient: Sendable, Equatable {
+    struct Coefficient: Sendable, Hashable, Codable {
         public let n: Int
         public let m: Int
         public let kind: CoefficientKind

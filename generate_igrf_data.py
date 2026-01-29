@@ -31,7 +31,7 @@ class IGRFDoc:
 
 
 ROOT = Path(__file__).resolve().parent
-OUT_DIR = ROOT / "Sources" / "IGFRSwift" / "data"
+OUT_DIR = ROOT / "Sources" / "IGFRSwift" / "models"
 
 DEFAULT_CONTEXT = None
 URL_CONTEXT = None
