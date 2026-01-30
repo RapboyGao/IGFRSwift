@@ -6,8 +6,6 @@
 
 🌍 **A powerful Swift library for calculating Earth's magnetic field** using international standard models like IGRF and WMM.
 
-![Magnetic Field Visualization](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Earth%27s%20magnetic%20field%20visualization%20with%20field%20lines%20and%20polarity%20in%20blue%20and%20red%2C%20scientific%20accurate%2C%203D%20rendering%2C%20dark%20background&image_size=landscape_16_9)
-
 ## 🌐 Language
 
 - [English](README.md)
@@ -106,6 +104,7 @@ let igrf12Result = SHCModel.igrf12.calculate(location, date: date)
 GeoMagSwift includes the following magnetic field models:
 
 ### IGRF (International Geomagnetic Reference Field)
+
 - **IGRF-14**: Latest model (2020.0 - 2025.0)
 - **IGRF-13**: Model for 2015.0 - 2020.0
 - **IGRF-12**: Model for 2010.0 - 2015.0
@@ -113,6 +112,7 @@ GeoMagSwift includes the following magnetic field models:
 - **IGRF-10**: Model for 2000.0 - 2005.0
 
 ### WMM (World Magnetic Model)
+
 - **WMM2025**: Latest model (2025.0 - 2030.0)
 - **WMM2020**: Model for 2020.0 - 2025.0
 - **WMM2015**: Model for 2015.0 - 2020.0

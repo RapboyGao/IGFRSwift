@@ -6,7 +6,6 @@
 
 🌍 **一个强大的 Swift 库，用于使用 IGRF 和 WMM 等国际标准模型计算地球磁场**。
 
-![Magnetic Field Visualization](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Earth%27s%20magnetic%20field%20visualization%20with%20field%20lines%20and%20polarity%20in%20blue%20and%20red%2C%20scientific%20accurate%2C%203D%20rendering%2C%20dark%20background&image_size=landscape_16_9)
 
 ## 🌐 语言
 
