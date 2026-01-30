@@ -25,22 +25,22 @@ jobs:
       - name: Test Package
         run: swift test -v
 
-      - name: Generate Docc
-        run: swift package --allow-writing-to-directory .github/.pages \
-          generate-documentation --target GeoMagSwift \
-          --disable-indexing \
-          --transform-for-static-hosting \
-          --hosting-base-path GeoMagSwift \
-          --output-path .github/.pages
+      # - name: Generate Docc
+      #   run: swift package --allow-writing-to-directory .github/.pages \
+      #     generate-documentation --target GeoMagSwift \
+      #     --disable-indexing \
+      #     --transform-for-static-hosting \
+      #     --hosting-base-path GeoMagSwift \
+      #     --output-path .github/.pages
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      # - name: Setup Pages
+      #   uses: actions/configure-pages@v5
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "./.github/.pages"
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: "./.github/.pages"
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
