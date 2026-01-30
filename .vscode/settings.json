@@ -5,7 +5,7 @@
     "Sources/GeoMagSwift": "src",
     "Tests/GeoMagTests": "test",
     "Tests": "test",
-    "**.docc": "markdown",
+    "GeoMagSwift.docc": "docs",
   },
   "cSpell.words": [
     "Docc",
