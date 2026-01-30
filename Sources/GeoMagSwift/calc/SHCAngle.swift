@@ -67,6 +67,15 @@ public enum SHCAngle: Codable, Sendable, Hashable {
         }
     }
 
+    public func toArcMinutes() -> Self {
+        switch self {
+        case .degrees, .radians:
+            return .arcMinutes(arcMinutes)
+        case .arcMinutes:
+            return self
+        }
+    }
+
     public var sin: Double {
         Foundation.sin(radians)
     }

@@ -247,8 +247,8 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         let dD = (x * dY - y * dX) / (h * h)
         let dI = (h * dZ - z * dH) / (f * f)
 
-        let dDArcMin = SHCAngle.radians(dD).arcMinutes
-        let dIArcMin = SHCAngle.radians(dI).arcMinutes
+        let dDArcMin = SHCAngle.radians(dD)
+        let dIArcMin = SHCAngle.radians(dI)
 
         return MagneticFieldSecularVariation(
             north: dX,
@@ -256,8 +256,8 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
             down: dZ,
             horizontalIntensity: dH,
             totalIntensity: dF,
-            declination: SHCAngle(arcMinutes: dDArcMin),
-            inclination: SHCAngle(arcMinutes: dIArcMin)
+            declination: dDArcMin.toArcMinutes(),
+            inclination: dIArcMin.toArcMinutes()
         )
     }
 }
