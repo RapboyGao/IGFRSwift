@@ -3,11 +3,11 @@ import Foundation
 
 /// 球谐系数模型，用于计算地磁场
 /// Spherical Harmonic Coefficient model for calculating magnetic field
-/// 
+///
 /// 该结构体表示一个完整的球谐系数模型，用于计算地球磁场。它包含模型的基本信息（如文件名、头部信息）、
 /// 模型历元、球谐系数以及最大阶数。通过这些信息，模型可以计算任意位置和时间的地磁场值及其长期变化。
 /// 该模型实现了Codable协议，支持序列化和反序列化，同时实现了Identifiable协议，便于在SwiftUI中使用。
-/// 
+///
 /// This structure represents a complete spherical harmonic coefficient model for calculating the Earth's magnetic field.
 /// It contains basic model information (such as file name, header information), model epochs,
 /// spherical harmonic coefficients, and maximum order. Using this information, the model can calculate
@@ -60,39 +60,6 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         self.epochs = epochs
         self.coefficients = coefficients
         self.nmax = coefficients.map { $0.n }.max() ?? 0
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case fileName
-        case headers
-        case headerNumbers
-        case epochs
-        case coefficients
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let fileName = try container.decode(String.self, forKey: .fileName)
-        let headers = try container.decode([String].self, forKey: .headers)
-        let headerNumbers = try container.decode([Double].self, forKey: .headerNumbers)
-        let epochs = try container.decode([Double].self, forKey: .epochs)
-        let coefficients = try container.decode([Coefficient].self, forKey: .coefficients)
-        self.init(
-            fileName: fileName,
-            headers: headers,
-            headerNumbers: headerNumbers,
-            epochs: epochs,
-            coefficients: coefficients
-        )
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(fileName, forKey: .fileName)
-        try container.encode(headers, forKey: .headers)
-        try container.encode(headerNumbers, forKey: .headerNumbers)
-        try container.encode(epochs, forKey: .epochs)
-        try container.encode(coefficients, forKey: .coefficients)
     }
 
     /// 模型唯一标识符，使用文件名为ID
@@ -277,10 +244,10 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
 public extension SHCModel {
     /// 球谐系数类型枚举，表示高斯系数的类型
     /// Spherical harmonic coefficient kind enum, representing the type of Gaussian coefficient
-    /// 
+    ///
     /// 该枚举定义了两种类型的球谐系数：g系数和h系数。这些系数是地磁场球谐模型的基本组成部分，
     /// 用于计算地球磁场的各个分量。
-    /// 
+    ///
     /// This enum defines two types of spherical harmonic coefficients: g coefficients and h coefficients.
     /// These coefficients are fundamental components of the spherical harmonic model of the magnetic field,
     /// used to calculate various components of the Earth's magnetic field.
@@ -295,11 +262,11 @@ public extension SHCModel {
 
     /// 球谐系数结构体，表示单个球谐系数
     /// Spherical harmonic coefficient structure, representing a single spherical harmonic coefficient
-    /// 
+    ///
     /// 该结构体表示一个球谐系数，包含阶数(n)、次数(m)、系数类型(kind)和系数值(values)。
     /// 系数值是一个数组，对应于模型的各个历元。通过这些信息，可以在不同时间点插值计算系数值，
     /// 从而得到任意时间的地磁场值。
-    /// 
+    ///
     /// This structure represents a single spherical harmonic coefficient, including order (n),
     /// degree (m), coefficient kind, and coefficient values. The values array corresponds to
     /// the model's various epochs. Using this information, coefficient values can be interpolated
