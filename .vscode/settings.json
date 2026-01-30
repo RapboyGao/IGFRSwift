@@ -2,7 +2,12 @@
   "files.associations": {
     "*.txt": "markdown"
   },
-  "cSpell.words": [
-    "IGRF"
-  ]
+  "material-icon-theme.folders.associations": {
+    ".swiftpm": "swift",
+    ".swiftpm/xcode/package.xcworkspace": "swift",
+    "Sources/GeoMagSwift": "src",
+    "Tests/GeoMagTests": "test",
+    "Tests": "test"
+  },
+  "cSpell.words": ["IGRF"]
 }
