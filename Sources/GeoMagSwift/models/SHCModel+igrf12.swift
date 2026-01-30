@@ -2183,6 +2183,6 @@ public extension SHCModel {
             ),
         ],
         validFrom: 1900.0,
-        validTo: 2020.0,
+        validTo: 2020.0
     )
 }

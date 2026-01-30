@@ -212,7 +212,7 @@ def _write_model_file(doc: WMMDoc, version: int) -> None:
         lines.append("            ),")
     lines.append("        ],")
     lines.append(f"        validFrom: {epoch_str},")
-    lines.append(f"        validTo: {epoch_next},")
+    lines.append(f"        validTo: {epoch_next}")
     lines.append("    )")
     lines.append("}")
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")

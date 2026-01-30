@@ -1834,6 +1834,6 @@ public extension SHCModel {
             ),
         ],
         validFrom: 1900.0,
-        validTo: 2005.0,
+        validTo: 2005.0
     )
 }

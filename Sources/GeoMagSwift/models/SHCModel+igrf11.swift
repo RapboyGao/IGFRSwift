@@ -1987,6 +1987,6 @@ public extension SHCModel {
             ),
         ],
         validFrom: 1900.0,
-        validTo: 2015.0,
+        validTo: 2015.0
     )
 }
