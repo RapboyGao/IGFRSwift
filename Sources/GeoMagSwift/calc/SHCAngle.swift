@@ -6,6 +6,15 @@ public enum SHCAngle: Codable, Sendable, Hashable {
     case degrees(Double)
     case radians(Double)
 
+    /// 从角度创建弧度角度
+    /// Create a radians angle from degrees
+    /// 这样后续的运算都基于弧度，可以提高运算效率
+    /// 例如，sin(π/2) = 1，而 sin(90°) = 1，但是 sin(π/2) 是直接计算的，而 sin(90°) 是先转换为弧度再计算的
+    /// 所以，后续的运算都基于弧度可以避免重复转换，提高效率
+    public init(degrees: Double) {
+        self = .degrees(degrees).toRadians()
+    }
+
     public var radians: Double {
         switch self {
         case .degrees(let d):
@@ -55,12 +64,6 @@ public enum SHCAngle: Codable, Sendable, Hashable {
 
     public var tanh: Double {
         tanh(radians)
-    }
-
-    /// 从角度创建弧度角度
-    /// Create a radians angle from degrees
-    public static func fromDegrees(_ d: Double) -> Self {
-        .radians(d / radiansToDegrees)
     }
 
     public static func asin(_ x: Double) -> Self {
