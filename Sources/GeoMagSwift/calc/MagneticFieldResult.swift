@@ -65,7 +65,7 @@ public struct MagneticFieldResult: Sendable, Equatable {
         sqrt(horizontalIntensity * horizontalIntensity + down * down)
     }
 
-    /// 磁偏角（度）
+    /// 磁偏角（角度）
     /// 表示地磁场水平分量与地理正北方向的夹角，计算公式为：arctan2(east, north)
     /// 正值表示磁北在地理北以东，负值表示磁北在地理北以西。
     /// Declination of the magnetic field (degrees)
@@ -73,11 +73,11 @@ public struct MagneticFieldResult: Sendable, Equatable {
     /// calculated as: arctan2(east, north)
     /// Positive values indicate magnetic north is east of geographic north,
     /// negative values indicate magnetic north is west of geographic north.
-    public var declination: Double {
-        atan2(east, north).radiansToDegrees
+    public var declination: SHCAngle {
+        SHCAngle.atan2(east, north)
     }
 
-    /// 磁倾角（度）
+    /// 磁倾角（角度）
     /// 表示地磁场总强度与水平方向的夹角，计算公式为：arctan2(down, horizontalIntensity)
     /// 正值表示磁场方向向下倾斜（北半球），负值表示磁场方向向上倾斜（南半球）。
     /// Inclination of the magnetic field (degrees)
@@ -85,7 +85,7 @@ public struct MagneticFieldResult: Sendable, Equatable {
     /// calculated as: arctan2(down, horizontalIntensity)
     /// Positive values indicate the magnetic field direction dips downward (Northern Hemisphere),
     /// negative values indicate the magnetic field direction dips upward (Southern Hemisphere).
-    public var inclination: Double {
-        atan2(down, horizontalIntensity).radiansToDegrees
+    public var inclination: SHCAngle {
+        SHCAngle.atan2(down, horizontalIntensity)
     }
 }

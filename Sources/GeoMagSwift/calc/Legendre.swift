@@ -20,9 +20,9 @@ internal enum Legendre {
     /// - Returns:
     ///   包含勒让德多项式值和其导数的元组
     ///   Tuple containing Legendre polynomial values and their derivatives
-    static func schmidtNormalized(nmax: Int, theta: Double) -> (p: [[Double]], dp: [[Double]]) {
-        let sinTheta = sin(theta)
-        let cosTheta = cos(theta)
+    static func schmidtNormalized(nmax: Int, theta: SHCAngle) -> (p: [[Double]], dp: [[Double]]) {
+        let sinTheta = theta.sin
+        let cosTheta = theta.cos
         let sinThetaSafe = abs(sinTheta) < 1.0e-10 ? (sinTheta >= 0 ? 1.0e-10 : -1.0e-10) : sinTheta
 
         var p = Array(repeating: Array(repeating: 0.0, count: nmax + 1), count: nmax + 1)

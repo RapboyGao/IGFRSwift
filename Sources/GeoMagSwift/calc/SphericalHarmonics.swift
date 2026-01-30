@@ -34,10 +34,10 @@ internal enum SphericalHarmonics {
         altitude: Double
     ) -> (north: Double, east: Double, down: Double) {
         let coords = Geodesy.geocentricCoordinates(latitude: latitude, longitude: longitude, altitude: altitude)
-        let lonRad = longitude.degreesToRadians
+        let lonAngle = SHCAngle(degrees: longitude)
 
-        let cosLon = cos(lonRad)
-        let sinLon = sin(lonRad)
+        let cosLon = lonAngle.cos
+        let sinLon = lonAngle.sin
 
         var cosMLon = Array(repeating: 0.0, count: nmax + 1)
         var sinMLon = Array(repeating: 0.0, count: nmax + 1)
@@ -54,7 +54,7 @@ internal enum SphericalHarmonics {
             }
         }
 
-        let (p, dp) = Legendre.schmidtNormalized(nmax: nmax, theta: coords.theta)
+        let (p, dp) = Legendre.schmidtNormalized(nmax: nmax, theta: SHCAngle.radians(coords.theta))
 
         var br = 0.0
         var bt = 0.0

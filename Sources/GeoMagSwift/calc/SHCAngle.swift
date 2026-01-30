@@ -43,42 +43,42 @@ public enum SHCAngle: Codable, Sendable, Hashable {
     }
 
     public var sin: Double {
-        sin(radians)
+        Foundation.sin(radians)
     }
 
     public var cos: Double {
-        cos(radians)
+        Foundation.cos(radians)
     }
 
     public var tan: Double {
-        tan(radians)
+        Foundation.tan(radians)
     }
 
     public var sinh: Double {
-        sinh(radians)
+        Foundation.sinh(radians)
     }
 
     public var cosh: Double {
-        cosh(radians)
+        Foundation.cosh(radians)
     }
 
     public var tanh: Double {
-        tanh(radians)
+        Foundation.tanh(radians)
     }
 
     public static func asin(_ x: Double) -> Self {
-        .radians(asin(x))
+        .radians(Foundation.asin(x))
     }
 
     public static func acos(_ x: Double) -> Self {
-        .radians(acos(x))
+        .radians(Foundation.acos(x))
     }
 
     public static func atan(_ x: Double) -> Self {
-        .radians(atan(x))
+        .radians(Foundation.atan(x))
     }
 
     public static func atan2(_ y: Double, _ x: Double) -> Self {
-        .radians(atan2(y, x))
+        .radians(Foundation.atan2(y, x))
     }
 }

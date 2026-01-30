@@ -46,9 +46,10 @@ internal enum Geodesy {
     ///   地心坐标结构体
     ///   Geocentric coordinates struct
     static func geocentricCoordinates(latitude: Double, longitude: Double, altitude: Double) -> GeocentricCoordinates {
-        let latRad = latitude.degreesToRadians
-        let sinLat = sin(latRad)
-        let cosLat = cos(latRad)
+        let latAngle = SHCAngle(degrees: latitude)
+        let latRad = latAngle.radians
+        let sinLat = latAngle.sin
+        let cosLat = latAngle.cos
 
         let a = wgs84A
         let b = wgs84B

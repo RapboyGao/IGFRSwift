@@ -121,10 +121,10 @@ struct MagneticModelTestConfig {
             let locationDesc = "(lat: \(latitude), lon: \(longitude))"
 
             #expect(
-                abs(result.mainField.declination - api.declination) <= maxErrorDegrees,
+                abs(result.mainField.declination.degrees - api.declination) <= maxErrorDegrees,
                 "Declination at \(locationDesc) exceeds error threshold")
             #expect(
-                abs(result.mainField.inclination - api.inclination) <= maxErrorDegrees,
+                abs(result.mainField.inclination.degrees - api.inclination) <= maxErrorDegrees,
                 "Inclination at \(locationDesc) exceeds error threshold")
             #expect(
                 abs(result.mainField.north - api.xcomponent) <= maxErrorNT,
