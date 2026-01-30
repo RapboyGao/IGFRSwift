@@ -1,0 +1,43 @@
+name: Publish Documentation to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  publish-docs:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.2.3"
+
+      - name: Generate Documentation
+        run: |
+          mkdir -p .github/docs
+          swift package --allow-writing-to-directory .github/docs \
+            generate-documentation --target GeoMagSwift \
+            --disable-indexing \
+            --transform-for-static-hosting \
+            --hosting-base-path GeoMagSwift \
+            --output-path .github/docs
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./docs"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
