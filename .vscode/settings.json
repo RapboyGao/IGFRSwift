@@ -1,10 +1,7 @@
 {
-  "files.associations": {
-    "*.txt": "markdown"
-  },
   "material-icon-theme.folders.associations": {
-    ".swiftpm": "swift",
-    ".swiftpm/xcode/package.xcworkspace": "swift",
+    ".swiftpm": "intellij",
+    ".swiftpm/xcode/package.xcworkspace": "intellij",
     "Sources/GeoMagSwift": "src",
     "Tests/GeoMagTests": "test",
     "Tests": "test"
