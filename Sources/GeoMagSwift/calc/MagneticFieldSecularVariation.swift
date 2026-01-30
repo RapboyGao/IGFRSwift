@@ -61,9 +61,9 @@ public struct MagneticFieldSecularVariation: Sendable, Hashable, Codable {
     /// Initialize magnetic field secular variation structure
     /// - Parameters:
     ///   - mainField: 主磁场结果
-    ///   - mainField: Main magnetic field result
+    ///     - Main magnetic field result
     ///   - derivative: 导数分量 (north, east, down)
-    ///   - derivative: Derivative components (north, east, down)
+    ///     - Derivative components (north, east, down)
     public init(
         mainField: MagneticFieldResult,
         derivative: (north: Double, east: Double, down: Double)

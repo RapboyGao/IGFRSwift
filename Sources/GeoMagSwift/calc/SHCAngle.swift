@@ -44,7 +44,7 @@ public enum SHCAngle: Codable, Sendable, Hashable {
     /// Therefore, subsequent operations based on radians can avoid repeated conversions and improve efficiency.
     ///
     /// - Parameter degrees: 角度值
-    /// - Parameter degrees: Angle in degrees
+    ///     - Angle in degrees
     public init(degrees: Double) {
         self = .degrees(degrees).toRadians()
     }
@@ -57,7 +57,7 @@ public enum SHCAngle: Codable, Sendable, Hashable {
     /// which can improve computational efficiency.
     ///
     /// - Parameter arcMinutes: 角分值
-    /// - Parameter arcMinutes: Angle in arc minutes
+    ///     - Angle in arc minutes
     public init(arcMinutes: Double) {
         self = .arcMinutes(arcMinutes).toRadians()
     }
@@ -198,7 +198,7 @@ public enum SHCAngle: Codable, Sendable, Hashable {
     /// Calculate the arc sine value
     ///
     /// - Parameter x: 正弦值，范围为[-1, 1]
-    /// - Parameter x: Sine value, range [-1, 1]
+    ///     - Sine value, range [-1, 1]
     /// - Returns: 对应的角度（弧度）
     /// - Returns: Corresponding angle (in radians)
     public static func asin(_ x: Double) -> Self {
@@ -209,7 +209,7 @@ public enum SHCAngle: Codable, Sendable, Hashable {
     /// Calculate the arc cosine value
     ///
     /// - Parameter x: 余弦值，范围为[-1, 1]
-    /// - Parameter x: Cosine value, range [-1, 1]
+    ///     - Cosine value, range [-1, 1]
     /// - Returns: 对应的角度（弧度）
     /// - Returns: Corresponding angle (in radians)
     public static func acos(_ x: Double) -> Self {
@@ -220,7 +220,7 @@ public enum SHCAngle: Codable, Sendable, Hashable {
     /// Calculate the arc tangent value
     ///
     /// - Parameter x: 正切值
-    /// - Parameter x: Tangent value
+    ///     - Tangent value
     /// - Returns: 对应的角度（弧度），范围为[-π/2, π/2]
     /// - Returns: Corresponding angle (in radians), range [-π/2, π/2]
     public static func atan(_ x: Double) -> Self {
@@ -231,9 +231,9 @@ public enum SHCAngle: Codable, Sendable, Hashable {
     /// Calculate the arc tangent of the ratio of two numbers
     ///
     /// - Parameter y: 分子
-    /// - Parameter y: Numerator
+    ///     - Numerator
     /// - Parameter x: 分母
-    /// - Parameter x: Denominator
+    ///     - Denominator
     /// - Returns: 对应的角度（弧度），范围为[-π, π]
     /// - Returns: Corresponding angle (in radians), range [-π, π]
     public static func atan2(_ y: Double, _ x: Double) -> Self {

@@ -37,11 +37,11 @@ internal enum Geodesy {
     /// Calculate geocentric coordinates
     /// - Parameters:
     ///   - latitude: 纬度（度）
-    ///   - latitude: Latitude (degrees)
+    ///     - Latitude (degrees)
     ///   - longitude: 经度（度）
-    ///   - longitude: Longitude (degrees)
+    ///     - Longitude (degrees)
     ///   - altitude: 海拔高度（公里）
-    ///   - altitude: Altitude (km)
+    ///     - Altitude (km)
     /// - Returns:
     ///   地心坐标结构体
     ///   Geocentric coordinates struct

@@ -35,7 +35,7 @@ jobs:
         run: |
           mkdir -p .github/.pages
           swift package --allow-writing-to-directory .github/.pages \
-            generate-documentation --target GeoMagSwift \
+            generate-documentation \
             --disable-indexing \
             --transform-for-static-hosting \
             --hosting-base-path GeoMagSwift \

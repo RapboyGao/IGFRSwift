@@ -7,9 +7,9 @@ internal enum DateUtils {
     /// Calculate decimal year from given date
     /// - Parameters:
     ///   - date: 输入日期
-    ///   - date: Input date
+    ///     - Input date
     ///   - calendar: 日历对象，默认为公历
-    ///   - calendar: Calendar object, default is Gregorian
+    ///     - Calendar object, default is Gregorian
     /// - Returns:
     ///   十进制年份值
     ///   Decimal year value

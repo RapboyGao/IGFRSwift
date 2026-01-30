@@ -37,17 +37,17 @@ internal enum SphericalHarmonics {
     /// Calculate magnetic field components
     /// - Parameters:
     ///   - nmax: 最大阶数
-    ///   - nmax: Maximum order
+    ///     - Maximum order
     ///   - g: 高斯系数g
-    ///   - g: Gaussian coefficients g
+    ///     - Gaussian coefficients g
     ///   - h: 高斯系数h
-    ///   - h: Gaussian coefficients h
+    ///     - Gaussian coefficients h
     ///   - latitude: 纬度（度）
-    ///   - latitude: Latitude (degrees)
+    ///     - Latitude (degrees)
     ///   - longitude: 经度（度）
-    ///   - longitude: Longitude (degrees)
+    ///     - Longitude (degrees)
     ///   - altitude: 海拔高度（公里）
-    ///   - altitude: Altitude (km)
+    ///     - Altitude (km)
     /// - Returns:
     ///   北向、东向和垂直向下分量
     ///   North, east and down components

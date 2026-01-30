@@ -40,15 +40,15 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     /// Initialize spherical harmonic coefficient model
     /// - Parameters:
     ///   - fileName: 模型文件名
-    ///   - fileName: Model file name
+    ///     - Model file name
     ///   - headers: 模型头部信息
-    ///   - headers: Model header information
+    ///     - Model header information
     ///   - headerNumbers: 模型头部数字信息
-    ///   - headerNumbers: Model header numbers
+    ///     - Model header numbers
     ///   - epochs: 模型历元数组
-    ///   - epochs: Model epochs array
+    ///     - Model epochs array
     ///   - coefficients: 球谐系数数组
-    ///   - coefficients: Spherical harmonic coefficients array
+    ///     - Spherical harmonic coefficients array
     public init(
         fileName: String,
         headers: [String],
@@ -85,12 +85,12 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     /// Calculate magnetic field at specified location and date
     /// - Parameters:
     ///   - location: 位置信息，包含经纬度和海拔高度
-    ///   - location: Location information, including latitude, longitude, and altitude
+    ///     - Location information, including latitude, longitude, and altitude
     ///   - date: 日期，默认为当前日期
-    ///   - date: Date, default is current date
+    ///     - Date, default is current date
     /// - Returns:
     ///   地磁场解，包含主磁场和长期变化信息
-    ///   Magnetic field solution, containing main field and secular variation information
+    ///     - Magnetic field solution, containing main field and secular variation information
     public func calculate(
         _ location: CLLocation,
         date: Date = Date()
@@ -105,16 +105,16 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     /// Calculate magnetic field at specified location and date
     /// - Parameters:
     ///   - latitude: 纬度（度）
-    ///   - latitude: Latitude (degrees)
+    ///     - Latitude (degrees)
     ///   - longitude: 经度（度）
-    ///   - longitude: Longitude (degrees)
+    ///     - Longitude (degrees)
     ///   - altitude: 海拔高度（公里）
-    ///   - altitude: Altitude (km)
+    ///     - Altitude (km)
     ///   - year: 年份（十进制）
-    ///   - year: Year (decimal)
+    ///     - Year (decimal)
     /// - Returns:
     ///   地磁场解，包含主磁场和长期变化信息
-    ///   Magnetic field solution, containing main field and secular variation information
+    ///     - Magnetic field solution, containing main field and secular variation information
     public func calculate(latitude: Double, longitude: Double, altitude: Double, year: Date) throws -> MagneticFieldSolution {
         let year = DateUtils.decimalYear(from: year)
         return try calculate(
@@ -126,16 +126,16 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     /// Calculate magnetic field at specified latitude, longitude, altitude and year
     /// - Parameters:
     ///   - latitude: 纬度（度）
-    ///   - latitude: Latitude (degrees)
+    ///     - Latitude (degrees)
     ///   - longitude: 经度（度）
-    ///   - longitude: Longitude (degrees)
+    ///     - Longitude (degrees)
     ///   - altitude: 海拔高度（公里）
-    ///   - altitude: Altitude (km)
+    ///     - Altitude (km)
     ///   - year: 年份（十进制）
-    ///   - year: Year (decimal)
+    ///     - Year (decimal)
     /// - Returns:
     ///   地磁场解，包含主磁场和长期变化信息
-    ///   Magnetic field solution, containing main field and secular variation information
+    ///     - Magnetic field solution, containing main field and secular variation information
     public func calculate(
         latitude: Double,
         longitude: Double,
@@ -169,11 +169,11 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     /// 计算指定年份的球谐系数及其导数
     /// Calculate spherical harmonic coefficients and their derivatives for specified year
     /// - Parameter year: 年份（十进制）
-    /// - Parameter year: Year (decimal)
+    ///     - Year (decimal)
     /// - Returns:
     ///   球谐系数及其导数的元组，包含g系数、h系数、g系数导数和h系数导数
-    ///   Tuple of spherical harmonic coefficients and their derivatives, including g coefficients, h coefficients,
-    ///   g coefficient derivatives, and h coefficient derivatives
+    ///     - Tuple of spherical harmonic coefficients and their derivatives, including g coefficients, h coefficients,
+    ///     - g coefficient derivatives, and h coefficient derivatives
     private func coefficients(for year: Double) -> (g: [[Double]], h: [[Double]], gDot: [[Double]], hDot: [[Double]]) {
         let size = nmax + 1
         var g = Array(repeating: Array(repeating: 0.0, count: size), count: size)
@@ -217,11 +217,11 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     /// 计算插值参数，用于在两个历元之间插值
     /// Calculate interpolation parameters for interpolating between two epochs
     /// - Parameter year: 年份（十进制）
-    /// - Parameter year: Year (decimal)
+    ///     - Year (decimal)
     /// - Returns:
     ///   插值索引和分数，索引表示使用哪两个历元进行插值，分数表示插值的权重
-    ///   Interpolation index and fraction, where index indicates which two epochs to use for interpolation,
-    ///   and fraction indicates the interpolation weight
+    ///     - Interpolation index and fraction, where index indicates which two epochs to use for interpolation,
+    ///     - and fraction indicates the interpolation weight
     private func interpolationParameters(for year: Double) -> (index: Int, fraction: Double) {
         if epochs.count < 2 {
             return (0, 0.0)
@@ -300,13 +300,13 @@ public extension SHCModel {
         /// Initialize spherical harmonic coefficient
         /// - Parameters:
         ///   - n: 系数的阶数
-        ///   - n: Coefficient order
+        ///     - Coefficient order
         ///   - m: 系数的次数
-        ///   - m: Coefficient degree
+        ///     - Coefficient degree
         ///   - kind: 系数类型
-        ///   - kind: Coefficient kind
+        ///     - Coefficient kind
         ///   - values: 系数值数组
-        ///   - values: Array of coefficient values
+        ///     - Array of coefficient values
         public init(n: Int, m: Int, kind: CoefficientKind, values: [Double]) {
             self.n = n
             self.m = m

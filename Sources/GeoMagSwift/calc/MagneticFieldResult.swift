@@ -36,11 +36,11 @@ public struct MagneticFieldResult: Sendable, Hashable, Codable {
     /// Initialize magnetic field result structure
     /// - Parameters:
     ///   - north: 地磁场北向分量（纳特斯拉）
-    ///   - north: North component of the magnetic field (nT)
+    ///     - North component of the magnetic field (nT)
     ///   - east: 地磁场东向分量（纳特斯拉）
-    ///   - east: East component of the magnetic field (nT)
+    ///     - East component of the magnetic field (nT)
     ///   - down: 地磁场垂直向下分量（纳特斯拉）
-    ///   - down: Down component of the magnetic field (nT)
+    ///     - Down component of the magnetic field (nT)
     public init(north: Double, east: Double, down: Double) {
         self.north = north
         self.east = east

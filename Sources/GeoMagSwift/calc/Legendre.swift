@@ -14,9 +14,9 @@ internal enum Legendre {
     /// Calculate Schmidt-normalized Legendre polynomials and their derivatives
     /// - Parameters:
     ///   - nmax: 最大阶数
-    ///   - nmax: Maximum order
+    ///     - Maximum order
     ///   - theta: 极角（弧度）
-    ///   - theta: Polar angle (radians)
+    ///     - Polar angle (radians)
     /// - Returns:
     ///   包含勒让德多项式值和其导数的元组
     ///   Tuple containing Legendre polynomial values and their derivatives
@@ -83,7 +83,7 @@ internal enum Legendre {
     /// 计算归一化因子
     /// Calculate normalization factors
     /// - Parameter nmax: 最大阶数
-    /// - Parameter nmax: Maximum order
+    ///     - Maximum order
     /// - Returns:
     ///   归一化因子矩阵
     ///   Normalization factors matrix
@@ -112,7 +112,7 @@ internal enum Legendre {
     /// 计算阶乘数组
     /// Calculate factorial array
     /// - Parameter max: 最大计算值
-    /// - Parameter max: Maximum value
+    ///     - Maximum value
     /// - Returns:
     ///   阶乘值数组
     ///   Factorial values array
@@ -133,11 +133,11 @@ internal enum Legendre {
     /// Calculate Schmidt normalization factor
     /// - Parameters:
     ///   - n: 阶数
-    ///   - n: Order
+    ///     - Order
     ///   - m: 次数
-    ///   - m: Degree
+    ///     - Degree
     ///   - factorials: 阶乘数组
-    ///   - factorials: Factorial array
+    ///     - Factorial array
     /// - Returns:
     ///   归一化因子
     ///   Normalization factor
