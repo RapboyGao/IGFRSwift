@@ -255,9 +255,6 @@ def _write_model_file(doc: IGRFDoc) -> None:
     lines.append(
         "        epochs: " + _format_double_array(doc.epochs, "        ") + ","
     )
-    if doc.epochs:
-        lines.append(f"        validFrom: {doc.epochs[0]},")
-        lines.append(f"        validTo: {doc.epochs[-1]},")
     lines.append("        coefficients: [")
     for row in doc.coefficients:
         lines.append("            Coefficient(")
@@ -269,7 +266,10 @@ def _write_model_file(doc: IGRFDoc) -> None:
             + _format_double_array(row.values, "                ")
         )
         lines.append("            ),")
-    lines.append("        ]")
+    lines.append("        ],")
+    if doc.epochs:
+        lines.append(f"        validFrom: {doc.epochs[0]},")
+        lines.append(f"        validTo: {doc.epochs[-1]},")
     lines.append("    )")
     lines.append("}")
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")

@@ -199,8 +199,6 @@ def _write_model_file(doc: WMMDoc, version: int) -> None:
     lines.append(
         "        epochs: " + _format_double_array([epoch_str, epoch_next], "        ") + ","
     )
-    lines.append(f"        validFrom: {epoch_str},")
-    lines.append(f"        validTo: {epoch_next},")
     lines.append("        coefficients: [")
     for row in doc.coefficients:
         lines.append("            Coefficient(")
@@ -212,7 +210,9 @@ def _write_model_file(doc: WMMDoc, version: int) -> None:
             + _format_double_array(row.values, "                ")
         )
         lines.append("            ),")
-    lines.append("        ]")
+    lines.append("        ],")
+    lines.append(f"        validFrom: {epoch_str},")
+    lines.append(f"        validTo: {epoch_next},")
     lines.append("    )")
     lines.append("}")
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -221,7 +221,7 @@ def _write_model_file(doc: WMMDoc, version: int) -> None:
 def _clean_output() -> None:
     if not OUT_DIR.exists():
         return
-    for path in OUT_DIR.glob("SHCModel+wmm*.swift"):
+    for path in OUT_DIR.glob("SHCModel+wmm\d+.swift"):
         path.unlink()
 
 

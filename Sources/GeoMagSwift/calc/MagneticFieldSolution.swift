@@ -33,3 +33,35 @@ public struct MagneticFieldSolution: Sendable, Hashable, Codable {
     /// horizontal intensity, total intensity, declination, and inclination rates.
     public let secularVariation: MagneticFieldSecularVariation
 }
+
+extension MagneticFieldSolution: CustomStringConvertible {
+    public var description: String {
+        func format(_ value: Double) -> String {
+            String(format: "%.2f", locale: Locale.current, value)
+        }
+
+        let line1 = "\(I18n.north): \(format(mainField.north)) \(I18n.unitNT)"
+        let line2 = "\(I18n.east): \(format(mainField.east)) \(I18n.unitNT)"
+        let line3 = "\(I18n.down): \(format(mainField.down)) \(I18n.unitNT)"
+        let line4 = "\(I18n.horizontalIntensity): \(format(mainField.horizontalIntensity)) \(I18n.unitNT)"
+        let line5 = "\(I18n.totalIntensity): \(format(mainField.totalIntensity)) \(I18n.unitNT)"
+        let line6 = "\(I18n.declination): \(format(mainField.declination.degrees)) \(I18n.unitDegree)"
+        let line7 = "\(I18n.inclination): \(format(mainField.inclination.degrees)) \(I18n.unitDegree)"
+
+        let svLine1 = "\(I18n.north): \(format(secularVariation.north)) \(I18n.unitNTPerYear)"
+        let svLine2 = "\(I18n.east): \(format(secularVariation.east)) \(I18n.unitNTPerYear)"
+        let svLine3 = "\(I18n.down): \(format(secularVariation.down)) \(I18n.unitNTPerYear)"
+        let svLine4 = "\(I18n.horizontalIntensity): \(format(secularVariation.horizontalIntensity)) \(I18n.unitNTPerYear)"
+        let svLine5 = "\(I18n.totalIntensity): \(format(secularVariation.totalIntensity)) \(I18n.unitNTPerYear)"
+        let svLine6 = "\(I18n.declination): \(format(secularVariation.declination.arcMinutes)) \(I18n.unitArcMinPerYear)"
+        let svLine7 = "\(I18n.inclination): \(format(secularVariation.inclination.arcMinutes)) \(I18n.unitArcMinPerYear)"
+
+        return [
+            "\(I18n.magneticFieldSolutionTitle)",
+            "\(I18n.mainFieldTitle):",
+            line1, line2, line3, line4, line5, line6, line7,
+            "\(I18n.secularVariationTitle):",
+            svLine1, svLine2, svLine3, svLine4, svLine5, svLine6, svLine7,
+        ].joined(separator: "\n")
+    }
+}

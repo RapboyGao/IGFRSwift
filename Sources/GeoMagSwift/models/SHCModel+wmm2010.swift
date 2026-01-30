@@ -1470,6 +1470,8 @@ public extension SHCModel {
                     0.9, 0.9,
                 ]
             ),
-        ]
+        ],
+        validFrom: 2010.0,
+        validTo: 2015.0
     )
 }

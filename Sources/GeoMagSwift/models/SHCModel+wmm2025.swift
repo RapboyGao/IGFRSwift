@@ -1470,6 +1470,8 @@ public extension SHCModel {
                     0.2, -0.3,
                 ]
             ),
-        ]
+        ],
+        validFrom: 2025,
+        validTo: 2030,
     )
 }
