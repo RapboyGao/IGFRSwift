@@ -46,6 +46,14 @@ public extension SHCModel {
         ///
         /// Epochs field
         case epochs
+        /// 有效期开始字段
+        ///
+        /// Valid-from field
+        case validFrom
+        /// 有效期结束字段
+        ///
+        /// Valid-to field
+        case validTo
         /// 系数字段
         ///
         /// Coefficients field
@@ -66,13 +74,17 @@ public extension SHCModel {
         let headers = try container.decode([String].self, forKey: .headers)
         let headerNumbers = try container.decode([Double].self, forKey: .headerNumbers)
         let epochs = try container.decode([Double].self, forKey: .epochs)
+        let validFrom = try container.decodeIfPresent(Double.self, forKey: .validFrom)
+        let validTo = try container.decodeIfPresent(Double.self, forKey: .validTo)
         let coefficients = try container.decode([Coefficient].self, forKey: .coefficients)
         self.init(
             fileName: fileName,
             headers: headers,
             headerNumbers: headerNumbers,
             epochs: epochs,
-            coefficients: coefficients
+            coefficients: coefficients,
+            validFrom: validFrom,
+            validTo: validTo
         )
     }
 
@@ -90,6 +102,8 @@ public extension SHCModel {
         try container.encode(headers, forKey: .headers)
         try container.encode(headerNumbers, forKey: .headerNumbers)
         try container.encode(epochs, forKey: .epochs)
+        try container.encode(validFrom, forKey: .validFrom)
+        try container.encode(validTo, forKey: .validTo)
         try container.encode(coefficients, forKey: .coefficients)
     }
 }

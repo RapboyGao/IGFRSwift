@@ -24,6 +24,8 @@ func testYearOutOfRangeThrows() throws {
             #expect(year < range.lowerBound)
             #expect(range.lowerBound == minEpoch)
             #expect(range.upperBound == maxEpoch)
+        case .noModelForYear:
+            #expect(Bool(false), "Unexpected noModelForYear error")
         case .invalidEpochs:
             #expect(Bool(false), "Model epochs should be valid")
         }
@@ -40,6 +42,8 @@ func testYearOutOfRangeThrows() throws {
             #expect(year > range.upperBound)
             #expect(range.lowerBound == minEpoch)
             #expect(range.upperBound == maxEpoch)
+        case .noModelForYear:
+            #expect(Bool(false), "Unexpected noModelForYear error")
         case .invalidEpochs:
             #expect(Bool(false), "Model epochs should be valid")
         }

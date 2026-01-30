@@ -189,6 +189,8 @@ def _write_model_file(doc: WMMHRDoc, version: int) -> None:
             float(doc.epoch),
             float(doc.epoch + Decimal(5)),
         ],
+        "validFrom": float(doc.epoch),
+        "validTo": float(doc.epoch + Decimal(5)),
         "coefficients": [
             {
                 "n": row.n,

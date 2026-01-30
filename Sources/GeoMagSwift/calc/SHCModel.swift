@@ -32,6 +32,14 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     ///
     /// Model epochs, an array of time points (decimal years) for which the model is valid
     public let epochs: [Double]
+    /// 模型有效期开始年份（十进制年份）
+    ///
+    /// Model valid-from year (decimal year)
+    public let validFrom: Double
+    /// 模型有效期结束年份（十进制年份）
+    ///
+    /// Model valid-to year (decimal year)
+    public let validTo: Double
     /// 球谐系数数组，包含模型的所有高斯系数
     ///
     /// Array of spherical harmonic coefficients, containing all Gaussian coefficients of the model
@@ -63,12 +71,18 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         headers: [String],
         headerNumbers: [Double],
         epochs: [Double],
-        coefficients: [Coefficient]
+        coefficients: [Coefficient],
+        validFrom: Double? = nil,
+        validTo: Double? = nil
     ) {
         self.fileName = fileName
         self.headers = headers
         self.headerNumbers = headerNumbers
         self.epochs = epochs
+        let epochMin = epochs.min() ?? 0.0
+        let epochMax = epochs.max() ?? 0.0
+        self.validFrom = validFrom ?? epochMin
+        self.validTo = validTo ?? epochMax
         self.coefficients = coefficients
         self.gCoefficients = coefficients.filter { $0.kind == .g }
         self.hCoefficients = coefficients.filter { $0.kind == .h }
@@ -88,6 +102,10 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         ///
         /// Year is outside model valid range
         case yearOutOfRange(year: Double, validRange: ClosedRange<Double>)
+        /// 未找到覆盖该年份的模型
+        ///
+        /// No model covers the requested year
+        case noModelForYear(year: Double)
         /// 模型历元不足，无法进行插值
         ///
         /// Not enough epochs to interpolate
@@ -185,10 +203,10 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     ///   如果年份超出模型有效期或模型历元无效，抛出相应错误
     ///   Throws error if year is outside model valid range or epochs are invalid
     private func validateYear(_ year: Double) throws {
-        guard let minEpoch = epochs.min(), let maxEpoch = epochs.max(), epochs.count >= 2 else {
+        guard epochs.count >= 2 else {
             throw SHCModelError.invalidEpochs
         }
-        let range = minEpoch...maxEpoch
+        let range = validFrom...validTo
         guard range.contains(year) else {
             throw SHCModelError.yearOutOfRange(year: year, validRange: range)
         }
@@ -285,6 +303,39 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
 }
 
 public extension SHCModel {
+    /// 根据年份选择最合适的模型
+    ///
+    /// Select the best available model for a given year
+    static func bestModel(for year: Double) throws -> SHCModel {
+        let candidates: [SHCModel] = [
+            .wmmhr2025,
+            .wmm2025,
+            .wmm2020,
+            .wmm2015,
+            .wmm2010,
+            .igrf14,
+            .igrf13,
+            .igrf12,
+            .igrf11,
+            .igrf10,
+        ]
+        for model in candidates {
+            let range = model.validFrom...model.validTo
+            if range.contains(year) {
+                return model
+            }
+        }
+        throw SHCModelError.noModelForYear(year: year)
+    }
+
+    /// 根据日期选择最合适的模型
+    ///
+    /// Select the best available model for a given date
+    static func bestModel(for date: Date) throws -> SHCModel {
+        let year = DateUtils.decimalYear(from: date)
+        return try bestModel(for: year)
+    }
+
     /// 球谐系数类型枚举，表示高斯系数的类型
     ///
     /// Spherical harmonic coefficient kind enum, representing the type of Gaussian coefficient

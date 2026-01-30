@@ -199,6 +199,8 @@ def _write_model_file(doc: WMMDoc, version: int) -> None:
     lines.append(
         "        epochs: " + _format_double_array([epoch_str, epoch_next], "        ") + ","
     )
+    lines.append(f"        validFrom: {epoch_str},")
+    lines.append(f"        validTo: {epoch_next},")
     lines.append("        coefficients: [")
     for row in doc.coefficients:
         lines.append("            Coefficient(")
