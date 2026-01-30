@@ -28,8 +28,13 @@ jobs:
 
     - name: Generate Documentation
       run: |
-        swift package generate-documentation \
+        swift package dump-symbol-graph \
           --target GeoMagSwift \
+          --output-path .build/symbolgraphs
+        xcrun docc convert .build/symbolgraphs \
+          --fallback-display-name GeoMagSwift \
+          --fallback-bundle-identifier com.geomagswift.docs \
+          --fallback-bundle-version 0.0.1 \
           --output-path docs-output \
           --transform-for-static-hosting \
           --hosting-base-path GeoMagSwift
