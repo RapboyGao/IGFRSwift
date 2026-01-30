@@ -213,4 +213,3 @@ GeoMagSwift steht unter der MIT-Lizenz zur Verfügung. Weitere Informationen fin
 
 **Mit ❤️ für Erdwissenschaften und Navigation erstellt**
 
-![Magnetic Field Lines](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Magnetic%20field%20lines%20around%20Earth%2C%20scientific%20visualization%2C%20blue%20and%20red%20field%20lines%2C%203D%20rendering%2C%20space%20background&image_size=landscape_16_9)
