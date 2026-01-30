@@ -11,65 +11,100 @@ GeoMagSwift provides fast, offline geomagnetic field computation based on spheri
 - Deterministic and suitable for navigation, mapping, and scientific analysis.
 - Designed to run without network access once model data is embedded.
 
-## SHCModel Explained
+## SHCModel Explained (Plain Language)
 
-`SHCModel` is a spherical harmonic coefficient model of the Earth's magnetic field. The model contains:
+`SHCModel` is a mathematical description of Earth’s magnetic field. Think of it like a global “map” of magnetism that can be queried at any location and time. The model stores numbers (coefficients) for a set of reference years and lets us compute the magnetic field for dates in between.
 
-- `epochs`: discrete decimal years for which coefficients are defined.
-- `coefficients`: Gauss coefficients `g(n,m)` and `h(n,m)` for each epoch.
-- `nmax`: maximum degree/order of the model.
-- `validFrom` / `validTo`: recommended validity range for the model.
+What it contains:
 
-The model represents the geomagnetic potential as a truncated spherical harmonic expansion. In geocentric coordinates, the magnetic potential `V` is:
+- `epochs`: a list of reference years like `2020.0`, `2025.0`.
+- `coefficients`: tables of numbers named `g(n,m)` and `h(n,m)` for each epoch.
+- `nmax`: how detailed the model is (higher means more detail).
+- `validFrom` / `validTo`: the recommended time range.
+
+## The Big Picture
+
+We compute a magnetic **potential** first, then take its **gradient** to get the magnetic field. You do not need to compute these by hand; this is just the idea.
+
+### 1) The magnetic potential
+
+The model represents a scalar potential `V` around Earth:
 
 ```
 V(r, θ, λ) = a * Σ(n=1..N) (a/r)^(n+1) Σ(m=0..n)
             [ g(n,m) cos(mλ) + h(n,m) sin(mλ) ] P(n,m)(cos θ)
 ```
 
-Where:
-- `a` is the reference Earth radius.
-- `r` is the geocentric radius.
-- `θ` is colatitude, `λ` is longitude.
-- `P(n,m)` are Schmidt semi-normalized associated Legendre functions.
+What the symbols mean (simple explanation):
 
-The magnetic field vector is derived from the potential:
+- `V`: magnetic potential (a scalar field).
+- `a`: Earth reference radius (a fixed constant).
+- `r`: distance from Earth’s center to your point.
+- `θ` (theta): colatitude = 90° − latitude.
+- `λ` (lambda): longitude.
+- `n, m`: indices for the spherical harmonics (like rows/columns of detail).
+- `g(n,m), h(n,m)`: model coefficients (numbers from the dataset).
+- `P(n,m)`: associated Legendre functions (special polynomials).
+- `Σ`: sum (add up all terms).
+
+### 2) Magnetic field from potential
+
+The magnetic field `B` is the negative gradient of `V`:
 
 ```
 B = -∇V
 ```
 
-## Step-by-step Computation
+In plain terms: “take the spatial rate of change of the potential.” The library does this internally.
 
-1. **Decimal year**
-   Convert the input `Date` to decimal year `t`.
+## Step-by-step Computation (Beginner Friendly)
 
-2. **Epoch interpolation**
-   Find surrounding epochs `t0` and `t1`, compute the interpolation fraction:
-   
-   ```
-   f = (t - t0) / (t1 - t0)
-   g(t) = g(t0) + (g(t1) - g(t0)) * f
-   h(t) = h(t0) + (h(t1) - h(t0)) * f
-   ```
+### Step 1 — Convert date to decimal year
 
-3. **Spherical harmonic synthesis**
-   Evaluate associated Legendre functions and compute magnetic field components in geocentric coordinates from the coefficients.
+A date like 2025-07-01 becomes a number like `2025.5`. This makes interpolation easy.
 
-4. **Convert to local components**
-   Transform to north (`X`), east (`Y`), down (`Z`) components.
+### Step 2 — Interpolate coefficients between epochs
 
-5. **Derived quantities**
-   
-   ```
-   H = sqrt(X^2 + Y^2)          // horizontal intensity
-   F = sqrt(H^2 + Z^2)          // total intensity
-   D = atan2(Y, X)              // declination
-   I = atan2(Z, H)              // inclination
-   ```
+If the model has data for 2025.0 and 2030.0, and your date is 2027.5, we blend values linearly:
 
-6. **Secular variation**
-   Compute derivatives (using linear differences between epochs) and propagate to derived values.
+```
+frac = (t - t0) / (t1 - t0)
+value(t) = value(t0) + (value(t1) - value(t0)) * frac
+```
+
+- `t`: your decimal year
+- `t0`, `t1`: surrounding epochs
+- `frac`: how far between the two you are (0 to 1)
+
+### Step 3 — Compute field components
+
+Using the interpolated coefficients, we evaluate the spherical harmonics to obtain the field components in a local coordinate system:
+
+- `X` = north component
+- `Y` = east component
+- `Z` = down component
+
+### Step 4 — Compute derived quantities
+
+From `X, Y, Z`, we compute the values people commonly use:
+
+```
+H = sqrt(X^2 + Y^2)          // horizontal intensity
+F = sqrt(H^2 + Z^2)          // total intensity
+D = atan2(Y, X)              // declination
+I = atan2(Z, H)              // inclination
+```
+
+Plain meaning:
+
+- `H`: strength of the horizontal field
+- `F`: total field strength
+- `D`: how far magnetic north is from true north (angle)
+- `I`: angle the field dips into the ground
+
+### Step 5 — Secular variation (SV)
+
+The model also provides how the field changes per year. It calculates derivatives by comparing epochs, then propagates them to `H`, `F`, `D`, and `I`.
 
 ## Topics
 
