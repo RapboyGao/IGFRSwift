@@ -117,7 +117,7 @@ struct MagneticModelTestConfig {
                 coordinate: coordinate, altitude: 1000, horizontalAccuracy: 100.0, verticalAccuracy: 100.0,
                 timestamp: testDate)
 
-            let result = localModel.calculate(location, date: testDate)
+            let result = try localModel.calculate(location, date: testDate)
             let locationDesc = "(lat: \(latitude), lon: \(longitude))"
 
             #expect(

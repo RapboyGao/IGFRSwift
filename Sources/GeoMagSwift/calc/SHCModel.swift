@@ -70,6 +70,17 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     /// Model unique identifier, using file name as ID
     public var id: String { fileName }
 
+    /// 计算模型时可能发生的错误
+    /// Errors that can occur during model calculation
+    public enum SHCModelError: Error, Sendable, Hashable {
+        /// 年份超出模型有效期
+        /// Year is outside model valid range
+        case yearOutOfRange(year: Double, validRange: ClosedRange<Double>)
+        /// 模型历元不足，无法进行插值
+        /// Not enough epochs to interpolate
+        case invalidEpochs
+    }
+
     /// 计算指定位置和日期的地磁场
     /// Calculate magnetic field at specified location and date
     /// - Parameters:
@@ -83,9 +94,9 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     public func calculate(
         _ location: CLLocation,
         date: Date = Date()
-    ) -> MagneticFieldSolution {
+    ) throws -> MagneticFieldSolution {
         let year = DateUtils.decimalYear(from: date)
-        return calculate(
+        return try calculate(
             latitude: location.coordinate.latitude, longitude: location.coordinate.longitude,
             altitude: location.altitude / 1000.0, year: year)
     }
@@ -104,9 +115,9 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     /// - Returns:
     ///   地磁场解，包含主磁场和长期变化信息
     ///   Magnetic field solution, containing main field and secular variation information
-    public func calculate(latitude: Double, longitude: Double, altitude: Double, year: Date) -> MagneticFieldSolution {
+    public func calculate(latitude: Double, longitude: Double, altitude: Double, year: Date) throws -> MagneticFieldSolution {
         let year = DateUtils.decimalYear(from: year)
-        return calculate(
+        return try calculate(
             latitude: latitude, longitude: longitude,
             altitude: altitude, year: year)
     }
@@ -130,7 +141,8 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         longitude: Double,
         altitude: Double,
         year: Double
-    ) -> MagneticFieldSolution {
+    ) throws -> MagneticFieldSolution {
+        try validateYear(year)
         let (g, h, gDot, hDot) = coefficients(for: year)
         var workspace = SphericalHarmonics.Workspace(nmax: nmax)
         let main = SphericalHarmonics.fieldComponents(
@@ -142,6 +154,16 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         let sec = MagneticFieldSecularVariation(mainField: mainField, derivative: secular)
 
         return MagneticFieldSolution(mainField: mainField, secularVariation: sec)
+    }
+
+    private func validateYear(_ year: Double) throws {
+        guard let minEpoch = epochs.min(), let maxEpoch = epochs.max(), epochs.count >= 2 else {
+            throw SHCModelError.invalidEpochs
+        }
+        let range = minEpoch...maxEpoch
+        guard range.contains(year) else {
+            throw SHCModelError.yearOutOfRange(year: year, validRange: range)
+        }
     }
 
     /// 计算指定年份的球谐系数及其导数

@@ -73,7 +73,7 @@ let location = CLLocation(latitude: 40.0, longitude: 116.0, altitude: 0)
 let date = Date()
 
 // Calculate magnetic field using IGRF14 model
-let result = SHCModel.igrf14.calculate(location, date: date)
+let result = try SHCModel.igrf14.calculate(location, date: date)
 
 // Access magnetic field components
 print("Declination: \(result.mainField.declination)°")
@@ -92,11 +92,11 @@ print("Declination Change: \(result.secularVariation.declination) arcmin/year")
 
 ```swift
 // Use WMM2025 model
-let wmmResult = SHCModel.wmm2025.calculate(location, date: date)
+let wmmResult = try SHCModel.wmm2025.calculate(location, date: date)
 
 // Use older IGRF models
-let igrf13Result = SHCModel.igrf13.calculate(location, date: date)
-let igrf12Result = SHCModel.igrf12.calculate(location, date: date)
+let igrf13Result = try SHCModel.igrf13.calculate(location, date: date)
+let igrf12Result = try SHCModel.igrf12.calculate(location, date: date)
 ```
 
 ## 📊 Models
@@ -165,7 +165,7 @@ import CoreLocation
 import GeoMagSwift
 
 func getMagneticDeclination(for location: CLLocation, at date: Date) -> Double {
-    let result = SHCModel.igrf14.calculate(location, date: date)
+    let result = try SHCModel.igrf14.calculate(location, date: date)
     return result.mainField.declination
 }
 
@@ -185,8 +185,8 @@ import GeoMagSwift
 let location = CLLocation(latitude: 0, longitude: 0) // Equator
 let date = Date()
 
-let igrfResult = SHCModel.igrf14.calculate(location, date: date)
-let wmmResult = SHCModel.wmm2025.calculate(location, date: date)
+let igrfResult = try SHCModel.igrf14.calculate(location, date: date)
+let wmmResult = try SHCModel.wmm2025.calculate(location, date: date)
 
 print("IGRF-14 Declination: \(igrfResult.mainField.declination)°")
 print("WMM2025 Declination: \(wmmResult.mainField.declination)°")

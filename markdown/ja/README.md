@@ -74,7 +74,7 @@ let location = CLLocation(latitude: 40.0, longitude: 116.0, altitude: 0)
 let date = Date()
 
 // IGRF14 モデルを使用して磁場を計算
-let result = SHCModel.igrf14.calculate(location, date: date)
+let result = try SHCModel.igrf14.calculate(location, date: date)
 
 // 磁場成分にアクセス
 print("磁偏角: \(result.mainField.declination)°")
@@ -93,11 +93,11 @@ print("磁偏角の変化率: \(result.secularVariation.declination) 弧分/年"
 
 ```swift
 // WMM2025 モデルを使用
-let wmmResult = SHCModel.wmm2025.calculate(location, date: date)
+let wmmResult = try SHCModel.wmm2025.calculate(location, date: date)
 
 // 古い IGRF モデルを使用
-let igrf13Result = SHCModel.igrf13.calculate(location, date: date)
-let igrf12Result = SHCModel.igrf12.calculate(location, date: date)
+let igrf13Result = try SHCModel.igrf13.calculate(location, date: date)
+let igrf12Result = try SHCModel.igrf12.calculate(location, date: date)
 ```
 
 ## 📊 モデル
@@ -164,7 +164,7 @@ import CoreLocation
 import GeoMagSwift
 
 func getMagneticDeclination(for location: CLLocation, at date: Date) -> Double {
-    let result = SHCModel.igrf14.calculate(location, date: date)
+    let result = try SHCModel.igrf14.calculate(location, date: date)
     return result.mainField.declination
 }
 
@@ -184,8 +184,8 @@ import GeoMagSwift
 let location = CLLocation(latitude: 0, longitude: 0) // 赤道
 let date = Date()
 
-let igrfResult = SHCModel.igrf14.calculate(location, date: date)
-let wmmResult = SHCModel.wmm2025.calculate(location, date: date)
+let igrfResult = try SHCModel.igrf14.calculate(location, date: date)
+let wmmResult = try SHCModel.wmm2025.calculate(location, date: date)
 
 print("IGRF-14 磁偏角: \(igrfResult.mainField.declination)°")
 print("WMM2025 磁偏角: \(wmmResult.mainField.declination)°")
