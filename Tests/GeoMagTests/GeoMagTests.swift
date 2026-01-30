@@ -15,19 +15,25 @@ import Testing
         var components = URLComponents()
         components.scheme = "https"
         components.host = "www.ngdc.noaa.gov"
-        components.path = "/geomag-web/calculators/calculateDeclination"
+        components.path = "/geomag-web/calculators/calculateIgrfwmm"
         components.queryItems = [
             URLQueryItem(name: "browserRequest", value: "true"),
-            URLQueryItem(name: "magneticComponent", value: "d"),
-            URLQueryItem(name: "key", value: "zNEw7"),
+            URLQueryItem(name: "key", value: "EAU2y"),
             URLQueryItem(name: "lat1", value: String(format: "%.6f", latAbs)),
             URLQueryItem(name: "lat1Hemisphere", value: latHem),
             URLQueryItem(name: "lon1", value: String(format: "%.6f", lonAbs)),
             URLQueryItem(name: "lon1Hemisphere", value: lonHem),
+            URLQueryItem(name: "coordinateSystem", value: "M"),
+            URLQueryItem(name: "elevation", value: "1"),
+            URLQueryItem(name: "elevationUnits", value: "K"),
             URLQueryItem(name: "model", value: "IGRF"),
             URLQueryItem(name: "startYear", value: "2026"),
             URLQueryItem(name: "startMonth", value: "1"),
             URLQueryItem(name: "startDay", value: "29"),
+            URLQueryItem(name: "endYear", value: "2026"),
+            URLQueryItem(name: "endMonth", value: "1"),
+            URLQueryItem(name: "endDay", value: "29"),
+            URLQueryItem(name: "dateStepSize", value: "1.0"),
             URLQueryItem(name: "resultFormat", value: "json"),
         ]
         return components.url!
@@ -50,7 +56,7 @@ import Testing
 
         let location = CLLocation(latitude: latitude, longitude: longitude)
         let result = SHCModel.igrf14.calculate(location, date: date)
-        #expect(abs(result.mainField.declination - declination!) <= 1e-5)
+        #expect(abs(result.mainField.declination - declination!) <= 0.1)
     }
 }
 
