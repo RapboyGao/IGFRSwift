@@ -22,13 +22,13 @@ jobs:
 
       - name: Generate Documentation
         run: |
-          mkdir -p .github/docs
-          swift package --allow-writing-to-directory .github/docs \
+          mkdir -p .github/.pages
+          swift package --allow-writing-to-directory .github/.pages \
             generate-documentation --target GeoMagSwift \
             --disable-indexing \
             --transform-for-static-hosting \
             --hosting-base-path GeoMagSwift \
-            --output-path .github/docs
+            --output-path .github/.pages
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
