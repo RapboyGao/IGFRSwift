@@ -57,6 +57,12 @@ public enum SHCAngle: Codable, Sendable, Hashable {
         tanh(radians)
     }
 
+    /// 从角度创建弧度角度
+    /// Create a radians angle from degrees
+    public static func fromDegrees(_ d: Double) -> Self {
+        .radians(d / radiansToDegrees)
+    }
+
     public static func asin(_ x: Double) -> Self {
         .radians(asin(x))
     }
