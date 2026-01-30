@@ -30,6 +30,8 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     /// 球谐系数数组，包含模型的所有高斯系数
     /// Array of spherical harmonic coefficients, containing all Gaussian coefficients of the model
     public let coefficients: [Coefficient]
+    private let gCoefficients: [Coefficient]
+    private let hCoefficients: [Coefficient]
     /// 模型的最大阶数，由系数数组中最大的n值决定
     /// Maximum order of the model, determined by the largest n value in the coefficient array
     public let nmax: Int
@@ -59,6 +61,8 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         self.headerNumbers = headerNumbers
         self.epochs = epochs
         self.coefficients = coefficients
+        self.gCoefficients = coefficients.filter { $0.kind == .g }
+        self.hCoefficients = coefficients.filter { $0.kind == .h }
         self.nmax = coefficients.map { $0.n }.max() ?? 0
     }
 
@@ -128,12 +132,13 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         year: Double
     ) -> MagneticFieldSolution {
         let (g, h, gDot, hDot) = coefficients(for: year)
+        var workspace = SphericalHarmonics.Workspace(nmax: nmax)
         let main = SphericalHarmonics.fieldComponents(
-            nmax: nmax, g: g, h: h, latitude: latitude, longitude: longitude, altitude: altitude)
+            nmax: nmax, g: g, h: h, latitude: latitude, longitude: longitude, altitude: altitude, workspace: &workspace)
         let mainField = MagneticFieldResult(north: main.north, east: main.east, down: main.down)
 
         let secular = SphericalHarmonics.fieldComponents(
-            nmax: nmax, g: gDot, h: hDot, latitude: latitude, longitude: longitude, altitude: altitude)
+            nmax: nmax, g: gDot, h: hDot, latitude: latitude, longitude: longitude, altitude: altitude, workspace: &workspace)
         let sec = MagneticFieldSecularVariation(mainField: mainField, derivative: secular)
 
         return MagneticFieldSolution(mainField: mainField, secularVariation: sec)
@@ -164,20 +169,24 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         let dt = t1 - t0
         let invDt = dt != 0.0 ? 1.0 / dt : 0.0
 
-        for coeff in coefficients {
+        for coeff in gCoefficients {
             guard coeff.values.count > index + 1 else { continue }
             let v0 = coeff.values[index]
             let v1 = coeff.values[index + 1]
             let value = v0 + (v1 - v0) * fraction
             let derivative = (v1 - v0) * invDt
+            g[coeff.n][coeff.m] = value
+            gDot[coeff.n][coeff.m] = derivative
+        }
 
-            if coeff.kind == .g {
-                g[coeff.n][coeff.m] = value
-                gDot[coeff.n][coeff.m] = derivative
-            } else {
-                h[coeff.n][coeff.m] = value
-                hDot[coeff.n][coeff.m] = derivative
-            }
+        for coeff in hCoefficients {
+            guard coeff.values.count > index + 1 else { continue }
+            let v0 = coeff.values[index]
+            let v1 = coeff.values[index + 1]
+            let value = v0 + (v1 - v0) * fraction
+            let derivative = (v1 - v0) * invDt
+            h[coeff.n][coeff.m] = value
+            hDot[coeff.n][coeff.m] = derivative
         }
 
         return (g, h, gDot, hDot)

@@ -20,48 +20,50 @@ internal enum Legendre {
     /// - Returns:
     ///   包含勒让德多项式值和其导数的元组
     ///   Tuple containing Legendre polynomial values and their derivatives
-    static func schmidtNormalized(nmax: Int, theta: SHCAngle) -> (p: [[Double]], dp: [[Double]]) {
+    static func schmidtNormalized(nmax: Int, theta: SHCAngle, p: inout [[Double]], dp: inout [[Double]]) {
         let sinTheta = theta.sin
         let cosTheta = theta.cos
         let sinThetaSafe = abs(sinTheta) < 1.0e-10 ? (sinTheta >= 0 ? 1.0e-10 : -1.0e-10) : sinTheta
-
-        var p = Array(repeating: Array(repeating: 0.0, count: nmax + 1), count: nmax + 1)
-        var dp = Array(repeating: Array(repeating: 0.0, count: nmax + 1), count: nmax + 1)
 
         p[0][0] = 1.0
         dp[0][0] = 0.0
 
         if nmax == 0 {
-            return (p, dp)
+            return
         }
 
+        let nDouble = (0...nmax).map { Double($0) }
+        let mDouble = (0...nmax).map { Double($0) }
+
         for m in 1...nmax {
-            p[m][m] = (2.0 * Double(m) - 1.0) * sinTheta * p[m - 1][m - 1]
+            let mVal = mDouble[m]
+            p[m][m] = (2.0 * mVal - 1.0) * sinTheta * p[m - 1][m - 1]
         }
 
         for m in 0..<nmax {
-            p[m + 1][m] = (2.0 * Double(m) + 1.0) * cosTheta * p[m][m]
+            let mVal = mDouble[m]
+            p[m + 1][m] = (2.0 * mVal + 1.0) * cosTheta * p[m][m]
         }
 
         if nmax >= 2 {
             for m in 0...nmax {
                 if m + 2 > nmax { continue }
                 for n in (m + 2)...nmax {
-                    let nDouble = Double(n)
-                    let mDouble = Double(m)
-                    let numerator = (2.0 * nDouble - 1.0) * cosTheta * p[n - 1][m]
-                        - (nDouble + mDouble - 1.0) * p[n - 2][m]
-                    p[n][m] = numerator / (nDouble - mDouble)
+                    let nVal = nDouble[n]
+                    let mVal = mDouble[m]
+                    let numerator = (2.0 * nVal - 1.0) * cosTheta * p[n - 1][m]
+                        - (nVal + mVal - 1.0) * p[n - 2][m]
+                    p[n][m] = numerator / (nVal - mVal)
                 }
             }
         }
 
         for n in 1...nmax {
             for m in 0...n {
-                let nDouble = Double(n)
-                let mDouble = Double(m)
-                let term = nDouble * cosTheta * p[n][m]
-                let prev = (n - 1 >= m) ? (nDouble + mDouble) * p[n - 1][m] : 0.0
+                let nVal = nDouble[n]
+                let mVal = mDouble[m]
+                let term = nVal * cosTheta * p[n][m]
+                let prev = (n - 1 >= m) ? (nVal + mVal) * p[n - 1][m] : 0.0
                 dp[n][m] = (term - prev) / sinThetaSafe
             }
         }
@@ -75,7 +77,7 @@ internal enum Legendre {
             }
         }
 
-        return (p, dp)
+        return
     }
 
     /// 计算归一化因子

@@ -3,6 +3,32 @@ import Foundation
 /// 球谐函数计算工具类
 /// Spherical harmonics calculation utilities
 internal enum SphericalHarmonics {
+
+    struct Workspace {
+        var cosMLon: [Double]
+        var sinMLon: [Double]
+        var p: [[Double]]
+        var dp: [[Double]]
+        var nmax: Int
+
+        init(nmax: Int) {
+            self.nmax = nmax
+            self.cosMLon = Array(repeating: 0.0, count: nmax + 1)
+            self.sinMLon = Array(repeating: 0.0, count: nmax + 1)
+            self.p = Array(repeating: Array(repeating: 0.0, count: nmax + 1), count: nmax + 1)
+            self.dp = Array(repeating: Array(repeating: 0.0, count: nmax + 1), count: nmax + 1)
+        }
+
+        mutating func ensureCapacity(nmax: Int) {
+            if nmax <= self.nmax { return }
+            self.nmax = nmax
+            self.cosMLon = Array(repeating: 0.0, count: nmax + 1)
+            self.sinMLon = Array(repeating: 0.0, count: nmax + 1)
+            self.p = Array(repeating: Array(repeating: 0.0, count: nmax + 1), count: nmax + 1)
+            self.dp = Array(repeating: Array(repeating: 0.0, count: nmax + 1), count: nmax + 1)
+        }
+    }
+
     /// 参考半径（公里）
     /// Reference radius (km)
     static let referenceRadius = 6371.2
@@ -31,7 +57,8 @@ internal enum SphericalHarmonics {
         h: [[Double]],
         latitude: Double,
         longitude: Double,
-        altitude: Double
+        altitude: Double,
+        workspace: inout Workspace
     ) -> (north: Double, east: Double, down: Double) {
         let coords = Geodesy.geocentricCoordinates(latitude: latitude, longitude: longitude, altitude: altitude)
         let lonAngle = SHCAngle(degrees: longitude)
@@ -39,49 +66,56 @@ internal enum SphericalHarmonics {
         let cosLon = lonAngle.cos
         let sinLon = lonAngle.sin
 
-        var cosMLon = Array(repeating: 0.0, count: nmax + 1)
-        var sinMLon = Array(repeating: 0.0, count: nmax + 1)
-        cosMLon[0] = 1.0
-        sinMLon[0] = 0.0
+        workspace.ensureCapacity(nmax: nmax)
+        workspace.cosMLon[0] = 1.0
+        workspace.sinMLon[0] = 0.0
         if nmax >= 1 {
-            cosMLon[1] = cosLon
-            sinMLon[1] = sinLon
+            workspace.cosMLon[1] = cosLon
+            workspace.sinMLon[1] = sinLon
             if nmax > 1 {
                 for m in 2...nmax {
-                    cosMLon[m] = cosMLon[m - 1] * cosLon - sinMLon[m - 1] * sinLon
-                    sinMLon[m] = sinMLon[m - 1] * cosLon + cosMLon[m - 1] * sinLon
+                    workspace.cosMLon[m] = workspace.cosMLon[m - 1] * cosLon - workspace.sinMLon[m - 1] * sinLon
+                    workspace.sinMLon[m] = workspace.sinMLon[m - 1] * cosLon + workspace.cosMLon[m - 1] * sinLon
                 }
             }
         }
 
-        let (p, dp) = Legendre.schmidtNormalized(nmax: nmax, theta: SHCAngle.radians(coords.theta))
+        let cosMLon = workspace.cosMLon
+        let sinMLon = workspace.sinMLon
+
+        Legendre.schmidtNormalized(nmax: nmax, theta: SHCAngle.radians(coords.theta), p: &workspace.p, dp: &workspace.dp)
+        let p = workspace.p
+        let dp = workspace.dp
 
         var br = 0.0
         var bt = 0.0
         var bp = 0.0
 
+        let mDouble = (0...nmax).map { Double($0) }
+        let nDouble = (0...nmax).map { Double($0) }
         let a = referenceRadius
         let r = coords.radius
         let ar = a / r
+        var arn = ar * ar * ar
         for n in 1...nmax {
-            let nDouble = Double(n)
-            let arn = pow(ar, nDouble + 2.0)
+            let nVal = nDouble[n]
             for m in 0...n {
-                let mDouble = Double(m)
+                let mVal = mDouble[m]
                 let gnm = g[n][m]
                 let hnm = h[n][m]
                 let cosTerm = cosMLon[m]
                 let sinTerm = sinMLon[m]
                 let temp = gnm * cosTerm + hnm * sinTerm
 
-                br += (nDouble + 1.0) * arn * temp * p[n][m]
+                br += (nVal + 1.0) * arn * temp * p[n][m]
                 bt += arn * temp * dp[n][m]
 
                 if m > 0 {
                     let tempPhi = gnm * sinTerm - hnm * cosTerm
-                    bp += arn * mDouble * tempPhi * p[n][m]
+                    bp += arn * mVal * tempPhi * p[n][m]
                 }
             }
+            arn *= ar
         }
 
         br = -br

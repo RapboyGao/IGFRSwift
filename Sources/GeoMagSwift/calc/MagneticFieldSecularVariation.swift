@@ -83,15 +83,15 @@ public struct MagneticFieldSecularVariation: Sendable, Equatable {
         let dD = (x * dY - y * dX) / (h * h)
         let dI = (h * dZ - z * dH) / (f * f)
 
-        let dDArcMin = SHCAngle.radians(dD)
-        let dIArcMin = SHCAngle.radians(dI)
+        let dDAngle = SHCAngle.radians(dD)
+        let dIAngle = SHCAngle.radians(dI)
 
         self.north = dX
         self.east = dY
         self.down = dZ
         self.horizontalIntensity = dH
         self.totalIntensity = dF
-        self.declination = dDArcMin.toArcMinutes()
-        self.inclination = dIArcMin.toArcMinutes()
+        self.declination = dDAngle
+        self.inclination = dIAngle
     }
 }
