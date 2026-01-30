@@ -159,10 +159,10 @@ struct MagneticModelTestConfig {
                 abs(sv.totalIntensity - api.totalintensity_sv) <= maxErrorNT,
                 "Secular variation total intensity at \(locationDesc) exceeds error threshold")
             #expect(
-                abs(sv.declinationArcMinutes - api.declination_sv * 60.0) <= maxErrorArcMin,
+                abs(sv.declination.arcMinutes - api.declination_sv * 60.0) <= maxErrorArcMin,
                 "Secular variation declination arc minutes at \(locationDesc) exceeds error threshold")
             #expect(
-                abs(sv.inclinationArcMinutes - api.inclination_sv * 60.0) <= maxErrorArcMin,
+                abs(sv.inclination.arcMinutes - api.inclination_sv * 60.0) <= maxErrorArcMin,
                 "Secular variation inclination arc minutes at \(locationDesc) exceeds error threshold")
         }
     }

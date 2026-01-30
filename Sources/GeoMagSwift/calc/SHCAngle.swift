@@ -1,10 +1,12 @@
 import Foundation
 
 private let radiansToDegrees = 57.29577951308232
+private let degreesToArcMinutes = 60.0
 
 public enum SHCAngle: Codable, Sendable, Hashable {
     case degrees(Double)
     case radians(Double)
+    case arcMinutes(Double)
 
     /// 从角度创建弧度角度
     /// Create a radians angle from degrees
@@ -15,12 +17,20 @@ public enum SHCAngle: Codable, Sendable, Hashable {
         self = .degrees(degrees).toRadians()
     }
 
+    /// 从角分创建弧度角度
+    /// Create a radians angle from arc minutes
+    public init(arcMinutes: Double) {
+        self = .arcMinutes(arcMinutes).toRadians()
+    }
+
     public var radians: Double {
         switch self {
         case .degrees(let d):
             return d / radiansToDegrees
         case .radians(let r):
             return r
+        case .arcMinutes(let m):
+            return (m / degreesToArcMinutes) / radiansToDegrees
         }
     }
 
@@ -30,6 +40,19 @@ public enum SHCAngle: Codable, Sendable, Hashable {
             return d
         case .radians(let r):
             return r * radiansToDegrees
+        case .arcMinutes(let m):
+            return m / degreesToArcMinutes
+        }
+    }
+
+    public var arcMinutes: Double {
+        switch self {
+        case .degrees(let d):
+            return d * degreesToArcMinutes
+        case .radians(let r):
+            return r * radiansToDegrees * degreesToArcMinutes
+        case .arcMinutes(let m):
+            return m
         }
     }
 
@@ -39,6 +62,8 @@ public enum SHCAngle: Codable, Sendable, Hashable {
             return .radians(d / radiansToDegrees)
         case .radians:
             return self
+        case .arcMinutes(let m):
+            return .radians((m / degreesToArcMinutes) / radiansToDegrees)
         }
     }
 

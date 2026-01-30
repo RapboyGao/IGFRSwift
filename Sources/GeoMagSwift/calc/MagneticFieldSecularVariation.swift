@@ -43,17 +43,17 @@ public struct MagneticFieldSecularVariation: Sendable, Equatable {
     /// Positive values indicate the total intensity is increasing annually, negative values indicate it is decreasing.
     public let totalIntensity: Double
     
-    /// 磁偏角的年变化率（角分/年）
+    /// 磁偏角的年变化率（角度）
     /// 正值表示磁偏角逐年增加（磁北逐年东移），负值表示磁偏角逐年减少（磁北逐年西移）。
-    /// Annual rate of change of the magnetic declination (arc minutes/year)
+    /// Annual rate of change of the magnetic declination (angle)
     /// Positive values indicate the declination is increasing annually (magnetic north moving eastward),
     /// negative values indicate the declination is decreasing annually (magnetic north moving westward).
-    public let declinationArcMinutes: Double
+    public let declination: SHCAngle
     
-    /// 磁倾角的年变化率（角分/年）
+    /// 磁倾角的年变化率（角度）
     /// 正值表示磁倾角逐年增加（磁场方向更倾向于垂直向下），负值表示磁倾角逐年减少（磁场方向更倾向于水平）。
-    /// Annual rate of change of the magnetic inclination (arc minutes/year)
+    /// Annual rate of change of the magnetic inclination (angle)
     /// Positive values indicate the inclination is increasing annually (magnetic field direction becoming more vertical),
     /// negative values indicate the inclination is decreasing annually (magnetic field direction becoming more horizontal).
-    public let inclinationArcMinutes: Double
+    public let inclination: SHCAngle
 }
