@@ -1,15 +1,18 @@
 import Foundation
 
 /// 日期工具类
+///
 /// Date utilities
 internal enum DateUtils {
     /// 计算给定日期的十进制年份
+    ///
     /// Calculate decimal year from given date
+    ///
     /// - Parameters:
     ///   - date: 输入日期
-    ///     - Input date
+    ///     Input date
     ///   - calendar: 日历对象，默认为公历
-    ///     - Calendar object, default is Gregorian
+    ///     Calendar object, default is Gregorian
     /// - Returns:
     ///   十进制年份值
     ///   Decimal year value

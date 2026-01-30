@@ -2,6 +2,7 @@ import CoreLocation
 import Foundation
 
 /// 球谐系数模型，用于计算地磁场
+///
 /// Spherical Harmonic Coefficient model for calculating magnetic field
 ///
 /// 该结构体表示一个完整的球谐系数模型，用于计算地球磁场。它包含模型的基本信息（如文件名、头部信息）、
@@ -16,39 +17,47 @@ import Foundation
 /// and the Identifiable protocol for easy use in SwiftUI.
 public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     /// 模型文件名，用于唯一标识模型
+    ///
     /// Model file name, used to uniquely identify the model
     public let fileName: String
     /// 模型头部信息，通常包含模型的元数据和描述
+    ///
     /// Model header information, typically containing model metadata and descriptions
     public let headers: [String]
     /// 模型头部数字信息，通常包含模型的参数和配置值
+    ///
     /// Model header numbers, typically containing model parameters and configuration values
     public let headerNumbers: [Double]
     /// 模型历元，即模型有效的时间点数组（十进制年份）
+    ///
     /// Model epochs, an array of time points (decimal years) for which the model is valid
     public let epochs: [Double]
     /// 球谐系数数组，包含模型的所有高斯系数
+    ///
     /// Array of spherical harmonic coefficients, containing all Gaussian coefficients of the model
     public let coefficients: [Coefficient]
     private let gCoefficients: [Coefficient]
     private let hCoefficients: [Coefficient]
     /// 模型的最大阶数，由系数数组中最大的n值决定
+    ///
     /// Maximum order of the model, determined by the largest n value in the coefficient array
     public let nmax: Int
 
     /// 初始化球谐系数模型
+    ///
     /// Initialize spherical harmonic coefficient model
+    ///
     /// - Parameters:
     ///   - fileName: 模型文件名
-    ///     - Model file name
+    ///     Model file name
     ///   - headers: 模型头部信息
-    ///     - Model header information
+    ///     Model header information
     ///   - headerNumbers: 模型头部数字信息
-    ///     - Model header numbers
+    ///     Model header numbers
     ///   - epochs: 模型历元数组
-    ///     - Model epochs array
+    ///     Model epochs array
     ///   - coefficients: 球谐系数数组
-    ///     - Spherical harmonic coefficients array
+    ///     Spherical harmonic coefficients array
     public init(
         fileName: String,
         headers: [String],
@@ -67,30 +76,36 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     }
 
     /// 模型唯一标识符，使用文件名为ID
+    ///
     /// Model unique identifier, using file name as ID
     public var id: String { fileName }
 
     /// 计算模型时可能发生的错误
+    ///
     /// Errors that can occur during model calculation
     public enum SHCModelError: Error, Sendable, Hashable {
         /// 年份超出模型有效期
+        ///
         /// Year is outside model valid range
         case yearOutOfRange(year: Double, validRange: ClosedRange<Double>)
         /// 模型历元不足，无法进行插值
+        ///
         /// Not enough epochs to interpolate
         case invalidEpochs
     }
 
     /// 计算指定位置和日期的地磁场
+    ///
     /// Calculate magnetic field at specified location and date
+    ///
     /// - Parameters:
     ///   - location: 位置信息，包含经纬度和海拔高度
-    ///     - Location information, including latitude, longitude, and altitude
+    ///     Location information, including latitude, longitude, and altitude
     ///   - date: 日期，默认为当前日期
-    ///     - Date, default is current date
+    ///     Date, default is current date
     /// - Returns:
     ///   地磁场解，包含主磁场和长期变化信息
-    ///     - Magnetic field solution, containing main field and secular variation information
+    ///   Magnetic field solution, containing main field and secular variation information
     public func calculate(
         _ location: CLLocation,
         date: Date = Date()
@@ -102,19 +117,21 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     }
 
     /// 计算指定位置和日期的地磁场
+    ///
     /// Calculate magnetic field at specified location and date
+    ///
     /// - Parameters:
     ///   - latitude: 纬度（度）
-    ///     - Latitude (degrees)
+    ///     Latitude (degrees)
     ///   - longitude: 经度（度）
-    ///     - Longitude (degrees)
+    ///     Longitude (degrees)
     ///   - altitude: 海拔高度（公里）
-    ///     - Altitude (km)
+    ///     Altitude (km)
     ///   - year: 年份（十进制）
-    ///     - Year (decimal)
+    ///     Year (decimal)
     /// - Returns:
     ///   地磁场解，包含主磁场和长期变化信息
-    ///     - Magnetic field solution, containing main field and secular variation information
+    ///   Magnetic field solution, containing main field and secular variation information
     public func calculate(latitude: Double, longitude: Double, altitude: Double, year: Date) throws -> MagneticFieldSolution {
         let year = DateUtils.decimalYear(from: year)
         return try calculate(
@@ -123,19 +140,21 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     }
 
     /// 计算指定经纬度、海拔和年份的地磁场
+    ///
     /// Calculate magnetic field at specified latitude, longitude, altitude and year
+    ///
     /// - Parameters:
     ///   - latitude: 纬度（度）
-    ///     - Latitude (degrees)
+    ///     Latitude (degrees)
     ///   - longitude: 经度（度）
-    ///     - Longitude (degrees)
+    ///     Longitude (degrees)
     ///   - altitude: 海拔高度（公里）
-    ///     - Altitude (km)
+    ///     Altitude (km)
     ///   - year: 年份（十进制）
-    ///     - Year (decimal)
+    ///     Year (decimal)
     /// - Returns:
     ///   地磁场解，包含主磁场和长期变化信息
-    ///     - Magnetic field solution, containing main field and secular variation information
+    ///   Magnetic field solution, containing main field and secular variation information
     public func calculate(
         latitude: Double,
         longitude: Double,
@@ -156,6 +175,15 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         return MagneticFieldSolution(mainField: mainField, secularVariation: sec)
     }
 
+    /// 验证年份是否在模型有效期内
+    ///
+    /// Validate if year is within model valid range
+    ///
+    /// - Parameter year: 年份（十进制）
+    ///   Year (decimal)
+    /// - Throws:
+    ///   如果年份超出模型有效期或模型历元无效，抛出相应错误
+    ///   Throws error if year is outside model valid range or epochs are invalid
     private func validateYear(_ year: Double) throws {
         guard let minEpoch = epochs.min(), let maxEpoch = epochs.max(), epochs.count >= 2 else {
             throw SHCModelError.invalidEpochs
@@ -167,13 +195,15 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     }
 
     /// 计算指定年份的球谐系数及其导数
+    ///
     /// Calculate spherical harmonic coefficients and their derivatives for specified year
+    ///
     /// - Parameter year: 年份（十进制）
-    ///     - Year (decimal)
+    ///   Year (decimal)
     /// - Returns:
     ///   球谐系数及其导数的元组，包含g系数、h系数、g系数导数和h系数导数
-    ///     - Tuple of spherical harmonic coefficients and their derivatives, including g coefficients, h coefficients,
-    ///     - g coefficient derivatives, and h coefficient derivatives
+    ///   Tuple of spherical harmonic coefficients and their derivatives, including g coefficients, h coefficients,
+    ///   g coefficient derivatives, and h coefficient derivatives
     private func coefficients(for year: Double) -> (g: [[Double]], h: [[Double]], gDot: [[Double]], hDot: [[Double]]) {
         let size = nmax + 1
         var g = Array(repeating: Array(repeating: 0.0, count: size), count: size)
@@ -215,13 +245,15 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     }
 
     /// 计算插值参数，用于在两个历元之间插值
+    ///
     /// Calculate interpolation parameters for interpolating between two epochs
+    ///
     /// - Parameter year: 年份（十进制）
-    ///     - Year (decimal)
+    ///   Year (decimal)
     /// - Returns:
     ///   插值索引和分数，索引表示使用哪两个历元进行插值，分数表示插值的权重
-    ///     - Interpolation index and fraction, where index indicates which two epochs to use for interpolation,
-    ///     - and fraction indicates the interpolation weight
+    ///   Interpolation index and fraction, where index indicates which two epochs to use for interpolation,
+    ///   and fraction indicates the interpolation weight
     private func interpolationParameters(for year: Double) -> (index: Int, fraction: Double) {
         if epochs.count < 2 {
             return (0, 0.0)
@@ -254,6 +286,7 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
 
 public extension SHCModel {
     /// 球谐系数类型枚举，表示高斯系数的类型
+    ///
     /// Spherical harmonic coefficient kind enum, representing the type of Gaussian coefficient
     ///
     /// 该枚举定义了两种类型的球谐系数：g系数和h系数。这些系数是地磁场球谐模型的基本组成部分，
@@ -264,14 +297,17 @@ public extension SHCModel {
     /// used to calculate various components of the Earth's magnetic field.
     enum CoefficientKind: String, Sendable, Hashable, Codable {
         /// 高斯g系数，用于计算地磁场的对称部分
+        ///
         /// Gaussian g coefficient, used to calculate the symmetric part of the magnetic field
         case g
         /// 高斯h系数，用于计算地磁场的反对称部分
+        ///
         /// Gaussian h coefficient, used to calculate the antisymmetric part of the magnetic field
         case h
     }
 
     /// 球谐系数结构体，表示单个球谐系数
+    ///
     /// Spherical harmonic coefficient structure, representing a single spherical harmonic coefficient
     ///
     /// 该结构体表示一个球谐系数，包含阶数(n)、次数(m)、系数类型(kind)和系数值(values)。
@@ -284,29 +320,35 @@ public extension SHCModel {
     /// at different time points to obtain magnetic field values at any time.
     struct Coefficient: Sendable, Hashable, Codable {
         /// 系数的阶数(n)，表示球谐函数的阶
+        ///
         /// Coefficient order (n), representing the order of the spherical harmonic function
         public let n: Int
         /// 系数的次数(m)，表示球谐函数的次
+        ///
         /// Coefficient degree (m), representing the degree of the spherical harmonic function
         public let m: Int
         /// 系数类型，表示是g系数还是h系数
+        ///
         /// Coefficient kind, indicating whether it is a g coefficient or an h coefficient
         public let kind: CoefficientKind
         /// 系数值数组，对应于模型的各个历元
+        ///
         /// Array of coefficient values, corresponding to the model's various epochs
         public let values: [Double]
 
         /// 初始化球谐系数
+        ///
         /// Initialize spherical harmonic coefficient
+        ///
         /// - Parameters:
         ///   - n: 系数的阶数
-        ///     - Coefficient order
+        ///     Coefficient order
         ///   - m: 系数的次数
-        ///     - Coefficient degree
+        ///     Coefficient degree
         ///   - kind: 系数类型
-        ///     - Coefficient kind
+        ///     Coefficient kind
         ///   - values: 系数值数组
-        ///     - Array of coefficient values
+        ///     Array of coefficient values
         public init(n: Int, m: Int, kind: CoefficientKind, values: [Double]) {
             self.n = n
             self.m = m

@@ -1,6 +1,7 @@
 import Foundation
 
 /// 地磁场解结构体，包含主磁场和长期变化的完整信息
+///
 /// Magnetic field solution structure, containing complete information about the main magnetic field and secular variation
 ///
 /// 该结构体表示地磁场计算的完整结果，包含两个主要部分：主磁场（MagneticFieldResult）和长期变化（MagneticFieldSecularVariation）。
@@ -16,6 +17,7 @@ import Foundation
 public struct MagneticFieldSolution: Sendable, Hashable, Codable {
     /// 主磁场结果
     /// 包含特定位置和时间的地磁场各分量的当前值，如北向、东向、垂直向下分量，以及派生的水平强度、总强度、磁偏角和磁倾角。
+    ///
     /// Main magnetic field result
     /// Contains the current values of various magnetic field components at a specific location and time,
     /// such as north, east, and down components, as well as derived quantities like horizontal intensity,
@@ -24,6 +26,7 @@ public struct MagneticFieldSolution: Sendable, Hashable, Codable {
 
     /// 地磁场长期变化
     /// 包含地磁场各分量的年变化率，如北向、东向、垂直向下分量的变化率，以及派生的水平强度、总强度、磁偏角和磁倾角的变化率。
+    ///
     /// Magnetic field secular variation
     /// Contains the annual rates of change of various magnetic field components,
     /// such as rates for north, east, and down components, as well as derived quantities like

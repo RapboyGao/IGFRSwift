@@ -1,16 +1,41 @@
 import Foundation
 
 /// 球谐函数计算工具类
+///
 /// Spherical harmonics calculation utilities
 internal enum SphericalHarmonics {
 
+    /// 工作空间结构体
+    ///
+    /// Workspace structure
     struct Workspace {
+        /// 余弦项数组
+        ///
+        /// Cosine terms array
         var cosMLon: [Double]
+        /// 正弦项数组
+        ///
+        /// Sine terms array
         var sinMLon: [Double]
+        /// 勒让德多项式值数组
+        ///
+        /// Legendre polynomial values array
         var p: [[Double]]
+        /// 勒让德多项式导数值数组
+        ///
+        /// Legendre polynomial derivatives array
         var dp: [[Double]]
+        /// 最大阶数
+        ///
+        /// Maximum order
         var nmax: Int
 
+        /// 初始化工作空间
+        ///
+        /// Initialize workspace
+        ///
+        /// - Parameter nmax: 最大阶数
+        ///   Maximum order
         init(nmax: Int) {
             self.nmax = nmax
             self.cosMLon = Array(repeating: 0.0, count: nmax + 1)
@@ -19,6 +44,12 @@ internal enum SphericalHarmonics {
             self.dp = Array(repeating: Array(repeating: 0.0, count: nmax + 1), count: nmax + 1)
         }
 
+        /// 确保工作空间容量
+        ///
+        /// Ensure workspace capacity
+        ///
+        /// - Parameter nmax: 最大阶数
+        ///   Maximum order
         mutating func ensureCapacity(nmax: Int) {
             if nmax <= self.nmax { return }
             self.nmax = nmax
@@ -30,24 +61,29 @@ internal enum SphericalHarmonics {
     }
 
     /// 参考半径（公里）
+    ///
     /// Reference radius (km)
     static let referenceRadius = 6371.2
 
     /// 计算地磁场分量
+    ///
     /// Calculate magnetic field components
+    ///
     /// - Parameters:
     ///   - nmax: 最大阶数
-    ///     - Maximum order
+    ///     Maximum order
     ///   - g: 高斯系数g
-    ///     - Gaussian coefficients g
+    ///     Gaussian coefficients g
     ///   - h: 高斯系数h
-    ///     - Gaussian coefficients h
+    ///     Gaussian coefficients h
     ///   - latitude: 纬度（度）
-    ///     - Latitude (degrees)
+    ///     Latitude (degrees)
     ///   - longitude: 经度（度）
-    ///     - Longitude (degrees)
+    ///     Longitude (degrees)
     ///   - altitude: 海拔高度（公里）
-    ///     - Altitude (km)
+    ///     Altitude (km)
+    ///   - workspace: 工作空间
+    ///     Workspace
     /// - Returns:
     ///   北向、东向和垂直向下分量
     ///   North, east and down components

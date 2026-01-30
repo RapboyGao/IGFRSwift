@@ -12,10 +12,10 @@ if [ -d ".github/.pages" ]; then
 fi
 
 # 检查是否存在旧的构建目录，如果存在则删除
-if [ -d ".build" ]; then
-    rm -rf ".build"
-    echo "已清理现有的构建目录"
-fi
+# if [ -d ".build" ]; then
+#     rm -rf ".build"
+#     echo "已清理现有的构建目录"
+# fi
 
 # 创建新的文档目录
 mkdir -p .github/.pages

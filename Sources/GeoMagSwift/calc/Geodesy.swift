@@ -1,47 +1,59 @@
 import Foundation
 
 /// 地心坐标系
+///
 /// Geocentric coordinates
 internal struct GeocentricCoordinates {
     /// 半径
+    ///
     /// Radius
     let radius: Double
     /// 极角
+    ///
     /// Polar angle
     let theta: Double
     /// 极角正弦值
+    ///
     /// Sine of polar angle
     let sinTheta: Double
     /// 极角余弦值
+    ///
     /// Cosine of polar angle
     let cosTheta: Double
     /// 纬度差正弦值
+    ///
     /// Sine of latitude difference
     let sinDelta: Double
     /// 纬度差余弦值
+    ///
     /// Cosine of latitude difference
     let cosDelta: Double
 }
 
 /// 大地测量工具类
+///
 /// Geodesy utilities
 internal enum Geodesy {
     /// WGS84椭球体长半轴（公里）
+    ///
     /// WGS84 ellipsoid semi-major axis (km)
     static let wgs84A = 6378.137
     /// WGS84椭球体短半轴（公里）
+    ///
     /// WGS84 ellipsoid semi-minor axis (km)
     static let wgs84B = 6356.7523142
 
     /// 计算地心坐标
+    ///
     /// Calculate geocentric coordinates
+    ///
     /// - Parameters:
     ///   - latitude: 纬度（度）
-    ///     - Latitude (degrees)
+    ///     Latitude (degrees)
     ///   - longitude: 经度（度）
-    ///     - Longitude (degrees)
+    ///     Longitude (degrees)
     ///   - altitude: 海拔高度（公里）
-    ///     - Altitude (km)
+    ///     Altitude (km)
     /// - Returns:
     ///   地心坐标结构体
     ///   Geocentric coordinates struct
