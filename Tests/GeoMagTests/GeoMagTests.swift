@@ -28,6 +28,5 @@ import Testing
         localModel: SHCModel.wmmhr2025,
         seed: 0x1234567890ABCDEF
     )
-    print("WMMHR 2025 Coefficients = ", config.localModel.coefficients.count)
     try await config.runTests()
 }
