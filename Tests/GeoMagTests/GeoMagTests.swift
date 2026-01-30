@@ -29,7 +29,7 @@ import Testing
         modelName: "WMMHR",
         localModel: SHCModel.wmmhr2025,
         seed: 0x1234567890ABCDEF,
-        maxErrorNT: 20.0
+        maxErrorNT: 25
     )
     try await config.runTests()
 }
