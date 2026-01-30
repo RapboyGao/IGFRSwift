@@ -1,0 +1,14 @@
+"magnetic_field_solution_title" = "磁場計算結果";
+"magnetic_field_solution_main_field" = "主磁場";
+"magnetic_field_solution_secular_variation" = "長期變化";
+"magnetic_field_solution_north" = "北向分量";
+"magnetic_field_solution_east" = "東向分量";
+"magnetic_field_solution_down" = "向下分量";
+"magnetic_field_solution_horizontal_intensity" = "水平強度";
+"magnetic_field_solution_total_intensity" = "總強度";
+"magnetic_field_solution_declination" = "磁偏角";
+"magnetic_field_solution_inclination" = "磁傾角";
+"magnetic_field_solution_unit_nt" = "nT";
+"magnetic_field_solution_unit_nt_per_year" = "nT/年";
+"magnetic_field_solution_unit_degree" = "°";
+"magnetic_field_solution_unit_arcmin_per_year" = "角分/年";

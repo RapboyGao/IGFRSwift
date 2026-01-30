@@ -1,0 +1,14 @@
+"magnetic_field_solution_title" = "Magnetic Field Solution";
+"magnetic_field_solution_main_field" = "Main Field";
+"magnetic_field_solution_secular_variation" = "Secular Variation";
+"magnetic_field_solution_north" = "North";
+"magnetic_field_solution_east" = "East";
+"magnetic_field_solution_down" = "Down";
+"magnetic_field_solution_horizontal_intensity" = "Horizontal Intensity";
+"magnetic_field_solution_total_intensity" = "Total Intensity";
+"magnetic_field_solution_declination" = "Declination";
+"magnetic_field_solution_inclination" = "Inclination";
+"magnetic_field_solution_unit_nt" = "nT";
+"magnetic_field_solution_unit_nt_per_year" = "nT/year";
+"magnetic_field_solution_unit_degree" = "°";
+"magnetic_field_solution_unit_arcmin_per_year" = "arcmin/year";
