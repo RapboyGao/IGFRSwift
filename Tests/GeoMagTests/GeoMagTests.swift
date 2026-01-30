@@ -16,10 +16,13 @@ struct MagneticModelTestConfig {
         self.modelName = modelName
         self.localModel = localModel
         self.seed = seed
-
+        
         let calendar = Calendar(identifier: .gregorian)
-        self.testDate = calendar.date(
-            from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0), year: 2026, month: 1, day: 29))!
+        guard let date = calendar.date(
+            from: DateComponents(timeZone: TimeZone(secondsFromGMT: 0), year: 2026, month: 1, day: 29)) else {
+            fatalError("Failed to create test date")
+        }
+        self.testDate = date
     }
 
     func makeURL(latitude: Double, longitude: Double) -> URL {
@@ -52,7 +55,10 @@ struct MagneticModelTestConfig {
             URLQueryItem(name: "dateStepSize", value: "1.0"),
             URLQueryItem(name: "resultFormat", value: "json"),
         ]
-        return components.url!
+        guard let url = components.url else {
+            fatalError("Failed to create URL for model: \(modelName)")
+        }
+        return url
     }
 
     func runTests() async throws {
@@ -65,12 +71,13 @@ struct MagneticModelTestConfig {
 
             let (data, _) = try await URLSession.shared.data(from: url)
             let response = try JSONDecoder().decode(Response.self, from: data)
-            let declination = response.result.first?.declination
-            #expect(declination != nil)
+            guard let declination = response.result.first?.declination else {
+                fatalError("Failed to get declination from API response")
+            }
 
             let location = CLLocation(latitude: latitude, longitude: longitude)
             let result = localModel.calculate(location, date: testDate)
-            #expect(abs(result.mainField.declination - declination!) <= maxError)
+            #expect(abs(result.mainField.declination - declination) <= maxError)
         }
     }
 }
