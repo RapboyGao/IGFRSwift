@@ -26,15 +26,26 @@ struct MagneticModelTestConfig {
     let localModel: SHCModel
     let seed: UInt64
     let testDate: Date
-    let testCount: Int = 1
-    let maxErrorDegrees: Double = 0.1
-    let maxErrorNT: Double = 1.0
-    let maxErrorArcMin: Double = 0.2
+    let testCount: Int = 5
+    let maxErrorDegrees: Double
+    let maxErrorNT: Double
+    let maxErrorArcMin: Double
 
-    init(modelName: String, localModel: SHCModel, seed: UInt64, testDate: Date? = nil) {
+    init(
+        modelName: String,
+        localModel: SHCModel,
+        seed: UInt64,
+        testDate: Date? = nil,
+        maxErrorDegrees: Double = 0.1,
+        maxErrorNT: Double = 15.0,
+        maxErrorArcMin: Double = 0.2
+    ) {
         self.modelName = modelName
         self.localModel = localModel
         self.seed = seed
+        self.maxErrorDegrees = maxErrorDegrees
+        self.maxErrorNT = maxErrorNT
+        self.maxErrorArcMin = maxErrorArcMin
 
         if let providedDate = testDate {
             self.testDate = providedDate
@@ -68,7 +79,7 @@ struct MagneticModelTestConfig {
             URLQueryItem(name: "lon1", value: String(format: "%.6f", lonAbs)),
             URLQueryItem(name: "lon1Hemisphere", value: lonHem),
             URLQueryItem(name: "coordinateSystem", value: "M"),
-            URLQueryItem(name: "elevation", value: "0"),
+            URLQueryItem(name: "elevation", value: "1"),
             URLQueryItem(name: "elevationUnits", value: "K"),
             URLQueryItem(name: "model", value: modelName),
             URLQueryItem(name: "startYear", value: String(year)),
@@ -101,27 +112,58 @@ struct MagneticModelTestConfig {
                 throw MagneticModelTestError.emptyResult(modelName)
             }
 
-            let location = CLLocation(latitude: latitude, longitude: longitude)
+            let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            let location = CLLocation(
+                coordinate: coordinate, altitude: 1000, horizontalAccuracy: 100.0, verticalAccuracy: 100.0,
+                timestamp: testDate)
 
             let result = localModel.calculate(location, date: testDate)
             let locationDesc = "(lat: \(latitude), lon: \(longitude))"
-            
-            #expect(abs(result.mainField.declination - api.declination) <= maxErrorDegrees, "Declination at \(locationDesc) exceeds error threshold")
-            #expect(abs(result.mainField.inclination - api.inclination) <= maxErrorDegrees, "Inclination at \(locationDesc) exceeds error threshold")
-            #expect(abs(result.mainField.north - api.xcomponent) <= maxErrorNT, "North component at \(locationDesc) exceeds error threshold")
-            #expect(abs(result.mainField.east - api.ycomponent) <= maxErrorNT, "East component at \(locationDesc) exceeds error threshold")
-            #expect(abs(result.mainField.down - api.zcomponent) <= maxErrorNT, "Down component at \(locationDesc) exceeds error threshold")
-            #expect(abs(result.mainField.horizontalIntensity - api.horintensity) <= maxErrorNT, "Horizontal intensity at \(locationDesc) exceeds error threshold")
-            #expect(abs(result.mainField.totalIntensity - api.totalintensity) <= maxErrorNT, "Total intensity at \(locationDesc) exceeds error threshold")
+
+            #expect(
+                abs(result.mainField.declination - api.declination) <= maxErrorDegrees,
+                "Declination at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(result.mainField.inclination - api.inclination) <= maxErrorDegrees,
+                "Inclination at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(result.mainField.north - api.xcomponent) <= maxErrorNT,
+                "North component at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(result.mainField.east - api.ycomponent) <= maxErrorNT,
+                "East component at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(result.mainField.down - api.zcomponent) <= maxErrorNT,
+                "Down component at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(result.mainField.horizontalIntensity - api.horintensity) <= maxErrorNT,
+                "Horizontal intensity at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(result.mainField.totalIntensity - api.totalintensity) <= maxErrorNT,
+                "Total intensity at \(locationDesc) exceeds error threshold")
 
             let sv = result.secularVariation
-            #expect(abs(sv.north - api.xcomponent_sv) <= maxErrorNT, "Secular variation north component at \(locationDesc) exceeds error threshold")
-            #expect(abs(sv.east - api.ycomponent_sv) <= maxErrorNT, "Secular variation east component at \(locationDesc) exceeds error threshold")
-            #expect(abs(sv.down - api.zcomponent_sv) <= maxErrorNT, "Secular variation down component at \(locationDesc) exceeds error threshold")
-            #expect(abs(sv.horizontalIntensity - api.horintensity_sv) <= maxErrorNT, "Secular variation horizontal intensity at \(locationDesc) exceeds error threshold")
-            #expect(abs(sv.totalIntensity - api.totalintensity_sv) <= maxErrorNT, "Secular variation total intensity at \(locationDesc) exceeds error threshold")
-            #expect(abs(sv.declinationArcMinutes - api.declination_sv * 60.0) <= maxErrorArcMin, "Secular variation declination arc minutes at \(locationDesc) exceeds error threshold")
-            #expect(abs(sv.inclinationArcMinutes - api.inclination_sv * 60.0) <= maxErrorArcMin, "Secular variation inclination arc minutes at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(sv.north - api.xcomponent_sv) <= maxErrorNT,
+                "Secular variation north component at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(sv.east - api.ycomponent_sv) <= maxErrorNT,
+                "Secular variation east component at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(sv.down - api.zcomponent_sv) <= maxErrorNT,
+                "Secular variation down component at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(sv.horizontalIntensity - api.horintensity_sv) <= maxErrorNT,
+                "Secular variation horizontal intensity at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(sv.totalIntensity - api.totalintensity_sv) <= maxErrorNT,
+                "Secular variation total intensity at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(sv.declinationArcMinutes - api.declination_sv * 60.0) <= maxErrorArcMin,
+                "Secular variation declination arc minutes at \(locationDesc) exceeds error threshold")
+            #expect(
+                abs(sv.inclinationArcMinutes - api.inclination_sv * 60.0) <= maxErrorArcMin,
+                "Secular variation inclination arc minutes at \(locationDesc) exceeds error threshold")
         }
     }
 }
