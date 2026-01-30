@@ -6,8 +6,6 @@
 
 🌍 **A powerful Swift library for calculating Earth's magnetic field** using international standard models like IGRF and WMM.
 
-![Magnetic Field Visualization](https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Earth%27s%20magnetic%20field%20visualization%20with%20field%20lines%20and%20polarity%20in%20blue%20and%20red%2C%20scientific%20accurate%2C%203D%20rendering%2C%20dark%20background&image_size=landscape_16_9)
-
 ## 🌐 Language
 
 - [English](README.md)
