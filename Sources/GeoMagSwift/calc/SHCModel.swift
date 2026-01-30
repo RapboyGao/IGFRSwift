@@ -62,6 +62,39 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         self.nmax = coefficients.map { $0.n }.max() ?? 0
     }
 
+    private enum CodingKeys: String, CodingKey {
+        case fileName
+        case headers
+        case headerNumbers
+        case epochs
+        case coefficients
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let fileName = try container.decode(String.self, forKey: .fileName)
+        let headers = try container.decode([String].self, forKey: .headers)
+        let headerNumbers = try container.decode([Double].self, forKey: .headerNumbers)
+        let epochs = try container.decode([Double].self, forKey: .epochs)
+        let coefficients = try container.decode([Coefficient].self, forKey: .coefficients)
+        self.init(
+            fileName: fileName,
+            headers: headers,
+            headerNumbers: headerNumbers,
+            epochs: epochs,
+            coefficients: coefficients
+        )
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(fileName, forKey: .fileName)
+        try container.encode(headers, forKey: .headers)
+        try container.encode(headerNumbers, forKey: .headerNumbers)
+        try container.encode(epochs, forKey: .epochs)
+        try container.encode(coefficients, forKey: .coefficients)
+    }
+
     /// 模型唯一标识符，使用文件名为ID
     /// Model unique identifier, using file name as ID
     public var id: String { fileName }
