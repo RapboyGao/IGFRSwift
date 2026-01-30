@@ -6,5 +6,8 @@
     "Tests/GeoMagTests": "test",
     "Tests": "test"
   },
-  "cSpell.words": ["IGRF"]
+  "cSpell.words": [
+    "Docc",
+    "IGRF"
+  ]
 }
