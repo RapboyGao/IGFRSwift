@@ -134,7 +134,7 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
 
         let secular = SphericalHarmonics.fieldComponents(
             nmax: nmax, g: gDot, h: hDot, latitude: latitude, longitude: longitude, altitude: altitude)
-        let sec = makeSecularVariation(mainField: mainField, derivative: secular)
+        let sec = MagneticFieldSecularVariation(mainField: mainField, derivative: secular)
 
         return MagneticFieldSolution(mainField: mainField, secularVariation: sec)
     }
@@ -218,48 +218,7 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
         return (index, fraction)
     }
 
-    /// 计算地磁场长期变化
-    /// Calculate magnetic field secular variation
-    /// - Parameters:
-    ///   - mainField: 主磁场结果
-    ///   - mainField: Main magnetic field result
-    ///   - derivative: 导数分量，包含北向、东向和垂直向下的导数
-    ///   - derivative: Derivative components, including north, east, and down derivatives
-    /// - Returns:
-    ///   地磁场长期变化结果
-    ///   Magnetic field secular variation result
-    private func makeSecularVariation(
-        mainField: MagneticFieldResult,
-        derivative: (north: Double, east: Double, down: Double)
-    ) -> MagneticFieldSecularVariation {
-        let x = mainField.north
-        let y = mainField.east
-        let z = mainField.down
-        let h = mainField.horizontalIntensity
-        let f = mainField.totalIntensity
 
-        let dX = derivative.north
-        let dY = derivative.east
-        let dZ = derivative.down
-
-        let dH = (x * dX + y * dY) / h
-        let dF = (x * dX + y * dY + z * dZ) / f
-        let dD = (x * dY - y * dX) / (h * h)
-        let dI = (h * dZ - z * dH) / (f * f)
-
-        let dDArcMin = SHCAngle.radians(dD)
-        let dIArcMin = SHCAngle.radians(dI)
-
-        return MagneticFieldSecularVariation(
-            north: dX,
-            east: dY,
-            down: dZ,
-            horizontalIntensity: dH,
-            totalIntensity: dF,
-            declination: dDArcMin.toArcMinutes(),
-            inclination: dIArcMin.toArcMinutes()
-        )
-    }
 }
 
 public extension SHCModel {

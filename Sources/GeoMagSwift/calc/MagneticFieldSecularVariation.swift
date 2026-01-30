@@ -56,4 +56,42 @@ public struct MagneticFieldSecularVariation: Sendable, Equatable {
     /// Positive values indicate the inclination is increasing annually (magnetic field direction becoming more vertical),
     /// negative values indicate the inclination is decreasing annually (magnetic field direction becoming more horizontal).
     public let inclination: SHCAngle
+    
+    /// 初始化地磁场长期变化结构体
+    /// Initialize magnetic field secular variation structure
+    /// - Parameters:
+    ///   - mainField: 主磁场结果
+    ///   - mainField: Main magnetic field result
+    ///   - derivative: 导数分量 (north, east, down)
+    ///   - derivative: Derivative components (north, east, down)
+    public init(
+        mainField: MagneticFieldResult,
+        derivative: (north: Double, east: Double, down: Double)
+    ) {
+        let x = mainField.north
+        let y = mainField.east
+        let z = mainField.down
+        let h = mainField.horizontalIntensity
+        let f = mainField.totalIntensity
+
+        let dX = derivative.north
+        let dY = derivative.east
+        let dZ = derivative.down
+
+        let dH = (x * dX + y * dY) / h
+        let dF = (x * dX + y * dY + z * dZ) / f
+        let dD = (x * dY - y * dX) / (h * h)
+        let dI = (h * dZ - z * dH) / (f * f)
+
+        let dDArcMin = SHCAngle.radians(dD)
+        let dIArcMin = SHCAngle.radians(dI)
+
+        self.north = dX
+        self.east = dY
+        self.down = dZ
+        self.horizontalIntensity = dH
+        self.totalIntensity = dF
+        self.declination = dDArcMin.toArcMinutes()
+        self.inclination = dIArcMin.toArcMinutes()
+    }
 }
