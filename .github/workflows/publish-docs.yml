@@ -26,6 +26,10 @@ jobs:
             rm -rf ".github/.pages"
             echo "Cleaned up existing documentation directory"
           fi
+          if [ -d ".build" ]; then
+            rm -rf ".build"
+            echo "Cleaned up existing build directory"
+          fi
 
       - name: Generate Documentation
         run: |
