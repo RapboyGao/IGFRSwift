@@ -20,6 +20,13 @@ jobs:
         with:
           swift-version: "6.2"
 
+      - name: Clean up existing documentation
+        run: |
+          if [ -d ".github/.pages" ]; then
+            rm -rf ".github/.pages"
+            echo "Cleaned up existing documentation directory"
+          fi
+
       - name: Generate Documentation
         run: |
           mkdir -p .github/.pages
