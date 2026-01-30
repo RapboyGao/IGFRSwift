@@ -4,7 +4,8 @@
     ".swiftpm/xcode/package.xcworkspace": "intellij",
     "Sources/GeoMagSwift": "src",
     "Tests/GeoMagTests": "test",
-    "Tests": "test"
+    "Tests": "test",
+    "**.docc": "markdown",
   },
   "cSpell.words": [
     "Docc",

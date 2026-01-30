@@ -66,6 +66,10 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
     ///     Model epochs array
     ///   - coefficients: 球谐系数数组
     ///     Spherical harmonic coefficients array
+    ///   - validFrom: 模型有效期开始年份（可选，默认值为最小历元）
+    ///     Model valid-from year (optional, default is minimum epoch)
+    ///   - validTo: 模型有效期结束年份（可选，默认值为最大历元）
+    ///     Model valid-to year (optional, default is maximum epoch)
     public init(
         fileName: String,
         headers: [String],
