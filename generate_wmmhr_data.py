@@ -201,7 +201,7 @@ def _write_model_file(doc: WMMHRDoc, version: int) -> None:
             for row in doc.coefficients
         ],
     }
-    resource_path.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+    resource_path.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8", newline="\n")
 
 def _clean_output() -> None:
     if not OUT_DIR.exists():

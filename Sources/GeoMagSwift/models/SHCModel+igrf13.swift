@@ -35,6 +35,8 @@ public extension SHCModel {
             1980.0, 1985.0, 1990.0, 1995.0, 2000.0, 2005.0, 2010.0, 2015.0,
             2020.0, 2025.0,
         ],
+        validFrom: 1900.0,
+        validTo: 2025.0,
         coefficients: [
             Coefficient(
                 n: 1,
