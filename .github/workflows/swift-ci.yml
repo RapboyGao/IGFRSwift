@@ -1,0 +1,128 @@
+name: Swift CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 0 * * 0'  # 每周日运行一次
+
+jobs:
+  test:
+    name: Test on macOS
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, macos-14, macos-13]
+        swift-version: ['6.0', '5.10']
+      fail-fast: false
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Swift
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: ${{ matrix.swift-version }}
+    
+    - name: Show Swift version
+      run: swift --version
+    
+    - name: Resolve dependencies
+      run: swift package resolve
+    
+    - name: Build package
+      run: swift build --verbose
+    
+    - name: Run tests
+      run: swift test --verbose
+
+  lint:
+    name: Lint and Format Check
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Swift
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: '6.0'
+    
+    - name: Check code formatting
+      run: |
+        if [ -f ".swift-format" ]; then
+          swift format --lint Sources/ Tests/
+        else
+          echo ".swift-format file not found, skipping format check"
+        fi
+
+  analyze:
+    name: Static Analysis
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Swift
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: '6.0'
+    
+    - name: Static analysis with swift build
+      run: swift build --enable-code-coverage
+
+  release:
+    name: Validate Release
+    runs-on: macos-latest
+    if: github.ref == 'refs/heads/main'
+    needs: [test, lint, analyze]
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Swift
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: '6.0'
+    
+    - name: Validate package for release
+      run: |
+        swift package clean
+        swift build -c release
+        swift test -c release
+
+  compatibility:
+    name: Platform Compatibility
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Swift
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: '6.0'
+    
+    - name: Check iOS compatibility
+      run: swift build --destination generic/platform=iOS
+    
+    - name: Check macOS compatibility
+      run: swift build --destination generic/platform=macOS
+    
+    - name: Check watchOS compatibility
+      run: swift build --destination generic/platform=watchOS
+    
+    - name: Check tvOS compatibility
+      run: swift build --destination generic/platform=tvOS
