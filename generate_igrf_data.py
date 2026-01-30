@@ -226,10 +226,18 @@ def _write_model_file(doc: IGRFDoc) -> None:
     lines.append(f"    /// 模型文件: {doc.file_name}")
     lines.append(f"    /// Model file: {doc.file_name}")
     if doc.epochs:
-        epochs_str = ", ".join(doc.epochs[:2])
+        epochs_str = ", ".join(doc.epochs)
         lines.append("    ///")
-        lines.append(f"    /// 有效 epoch: {epochs_str}")
-        lines.append(f"    /// Valid epochs: {epochs_str}")
+        if len(doc.epochs) >= 2:
+            lines.append(
+                f"    /// 有效 epoch: {doc.epochs[0]}–{doc.epochs[-1]} (共 {len(doc.epochs)} 个)"
+            )
+            lines.append(
+                f"    /// Valid epochs: {doc.epochs[0]}–{doc.epochs[-1]} ({len(doc.epochs)} total)"
+            )
+        else:
+            lines.append(f"    /// 有效 epoch: {epochs_str}")
+            lines.append(f"    /// Valid epochs: {epochs_str}")
     lines.append(f"    static let {model_name} = SHCModel(")
     lines.append(f"        fileName: \"{_swift_string(doc.file_name)}\",")
     if doc.headers:

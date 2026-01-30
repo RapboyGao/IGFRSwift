@@ -18,8 +18,8 @@ public extension SHCModel {
     /// 模型文件: igrf12coeffs.txt
     /// Model file: igrf12coeffs.txt
     ///
-    /// 有效 epoch: 1900.0, 1905.0
-    /// Valid epochs: 1900.0, 1905.0
+    /// 有效 epoch: 1900.0–2020.0 (共 25 个)
+    /// Valid epochs: 1900.0–2020.0 (25 total)
     static let igrf12 = SHCModel(
         fileName: "igrf12coeffs.txt",
         headers: [
