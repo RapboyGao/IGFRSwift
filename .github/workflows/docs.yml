@@ -2,7 +2,7 @@ name: Swift Docc Publish
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   workflow_dispatch:
 
 permissions:
@@ -18,34 +18,30 @@ jobs:
   build-docs:
     runs-on: macos-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Swift
-      uses: swift-actions/setup-swift@v2
-      with:
-        swift-version: '6.0'
+      - name: Set up Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.0"
 
-    - name: Generate Documentation
-      run: |
-        swift package dump-symbol-graph \
-          --target GeoMagSwift \
-          --output-path .build/symbolgraphs
-        xcrun docc convert .build/symbolgraphs \
-          --fallback-display-name GeoMagSwift \
-          --fallback-bundle-identifier com.geomagswift.docs \
-          --fallback-bundle-version 0.0.1 \
-          --output-path docs-output \
-          --transform-for-static-hosting \
-          --hosting-base-path GeoMagSwift
+      - name: Generate Documentation
+        run: |
+          swift package --allow-writing-to-directory .github/.pages \
+            generate-documentation --target GeoMagSwift \
+            --disable-indexing \
+            --transform-for-static-hosting \
+            --hosting-base-path GeoMagSwift \
+            --output-path .github/.pages
 
-    - name: Setup Pages
-      uses: actions/configure-pages@v5
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: './docs-output'
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./.github/.pages"
 
   deploy-docs:
     environment:
@@ -54,6 +50,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-docs
     steps:
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -11,3 +11,4 @@ summary.txt
 .swiftpm
 Package.resolved
 __pycache__
+.github/.pages
