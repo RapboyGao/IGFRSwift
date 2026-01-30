@@ -44,7 +44,7 @@
 Fügen Sie GeoMagSwift mit Swift Package Manager zu Ihrem Projekt hinzu:
 
 1. Wählen Sie in Xcode **Datei > Paketabhängigkeiten hinzufügen...**
-2. Geben Sie die Repository-URL ein: `https://github.com/yourusername/GeoMagSwift.git`
+2. Geben Sie die Repository-URL ein: `https://github.com/RapboyGao/GeoMagSwift.git`
 3. Wählen Sie die Version, die Sie verwenden möchten
 4. Klicken Sie auf **Paket hinzufügen**
 
@@ -54,7 +54,7 @@ Alternativ fügen Sie es direkt zu Ihrer `Package.swift`-Datei hinzu:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/GeoMagSwift.git", from: "1.0.0")
+    .package(url: "https://github.com/RapboyGao/GeoMagSwift.git", from: "1.0.0")
 ]
 ```
 

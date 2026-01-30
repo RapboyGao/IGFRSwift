@@ -45,7 +45,7 @@
 Swift Package Manager を使用して GeoMagSwift をプロジェクトに追加します：
 
 1. Xcode で、**ファイル > パッケージ依存関係を追加...** を選択します
-2. リポジトリ URL を入力します：`https://github.com/yourusername/GeoMagSwift.git`
+2. リポジトリ URL を入力します：`https://github.com/RapboyGao/GeoMagSwift.git`
 3. 使用するバージョンを選択します
 4. **パッケージを追加** をクリックします
 
@@ -55,7 +55,7 @@ Swift Package Manager を使用して GeoMagSwift をプロジェクトに追加
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/GeoMagSwift.git", from: "1.0.0")
+    .package(url: "https://github.com/RapboyGao/GeoMagSwift.git", from: "1.0.0")
 ]
 ```
 
