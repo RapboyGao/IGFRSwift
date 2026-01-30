@@ -12,12 +12,12 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     
     def do_GET(self):
         # 处理根路径重定向
-        if self.path == '/GeoMagSwift' or self.path == '/GeoMagSwift/':
-            # 重定向到实际文档入口
-            self.send_response(301)
-            self.send_header('Location', '/GeoMagSwift/documentation/geomagswift/')
-            self.end_headers()
-            return
+        # if self.path == '/GeoMagSwift' or self.path == '/GeoMagSwift/':
+        #     # 重定向到实际文档入口
+        #     self.send_response(301)
+        #     self.send_header('Location', '/GeoMagSwift/documentation/geomagswift/')
+        #     self.end_headers()
+        #     return
         # 调用父类方法处理其他请求
         super().do_GET()
     
