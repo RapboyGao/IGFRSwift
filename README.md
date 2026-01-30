@@ -9,11 +9,11 @@
 ## 🌐 Language
 
 - [English](README.md)
-- [中文](docs/zh/README.md)
-- [日本語](docs/ja/README.md)
-- [Deutsch](docs/de/README.md)
-- [Français](docs/fr/README.md)
-- [Español](docs/es/README.md)
+- [中文](markdown/zh/README.md)
+- [日本語](markdown/ja/README.md)
+- [Deutsch](markdown/de/README.md)
+- [Français](markdown/fr/README.md)
+- [Español](markdown/es/README.md)
 
 ## 📋 Table of Contents
 
