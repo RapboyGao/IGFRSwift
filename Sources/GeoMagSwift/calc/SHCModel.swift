@@ -86,6 +86,27 @@ public struct SHCModel: Sendable, Hashable, Codable, Identifiable {
             altitude: location.altitude / 1000.0, year: year)
     }
 
+    /// 计算指定位置和日期的地磁场
+    /// Calculate magnetic field at specified location and date
+    /// - Parameters:
+    ///   - latitude: 纬度（度）
+    ///   - latitude: Latitude (degrees)
+    ///   - longitude: 经度（度）
+    ///   - longitude: Longitude (degrees)
+    ///   - altitude: 海拔高度（公里）
+    ///   - altitude: Altitude (km)
+    ///   - year: 年份（十进制）
+    ///   - year: Year (decimal)
+    /// - Returns:
+    ///   地磁场解，包含主磁场和长期变化信息
+    ///   Magnetic field solution, containing main field and secular variation information
+    public func calculate(latitude: Double, longitude: Double, altitude: Double, year: Date) -> MagneticFieldSolution {
+        let year = DateUtils.decimalYear(from: year)
+        return calculate(
+            latitude: latitude, longitude: longitude,
+            altitude: altitude, year: year)
+    }
+
     /// 计算指定经纬度、海拔和年份的地磁场
     /// Calculate magnetic field at specified latitude, longitude, altitude and year
     /// - Parameters:
